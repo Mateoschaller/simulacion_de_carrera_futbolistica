@@ -2,6 +2,8 @@ import random
 from tabulate import tabulate
 import arch as taq
 import json
+import functions as fct
+
 def sumar_gol(nombre_jugador):
     for jugador in jugadores:
         if jugador["nombre"] == nombre_jugador:
@@ -59,6 +61,35 @@ def desancionar(club):
         if jugador["equipo"] == club:
             jugador["sancionado"] = False
 
+def actualizar_lesionados(nombre_jugador,duracion):
+    for jugador in jugadores:
+        if jugador["nombre"] == nombre_jugador:
+            if jugador["division"] == "champions":
+                pass
+            else:
+                jugador["lesionado"] = True
+                jugador["lesion"] = duracion
+
+def lesionados(club):
+    jugadores_lesionados = []
+    for jugador in jugadores:
+        if jugador["equipo"] == club:
+            if jugador["lesionado"] == True:
+                lesion = jugador["nombre"]
+                jugadores_lesionados.append(lesion)
+                if jugador["nombre"] == nombre_del_jugador:
+                    if jugador["sancionado"] == False:
+                        jugador["partidos"] -=1
+    return jugadores_lesionados 
+
+def deslesionar(club):
+    for jugador in jugadores:
+        if jugador["equipo"] == club:
+            if jugador["lesion"] != 0:
+                jugador["lesion"] -= 1
+            if jugador["lesion"] == 0:
+                jugador["lesionado"] = False
+
 def sancionados_carabao(club):
     jugadores_sancionados = []
     for jugador in jugadores:
@@ -100,9 +131,6 @@ def actualizar_rustico_carabao(nombre_jugador,ama,roja):
                 if jugador["nombre"] == nombre_del_jugador:
                     player["valoracion"] -= 0.5
 
-def numero_random():
-    return random.randint(1, 5)
-
 def sumar_gol_carabao(nombre_jugador):
     for jugador in jugadores:
         if jugador["nombre"] == nombre_jugador:
@@ -121,34 +149,6 @@ def sumar_asistencia_carabao(nombre_jugador):
                 player["valoracion"] += 0.25
            break  
 
-def actualizar_tabla(tabla,nombre_equipo,pts,goles_local,goles_visitante,victorias,empates,derrotas):
-    for equipo in tabla:
-        if nombre_equipo in equipo:
-            equipo[nombre_equipo]['PTS'] += pts
-            equipo[nombre_equipo]['GF'] += goles_local
-            equipo[nombre_equipo]['GC'] += goles_visitante
-            diferencia_goles = goles_local - goles_visitante
-            equipo[nombre_equipo]['GD'] += diferencia_goles
-            equipo[nombre_equipo]['V'] += victorias
-            equipo[nombre_equipo]['E'] += empates
-            equipo[nombre_equipo]['D'] += derrotas
-            break
-def mostrar_tabla(equiposs):
-    equipos_ordenados = sorted(equiposs, key=lambda x: (x[list(x.keys())[0]]['PTS'], x[list(x.keys())[0]]['GD']), reverse=True)
-    tabla = []
-    for i, equipo in enumerate(equipos_ordenados, start=1):
-        nombre_equipo = list(equipo.keys())[0]
-        puntos = equipo[nombre_equipo]['PTS']
-        goles = equipo[nombre_equipo]['GF']
-        vic = equipo[nombre_equipo]['V']
-        emp = equipo[nombre_equipo]['E']
-        der = equipo[nombre_equipo]['D']
-        diferencia_goles = equipo[nombre_equipo]['GD']
-        golesencontra = equipo[nombre_equipo]['GC']
-        tabla.append([i, nombre_equipo, puntos,vic,emp,der, goles,golesencontra, diferencia_goles])
-
-    headers = ["POS", "EQUIPO", "PTS","V","E","D" ,"GF","GC", "GD"]
-    print(tabulate(tabla, headers=headers, tablefmt="pretty"))
 def goleadores_totales(division):
     if division == "p":
         division = "premier"
@@ -200,1351 +200,31 @@ def asistentes_totales(division):
             contador += 1
     print("")        
 
-def resultado(club1,club2):
-    e1 = "Arsenal"
-    reputatione1 = 5
-    e2 = "Aston Villa"
-    reputatione2 = 3
-    e3 = "Bournemouth"
-    reputatione3 = 1
-    e4 = "Brentford"
-    reputatione4 = 3
-    e5 = "Brigthon"
-    reputatione5 = 4
-    e6 = "Chelsea"
-    reputatione6 = 5
-    e7 = "Crystal Palace"
-    reputatione7 = 3
-    e8 = "Everton"
-    reputatione8 = 2
-    e9 = "Fulham"
-    reputatione9 = 3
-    e10 = "Leeds United"
-    reputatione10 = 2
-    e11 = "Leicester City"
-    reputatione11 = 2
-    e12 = "Liverpool"
-    reputatione12 = 5
-    e13 = "Manchester City"
-    reputatione13 = 5
-    e14 = "Manchester United"
-    reputatione14 = 5
-    e15 = "Newcastle"
-    reputatione15 = 4
-    e16 = "Nottingham Forest"
-    reputatione16 = 2
-    e17 = "Southampton"
-    reputatione17 = 2
-    e18 = "Tottenham"
-    reputatione18 = 5
-    e19 = "West ham"
-    reputatione19 = 2
-    e20 = "Wolverhampton"
-    reputatione20 = 2
-    e21 = "Burnley"
-    reputatione21 = 2
-    e22 = "Sheffield United"
-    reputatione22 = 2
-    e23 = "Luton Town"
-    reputatione23 = 1
-    e24 = "Middlesbrough"
-    reputatione24 = 2
-    e25 = "Coventry City"
-    reputatione25 = 1
-    e26 = "Sunderland"
-    reputatione26 = 2
-    e27 = "Blackburn Rovers"
-    reputatione27 = 1
-    e28 = "Millwall"
-    reputatione28 = 1
-    e29 = "West Bromwich Albion"
-    reputatione29 = 1
-    e30 = "Swansea"
-    reputatione30 = 3
-    e31 = "Watford"
-    reputatione31 = 3
-    e32 = "Preston North End"
-    reputatione32 = 1
-    e33 = "Norwich"
-    reputatione33 = 3
-    e34 = "Bristol City"
-    reputatione34 = 1
-    e35 = "Hull City"
-    reputatione35 = 2
-    e36 = "Stoke City"
-    reputatione36 = 3
-    e37 = "Birmingham"
-    reputatione37 = 2
-    e38 = "Huddersfield Town"
-    reputatione38 = 2
-    e39 = "Cardiff City"
-    reputatione39 = 2
-    e40 = "Queens Park Rangers"
-    reputatione40 = 2
-    e41 = "PSG"
-    reputatione41 = 5
-    e42 = "O.Lyon"
-    reputatione42 = 3
-    e43 = "Inter"
-    reputatione43 = 5
-    e44 = "Juventus"
-    reputatione44 = 5
-    e45 = "Milan"
-    reputatione45 = 5
-    e46 = "Napoli"
-    reputatione46 = 5
-    e47 = "Roma"
-    reputatione47 = 5
-    e48 = "Atl.Madrid"
-    reputatione48 = 4
-    e49 = "Barcelona"
-    reputatione49 = 5
-    e50 = "Real Madrid"
-    reputatione50 = 5
-    e51 = "B.Dortmund"
-    reputatione51 = 5
-    e52 = "Bayern Munich"
-    reputatione52 = 5
-    e53 = "B.Leverkusen"
-    reputatione53 = 3
-    e54 = "Porto"
-    reputatione54 = 3
-    e55 = "Sporting Lisboa"
-    reputatione55 = 3
-    e56 = "Frankfurt"
-    reputatione56 = 3
-    e57 = "O.Marsella"
-    reputatione57 = 3
-    e58 = "Sevilla"
-    reputatione58 = 3
-    e59 = "Benfica"
-    reputatione59 = 3
-    e60 = "Leipzig"
-    reputatione60 = 3
-    e61 = "Ajax"
-    reputatione61 = 3
-    e62 = "Monaco"
-    reputatione62 = 3
-    e63 = "Shakhtar"
-    reputatione63 = 2
-    e64 = "Brugge"
-    reputatione64 = 2
-    e65 = "PSV"
-    reputatione65 = 2
-    e66 = "Real Sociedad"
-    reputatione66 = 2
-    
-    e67 = "Lazio"
-    reputatione67 = 4
-    e68 = "Atalanta"
-    reputatione68 = 4
-    e69 = "Fiorentina"
-    reputatione69 = 4
-    e70 = "Bologna"
-    reputatione70 = 3
-    e71 = "Torino"
-    reputatione71 = 3
-    e72 = "Monza"
-    reputatione72 = 2
-    e73 = "Udinese"
-    reputatione73 = 3
-    e74 = "Sassuolo"
-    reputatione74 = 3
-    e75 = "Empoli"
-    reputatione75 = 2
-    e76 = "Salernitana"
-    reputatione76 = 2
-    e77 = "Lecce"
-    reputatione77 = 2
-    e78 = "Hellas Verona"
-    reputatione78 = 2
-    e79 = "Spezia"
-    reputatione79 = 2
-    e80 = "Cremonese"
-    reputatione80 = 1
-    e81 = "Sampdoria"
-    reputatione81 = 3
-    e82 = "Frosinone"
-    reputatione82 = 2
-    e83 = "Genoa"
-    reputatione83 = 3
-    e84 = "Bari"
-    reputatione84 = 2
-    e85 = "Parma"
-    reputatione85 = 3
-    e86 = "Cagliari"
-    reputatione86 = 3
-    e87 = "Sudtirol"
-    reputatione87 = 1
-    e88 = "Reggina"
-    reputatione88 = 1
-    e89 = "Venezia"
-    reputatione89 = 1
-    e90 = "Palermo"
-    reputatione90 = 2
-    e91 = "Modena"
-    reputatione91 = 1
-    e92 = "Pisa"
-    reputatione92 = 1
-    e93 = "Ascoli"
-    reputatione93 = 1
-    e94 = "Como"
-    reputatione94 = 1
-    e95 = "Ternana"
-    reputatione95 = 1
-    e96 = "Brescia"
-    reputatione96 = 2
-    e97 = "Cittadella"
-    reputatione97 = 2
-    e98 = "Cosenza"
-    reputatione98 = 1
-    e99 = "Perugia"
-    reputatione99 = 1
-    e100 = "Spal"
-    reputatione100 = 2
-    e101 = "Benevento"
-    reputatione101 = 2
-    if club1 == "Arsenal":
-        clublocal = e1
-        reputationlocal = reputatione1
-    elif club1 == "Aston Villa":
-        clublocal = e2
-        reputationlocal = reputatione2
-    elif club1 == "Bournemouth":
-        clublocal = e3
-        reputationlocal = reputatione3
-    elif club1 == "Brentford":
-        clublocal = e4
-        reputationlocal = reputatione4
-    elif club1 == "Brigthon":
-        clublocal = e5
-        reputationlocal = reputatione5
-    elif club1 == "Chelsea":
-        clublocal = e6
-        reputationlocal = reputatione6
-    elif club1 == "Crystal Palace":
-        clublocal = e7        
-        reputationlocal = reputatione7
-    elif club1 == "Everton":
-        clublocal = e8
-        reputationlocal = reputatione8
-    elif club1 == "Fulham":
-        clublocal = e9
-        reputationlocal = reputatione9
-    elif club1 == "Leeds United":
-        clublocal = e10
-        reputationlocal = reputatione10
-    elif club1 == "Leicester City":
-        clublocal = e11
-        reputationlocal = reputatione11
-    elif club1 == "Liverpool":
-        clublocal = e12
-        reputationlocal = reputatione12
-    elif club1 == "Manchester City":
-        clublocal = e13
-        reputationlocal = reputatione13
-    elif club1 == "Manchester United":
-        clublocal = e14
-        reputationlocal = reputatione14
-    elif club1 == "Newcastle":
-        clublocal = e15
-        reputationlocal = reputatione15
-    elif club1 == "Nottingham Forest":
-        clublocal = e16
-        reputationlocal = reputatione16
-    elif club1 == "Southampton":
-        clublocal = e17
-        reputationlocal = reputatione17
-    elif club1 == "Tottenham":
-        clublocal = e18
-        reputationlocal = reputatione18
-    elif club1 == "West ham":
-        clublocal = e19
-        reputationlocal = reputatione19
-    elif club1 == "Wolverhampton":
-        clublocal = e20
-        reputationlocal = reputatione20
-    elif club1 == "Burnley":
-        clublocal = e21
-        reputationlocal = reputatione21    
-    elif club1 == "Sheffield United":
-        clublocal = e22
-        reputationlocal = reputatione22
-    elif club1 == "Luton Town":
-        clublocal = e23
-        reputationlocal = reputatione23
-    elif club1 == "Middlesbrough":
-        clublocal = e24
-        reputationlocal = reputatione24            
-    elif club1 == "Coventry City":
-        clublocal = e25
-        reputationlocal = reputatione25    
-    elif club1 == "Sunderland":
-        clublocal = e26
-        reputationlocal = reputatione26
-    elif club1 == "Blackburn Rovers":
-        clublocal = e27
-        reputationlocal = reputatione27
-    elif club1 == "Millwall":
-        clublocal = e28
-        reputationlocal = reputatione28    
-    elif club1 == "West Bromwich Albion":
-        clublocal = e29
-        reputationlocal = reputatione29
-    elif club1 == "Swansea":
-        clublocal = e30
-        reputationlocal = reputatione30
-    elif club1 == "Watford":
-        clublocal = e31
-        reputationlocal = reputatione31            
-    elif club1 == "Preston North End":
-        clublocal = e32
-        reputationlocal = reputatione32    
-    elif club1 == "Norwich":
-        clublocal = e33
-        reputationlocal = reputatione33
-    elif club1 == "Bristol City":
-        clublocal = e34
-        reputationlocal = reputatione34
-    elif club1 == "Hull City":
-        clublocal = e35
-        reputationlocal = reputatione35    
-    elif club1 == "Stoke City":
-        clublocal = e36
-        reputationlocal = reputatione36
-    elif club1 == "Birmingham":
-        clublocal = e37
-        reputationlocal = reputatione37
-    elif club1 == "Huddersfield Town":
-        clublocal = e38
-        reputationlocal = reputatione38            
-    elif club1 == "Cardiff City":
-        clublocal = e39
-        reputationlocal = reputatione39    
-    elif club1 == "Queens Park Rangers":
-        clublocal = e40
-        reputationlocal = reputatione40    
-    elif club1 == "PSG":
-        clublocal = e41
-        reputationlocal = reputatione41
-    elif club1 == "O.Lyon":
-        clublocal = e42
-        reputationlocal = reputatione42
-    elif club1 == "Inter":
-        clublocal = e43
-        reputationlocal = reputatione43
-    elif club1 == "Juventus":
-        clublocal = e44
-        reputationlocal = reputatione44
-    elif club1 == "Milan":
-        clublocal = e45
-        reputationlocal = reputatione45
-    elif club1 == "Napoli":
-        clublocal = e46
-        reputationlocal = reputatione46
-    elif club1 == "Roma":
-        clublocal = e47
-        reputationlocal = reputatione47
-    elif club1 == "Atl.Madrid":
-        clublocal = e48
-        reputationlocal = reputatione48
-    elif club1 == "Barcelona":
-        clublocal = e49
-        reputationlocal = reputatione49
-    elif club1 == "Real Madrid":
-        clublocal = e50
-        reputationlocal = reputatione50
-    elif club1 == "B.Dortmund":
-        clublocal = e51
-        reputationlocal = reputatione51
-    elif club1 == "Bayern Munich":
-        clublocal = e52
-        reputationlocal = reputatione52
-    elif club1 == "B.Leverkusen":
-        clublocal = e53
-        reputationlocal = reputatione53
-    elif club1 == "Porto":
-        clublocal = e54
-        reputationlocal = reputatione54
-    elif club1 == "Sporting Lisboa":
-        clublocal = e55
-        reputationlocal = reputatione55
-    elif club1 == "Frankfurt":
-        clublocal = e56
-        reputationlocal = reputatione56        
-    elif club1 == "O.Marsella":
-        clublocal = e57
-        reputationlocal = reputatione57
-    elif club1 == "Sevilla":
-        clublocal = e58
-        reputationlocal = reputatione58    
-    elif club1 == "Benfica":
-        clublocal = e59
-        reputationlocal = reputatione59
-    elif club1 == "Leipzig":
-        clublocal = e60
-        reputationlocal = reputatione60
-    elif club1 == "Ajax":
-        clublocal = e61
-        reputationlocal = reputatione61        
-    elif club1 == "Monaco":
-        clublocal = e62
-        reputationlocal = reputatione62
-    elif club1 == "Shakhtar":
-        clublocal = e63
-        reputationlocal = reputatione63  
-    elif club1 == "Brugge":
-        clublocal = e64
-        reputationlocal = reputatione64
-    elif club1 == "PSV":
-        clublocal = e65
-        reputationlocal = reputatione65        
-    elif club1 == "Real Sociedad":
-        clublocal = e66
-        reputationlocal = reputatione66
-    elif club1 == "Lazio":
-        clublocal = e67
-        reputationlocal = reputatione67        
-    elif club1 == "Atalanta":
-        clublocal = e68
-        reputationlocal = reputatione68
-    elif club1 == "Fiorentina":
-        clublocal = e69
-        reputationlocal = reputatione69    
-    elif club1 == "Bologna":
-        clublocal = e70
-        reputationlocal = reputatione70
-    elif club1 == "Torino":
-        clublocal = e71
-        reputationlocal = reputatione71
-    elif club1 == "Monza":
-        clublocal = e72
-        reputationlocal = reputatione72        
-    elif club1 == "Udinese":
-        clublocal = e73
-        reputationlocal = reputatione73
-    elif club1 == "Sassuolo":
-        clublocal = e74
-        reputationlocal = reputatione74  
-    elif club1 == "Empoli":
-        clublocal = e75
-        reputationlocal = reputatione75
-    elif club1 == "Salernitana":
-        clublocal = e76
-        reputationlocal = reputatione76    
-    elif club1 == "Lecce":
-        clublocal = e77
-        reputationlocal = reputatione77        
-    elif club1 == "Hellas Verona":
-        clublocal = e78
-        reputationlocal = reputatione78
-    elif club1 == "Spezia":
-        clublocal = e79
-        reputationlocal = reputatione79    
-    elif club1 == "Cremonese":
-        clublocal = e80
-        reputationlocal = reputatione80
-    elif club1 == "Sampdoria":
-        clublocal = e81
-        reputationlocal = reputatione81
-    elif club1 == "Frosinone":
-        clublocal = e82
-        reputationlocal = reputatione82        
-    elif club1 == "Genoa":
-        clublocal = e83
-        reputationlocal = reputatione83
-    elif club1 == "Bari":
-        clublocal = e84
-        reputationlocal = reputatione84  
-    elif club1 == "Parma":
-        clublocal = e85
-        reputationlocal = reputatione85
-    elif club1 == "Cagliari":
-        clublocal = e86
-        reputationlocal = reputatione86 
-    elif club1 == "Sudtirol":
-        clublocal = e87
-        reputationlocal = reputatione87        
-    elif club1 == "Reggina":
-        clublocal = e88
-        reputationlocal = reputatione88
-    elif club1 == "Venezia":
-        clublocal = e89
-        reputationlocal = reputatione89    
-    elif club1 == "Palermo":
-        clublocal = e90
-        reputationlocal = reputatione90
-    elif club1 == "Modena":
-        clublocal = e91
-        reputationlocal = reputatione91
-    elif club1 == "Pisa":
-        clublocal = e92
-        reputationlocal = reputatione92        
-    elif club1 == "Ascoli":
-        clublocal = e93
-        reputationlocal = reputatione93
-    elif club1 == "Como":
-        clublocal = e94
-        reputationlocal = reputatione94  
-    elif club1 == "Ternana":
-        clublocal = e95
-        reputationlocal = reputatione95
-    elif club1 == "Brescia":
-        clublocal = e96
-        reputationlocal = reputatione96 
-    elif club1 == "Cittadella":
-        clublocal = e97
-        reputationlocal = reputatione97
-    elif club1 == "Cosenza":
-        clublocal = e98
-        reputationlocal = reputatione98  
-    elif club1 == "Perugia":
-        clublocal = e99
-        reputationlocal = reputatione99
-    elif club1 == "Spal":
-        clublocal = e100
-        reputationlocal = reputatione100
-    elif club1 == "Benevento":
-        clublocal = e101
-        reputationlocal = reputatione101
-    else:
-        print("sos medio dislexico papito no?")
-        
-    if club2 == "Arsenal":
-        clubvisitor = e1
-        reputationvisitor = reputatione1
-    elif club2 == "Aston Villa":
-        clubvisitor = e2
-        reputationvisitor = reputatione2
-    elif club2 == "Bournemouth":
-        clubvisitor = e3
-        reputationvisitor = reputatione3
-    elif club2 == "Brentford":
-        clubvisitor = e4
-        reputationvisitor = reputatione4
-    elif club2 == "Brigthon":
-        clubvisitor = e5
-        reputationvisitor = reputatione5
-    elif club2 == "Chelsea":
-        clubvisitor = e6
-        reputationvisitor = reputatione6
-    elif club2 == "Crystal Palace":
-        clubvisitor = e7        
-        reputationvisitor = reputatione7
-    elif club2 == "Everton":
-        clubvisitor = e8
-        reputationvisitor = reputatione8
-    elif club2 == "Fulham":
-        clubvisitor = e9
-        reputationvisitor = reputatione9
-    elif club2 == "Leeds United":
-        clubvisitor = e10
-        reputationvisitor = reputatione10
-    elif club2 == "Leicester City":
-        clubvisitor = e11
-        reputationvisitor = reputatione11
-    elif club2 == "Liverpool":
-        clubvisitor = e12
-        reputationvisitor = reputatione12
-    elif club2 == "Manchester City":
-        clubvisitor = e13
-        reputationvisitor = reputatione13
-    elif club2 == "Manchester United":
-        clubvisitor = e14
-        reputationvisitor = reputatione14
-    elif club2 == "Newcastle":
-        clubvisitor = e15
-        reputationvisitor = reputatione15
-    elif club2 == "Nottingham Forest":
-        clubvisitor = e16
-        reputationvisitor = reputatione16
-    elif club2 == "Southampton":
-        clubvisitor = e17
-        reputationvisitor = reputatione17
-    elif club2 == "Tottenham":
-        clubvisitor = e18
-        reputationvisitor = reputatione18
-    elif club2 == "West ham":
-        clubvisitor = e19
-        reputationvisitor = reputatione19
-    elif club2 == "Wolverhampton":
-        clubvisitor = e20
-        reputationvisitor = reputatione20
-    elif club2 == "Burnley":
-        clubvisitor = e21
-        reputationvisitor = reputatione21    
-    elif club2 == "Sheffield United":
-        clubvisitor = e22
-        reputationvisitor = reputatione22
-    elif club2 == "Luton Town":
-        clubvisitor = e23
-        reputationvisitor = reputatione23
-    elif club2 == "Middlesbrough":
-        clubvisitor = e24
-        reputationvisitor = reputatione24            
-    elif club2 == "Coventry City":
-        clubvisitor = e25
-        reputationvisitor = reputatione25    
-    elif club2 == "Sunderland":
-        clubvisitor = e26
-        reputationvisitor = reputatione26
-    elif club2 == "Blackburn Rovers":
-        clubvisitor = e27
-        reputationvisitor = reputatione27
-    elif club2 == "Millwall":
-        clubvisitor = e28
-        reputationvisitor = reputatione28    
-    elif club2 == "West Bromwich Albion":
-        clubvisitor = e29
-        reputationvisitor = reputatione29
-    elif club2 == "Swansea":
-        clubvisitor = e30
-        reputationvisitor = reputatione30
-    elif club2 == "Watford":
-        clubvisitor = e31
-        reputationvisitor = reputatione31            
-    elif club2 == "Preston North End":
-        clubvisitor = e32
-        reputationvisitor = reputatione32    
-    elif club2 == "Norwich":
-        clubvisitor = e33
-        reputationvisitor = reputatione33
-    elif club2 == "Bristol City":
-        clubvisitor = e34
-        reputationvisitor = reputatione34
-    elif club2 == "Hull City":
-        clubvisitor = e35
-        reputationvisitor = reputatione35    
-    elif club2 == "Stoke City":
-        clubvisitor = e36
-        reputationvisitor = reputatione36
-    elif club2 == "Birmingham":
-        clubvisitor = e37
-        reputationvisitor = reputatione37
-    elif club2 == "Huddersfield Town":
-        clubvisitor = e38
-        reputationvisitor = reputatione38            
-    elif club2 == "Cardiff City":
-        clubvisitor = e39
-        reputationvisitor = reputatione39    
-    elif club2 == "Queens Park Rangers":
-        clubvisitor = e40
-        reputationvisitor = reputatione40    
-    elif club2 == "PSG":
-        clubvisitor = e41        
-        reputationvisitor = reputatione41
-    elif club2 == "O.Lyon":
-        clubvisitor = e42
-        reputationvisitor = reputatione42
-    elif club2 == "Inter":
-        clubvisitor = e43
-        reputationvisitor = reputatione43
-    elif club2 == "Juventus":
-        clubvisitor = e44
-        reputationvisitor = reputatione44
-    elif club2 == "Milan":
-        clubvisitor = e45
-        reputationvisitor = reputatione45
-    elif club2 == "Napoli":
-        clubvisitor = e46
-        reputationvisitor = reputatione46
-    elif club2 == "Roma":
-        clubvisitor = e47
-        reputationvisitor = reputatione47
-    elif club2 == "Atl.Madrid":
-        clubvisitor = e48
-        reputationvisitor = reputatione48
-    elif club2 == "Barcelona":
-        clubvisitor = e49
-        reputationvisitor = reputatione49
-    elif club2 == "Real Madrid":
-        clubvisitor = e50
-        reputationvisitor = reputatione50
-    elif club2 == "B.Dortmund":
-        clubvisitor = e51
-        reputationvisitor = reputatione51
-    elif club2 == "Bayern Munich":
-        clubvisitor = e52
-        reputationvisitor = reputatione52
-    elif club2 == "B.Leverkusen":
-        clubvisitor = e53
-        reputationvisitor = reputatione53
-    elif club2 == "Porto":
-        clubvisitor = e54
-        reputationvisitor = reputatione54
-    elif club2 == "Sporting Lisboa":
-        clubvisitor = e55
-        reputationvisitor = reputatione55
-    elif club2 == "Frankfurt":
-        clubvisitor = e56
-        reputationvisitor = reputatione56        
-    elif club2 == "O.Marsella":
-        clubvisitor = e57
-        reputationvisitor = reputatione57
-    elif club2 == "Sevilla":
-        clubvisitor = e58
-        reputationvisitor = reputatione58    
-    elif club2 == "Benfica":
-        clubvisitor = e59
-        reputationvisitor = reputatione59
-    elif club2 == "Leipzig":
-        clubvisitor = e60
-        reputationvisitor = reputatione60
-    elif club2 == "Ajax":
-        clubvisitor = e61
-        reputationvisitor = reputatione61        
-    elif club2 == "Monaco":
-        clubvisitor = e62
-        reputationvisitor = reputatione62
-    elif club2 == "Shakhtar":
-        clubvisitor = e63
-        reputationvisitor = reputatione63  
-    elif club2 == "Brugge":
-        clubvisitor = e64
-        reputationvisitor = reputatione64
-    elif club2 == "PSV":
-        clubvisitor = e65
-        reputationvisitor = reputatione65        
-    elif club2 == "Real Sociedad":
-        clubvisitor = e66
-        reputationvisitor = reputatione66  
-        
-    elif club2 == "Lazio":
-        clubvisitor = e67
-        reputationvisitor = reputatione67  
-    elif club2 == "Atalanta":
-        clubvisitor = e68
-        reputationvisitor = reputatione68  
-    elif club2 == "Fiorentina":
-        clubvisitor = e69
-        reputationvisitor = reputatione69 
-    elif club2 == "Bologna":
-        clubvisitor = e70
-        reputationvisitor = reputatione70  
-    elif club2 == "Torino":
-        clubvisitor = e71
-        reputationvisitor = reputatione71
-    elif club2 == "Monza":
-        clubvisitor = e72
-        reputationvisitor = reputatione72  
-    elif club2 == "Udinese":
-        clubvisitor = e73
-        reputationvisitor = reputatione73
-    elif club2 == "Sassuolo":
-        clubvisitor = e74
-        reputationvisitor = reputatione74  
-    elif club2 == "Empoli":
-        clubvisitor = e75
-        reputationvisitor = reputatione75
-    elif club2 == "Salernitana":
-        clubvisitor = e76
-        reputationvisitor = reputatione76  
-    elif club2 == "Lecce":
-        clubvisitor = e77
-        reputationvisitor = reputatione77
-    elif club2 == "Hellas Verona":
-        clubvisitor = e78
-        reputationvisitor = reputatione78  
-    elif club2 == "Spezia":
-        clubvisitor = e79
-        reputationvisitor = reputatione79
-    elif club2 == "Cremonese":
-        clubvisitor = e80
-        reputationvisitor = reputatione80  
-    elif club2 == "Sampdoria":
-        clubvisitor = e81
-        reputationvisitor = reputatione81
-    elif club2 == "Frosinone":
-        clubvisitor = e82
-        reputationvisitor = reputatione82  
-    elif club2 == "Genoa":
-        clubvisitor = e83
-        reputationvisitor = reputatione83
-    elif club2 == "Bari":
-        clubvisitor = e84
-        reputationvisitor = reputatione84  
-    elif club2 == "Parma":
-        clubvisitor = e85
-        reputationvisitor = reputatione85
-    elif club2 == "Cagliari":
-        clubvisitor = e86
-        reputationvisitor = reputatione86  
-    elif club2 == "Sudtirol":
-        clubvisitor = e87
-        reputationvisitor = reputatione87
-    elif club2 == "Reggina":
-        clubvisitor = e88
-        reputationvisitor = reputatione88  
-    elif club2 == "Venezia":
-        clubvisitor = e89
-        reputationvisitor = reputatione89
-    elif club2 == "Palermo":
-        clubvisitor = e90
-        reputationvisitor = reputatione90
-    elif club2 == "Modena":
-        clubvisitor = e91
-        reputationvisitor = reputatione91
-    elif club2 == "Pisa":
-        clubvisitor = e92
-        reputationvisitor = reputatione92
-    elif club2 == "Ascoli":
-        clubvisitor = e93
-        reputationvisitor = reputatione93
-    elif club2 == "Como":
-        clubvisitor = e94
-        reputationvisitor = reputatione94
-    elif club2 == "Ternana":
-        clubvisitor = e95
-        reputationvisitor = reputatione95
-    elif club2 == "Brescia":
-        clubvisitor = e96
-        reputationvisitor = reputatione96
-    elif club2 == "Cittadella":
-        clubvisitor = e97
-        reputationvisitor = reputatione97
-    elif club2 == "Cosenza":
-        clubvisitor = e98
-        reputationvisitor = reputatione98
-    elif club2 == "Perugia":
-        clubvisitor = e99
-        reputationvisitor = reputatione99
-    elif club2 == "Spal":
-        clubvisitor = e100
-        reputationvisitor = reputatione100
-    elif club2 == "Benevento":
-        clubvisitor = e101
-        reputationvisitor = reputatione101
-    else:
-        print("sos medio dislexico papito no?")
-        
-    reputation = (reputationlocal - reputationvisitor)    
-    if reputation == 0:
-        numeros = [0, 1, 2, 3, 4, 5, 6]
-        probabilidades = [0.39, 0.30, 0.19, 0.1, 0.02, 0, 0]
-        goallocal = random.choices(numeros, weights=probabilidades)[0]
-        numeros = [0, 1, 2, 3, 4, 5, 6]
-        probabilidades = [0.39, 0.30, 0.19, 0.1, 0.02, 0, 0]
-        goalsvisitor = random.choices(numeros, weights=probabilidades)[0]
-    elif reputation == 1:
-        numeros = [0, 1, 2, 3, 4, 5, 6]
-        probabilidades = [0.30, 0.32, 0.18, 0.1, 0.05, 0.03, 0.02]
-        goallocal = random.choices(numeros, weights=probabilidades)[0]
-        numeros = [0, 1, 2, 3, 4, 5, 6]
-        probabilidades = [0.36, 0.34, 0.15, 0.1, 0.03, 0.02, 0]
-        goalsvisitor = random.choices(numeros, weights=probabilidades)[0]
-    elif reputation == 2:
-        numeros = [0, 1, 2, 3, 4, 5, 6]
-        probabilidades = [0.25, 0.32, 0.21, 0.12, 0.05, 0.03, 0.02]
-        goallocal = random.choices(numeros, weights=probabilidades)[0]
-        numeros = [0, 1, 2, 3, 4, 5, 6]
-        probabilidades = [0.41, 0.35, 0.12, 0.1, 0.02, 0, 0]
-        goalsvisitor = random.choices(numeros, weights=probabilidades)[0]
-    elif reputation == 3:
-        numeros = [0, 1, 2, 3, 4, 5, 6]
-        probabilidades = [0.20, 0.25, 0.25, 0.15, 0.08, 0.05, 0.02]
-        goallocal = random.choices(numeros, weights=probabilidades)[0]
-        numeros = [0, 1, 2, 3, 4, 5, 6]
-        probabilidades = [0.45, 0.40, 0.1, 0.05, 0, 0, 0]
-        goalsvisitor = random.choices(numeros, weights=probabilidades)[0]
-    elif reputation == 4:
-        numeros = [0, 1, 2, 3, 4, 5, 6]
-        probabilidades = [0.1, 0.20, 0.30, 0.20, 0.12, 0.06, 0.02]
-        goallocal = random.choices(numeros, weights=probabilidades)[0]
-        numeros = [0, 1, 2, 3, 4, 5, 6]
-        probabilidades = [0.6, 0.30, 0.11, 0, 0, 0, 0]
-        goalsvisitor = random.choices(numeros, weights=probabilidades)[0]
-    elif reputation == -1:
-        numeros = [0, 1, 2, 3, 4, 5, 6]
-        probabilidades = [0.36, 0.34, 0.15, 0.1, 0.03, 0.02, 0]
-        goallocal = random.choices(numeros, weights=probabilidades)[0]
-        numeros = [0, 1, 2, 3, 4, 5, 6]
-        probabilidades = [0.30, 0.32, 0.18, 0.1, 0.05, 0.03, 0.02]
-        goalsvisitor = random.choices(numeros, weights=probabilidades)[0] 
-    elif reputation == -2:
-        numeros = [0, 1, 2, 3, 4, 5, 6]
-        probabilidades = [0.41, 0.35, 0.12, 0.1, 0.02, 0, 0]
-        goallocal = random.choices(numeros, weights=probabilidades)[0]
-        numeros = [0, 1, 2, 3, 4, 5, 6]
-        probabilidades = [0.25, 0.32, 0.21, 0.12, 0.05, 0.03, 0.02]
-        goalsvisitor = random.choices(numeros, weights=probabilidades)[0] 
-    elif reputation == -3 :    
-        numeros = [0, 1, 2, 3, 4, 5, 6]
-        probabilidades = [0.20, 0.25, 0.25, 0.15, 0.08, 0.05, 0.02]
-        goalsvisitor = random.choices(numeros, weights=probabilidades)[0]
-        numeros = [0, 1, 2, 3, 4, 5, 6]
-        probabilidades = [0.45, 0.40, 0.1, 0.05, 0, 0, 0]
-        goallocal = random.choices(numeros, weights=probabilidades)[0]
-    elif reputation == -4:
-        numeros = [0, 1, 2, 3, 4, 5, 6]
-        probabilidades = [0.1, 0.20, 0.30, 0.20, 0.12, 0.06, 0.02]
-        goalsvisitor = random.choices(numeros, weights=probabilidades)[0]
-        numeros = [0, 1, 2, 3, 4, 5, 6]
-        probabilidades = [0.6, 0.30, 0.11, 0, 0, 0, 0]
-        goallocal = random.choices(numeros, weights=probabilidades)[0]
-        
-    result = print(f'{club1} {goallocal}-{goalsvisitor} {club2}') 
-    return result,club1,goallocal,goalsvisitor,club2
-
-def resultado_selecciones(club1,club2):
-    e1 = "España"
-    reputatione1 = 5
-    e2 = "Francia"
-    reputatione2 = 5
-    e3 = "Holanda"
-    reputatione3 = 4
-    e4 = "Inglaterra"
-    reputatione4 = 5
-    e5 = "Italia"
-    reputatione5 = 5
-    e6 = "Croacia"
-    reputatione6 = 4
-    e7 = "Belgica"
-    reputatione7 = 3
-    e8 = "Portugal"
-    reputatione8 = 4
-    e9 = "Suiza"
-    reputatione9 = 2
-    e10 = "Dinamarca"
-    reputatione10 = 3
-    e11 = "Polonia"
-    reputatione11 = 2
-    e12 = "Noruega"
-    reputatione12 = 2
-    e13 = "Alemania" 
-    reputatione13 = 5
-    e14 = "Gales"
-    reputatione14 = 1
-    e15 = "Serbia"
-    reputatione15 = 1
-    e16 = "Suecia"
-    reputatione16 = 1
-     
-    e17 = "Argentina"
-    reputatione17 = 5
-    e18 = "Uruguay"
-    reputatione18 = 4
-    e19 = "Paraguay"
-    reputatione19 = 2
-    e20 = "Chile"
-    reputatione20 = 3
-    e21 = "Bolivia"
-    reputatione21 = 1
-    e22 = "Brasil"
-    reputatione22 = 5
-    e23 = "Peru"
-    reputatione23 = 3
-    e24 = "Colombia"
-    reputatione24 = 4
-    e25 = "Ecuador"
-    reputatione25 = 3
-    e26 = "Venezuela"
-    reputatione26 = 2
-    e27 = "Mexico"
-    reputatione27 = 3
-    e28 = "Estados Unidos"
-    reputatione28 = 3
-    e29 = "Canada"
-    reputatione29 = 2
-    e30 = "Costa Rica"
-    reputatione30 = 1
-    e31 = "Cuba"
-    reputatione31 = 1
-    e32 = "Honduras"
-    reputatione32 = 1
-    
-    e33 = "Egipto"
-    reputatione33 = 3
-    e34 = "Senegal"
-    reputatione34 = 3
-    e35 = "Tunez"
-    reputatione35 = 2
-    e36 = "Camerun"
-    reputatione36 = 2
-    e37 = "Marruecos"
-    reputatione37 = 3
-    e38 = "Nigeria"
-    reputatione38 = 2
-    e39 = "Ghana"
-    reputatione39 = 1
-    e40 = "Argelia"
-    reputatione40 = 1
-    
-    e41 = "Iran"
-    reputatione41 = 2
-    e42 = "Corea del Sur"
-    reputatione42 = 3
-    e43 = "Japon"
-    reputatione43 = 3
-    e44 = "China"
-    reputatione44 = 1
-    e45 = "Arabia Saudita"
-    reputatione45 = 2
-    e46 = "Israel"
-    reputatione46 = 1
-    e47 = "Australia"
-    reputatione47 = 3
-    e48 = "Qatar"
-    reputatione48 = 2
-    if club1 == "España":
-        clublocal = e1
-        reputationlocal = reputatione1
-    elif club1 == "Francia":
-        clublocal = e2
-        reputationlocal = reputatione2
-    elif club1 == "Holanda":
-        clublocal = e3
-        reputationlocal = reputatione3
-    elif club1 == "Inglaterra":
-        clublocal = e4
-        reputationlocal = reputatione4
-    elif club1 == "Italia":
-        clublocal = e5
-        reputationlocal = reputatione5
-    elif club1 == "Croacia":
-        clublocal = e6
-        reputationlocal = reputatione6
-    elif club1 == "Belgica":
-        clublocal = e7        
-        reputationlocal = reputatione7
-    elif club1 == "Portugal":
-        clublocal = e8
-        reputationlocal = reputatione8
-    elif club1 == "Suiza":
-        clublocal = e9
-        reputationlocal = reputatione9
-    elif club1 == "Dinamarca":
-        clublocal = e10
-        reputationlocal = reputatione10
-    elif club1 == "Polonia":
-        clublocal = e11
-        reputationlocal = reputatione11
-    elif club1 == "Noruega":
-        clublocal = e12
-        reputationlocal = reputatione12
-    elif club1 == "Alemania":
-        clublocal = e13
-        reputationlocal = reputatione13
-    elif club1 == "Gales":
-        clublocal = e14
-        reputationlocal = reputatione14
-    elif club1 == "Serbia":
-        clublocal = e15
-        reputationlocal = reputatione15
-    elif club1 == "Suecia":
-        clublocal = e16
-        reputationlocal = reputatione16        
-    elif club1 == "Argentina":
-        clublocal = e17
-        reputationlocal = reputatione17
-    elif club1 == "Uruguay":
-        clublocal = e18
-        reputationlocal = reputatione18
-    elif club1 == "Paraguay":
-        clublocal = e19
-        reputationlocal = reputatione19
-    elif club1 == "Chile":
-        clublocal = e20
-        reputationlocal = reputatione20
-    elif club1 == "Bolivia":
-        clublocal = e21
-        reputationlocal = reputatione21    
-    elif club1 == "Brasil":
-        clublocal = e22
-        reputationlocal = reputatione22
-    elif club1 == "Peru":
-        clublocal = e23
-        reputationlocal = reputatione23
-    elif club1 == "Colombia":
-        clublocal = e24
-        reputationlocal = reputatione24            
-    elif club1 == "Ecuador":
-        clublocal = e25
-        reputationlocal = reputatione25    
-    elif club1 == "Venezuela":
-        clublocal = e26
-        reputationlocal = reputatione26
-    elif club1 == "Mexico":
-        clublocal = e27
-        reputationlocal = reputatione27
-    elif club1 == "Estados Unidos":
-        clublocal = e28
-        reputationlocal = reputatione28    
-    elif club1 == "Canada":
-        clublocal = e29
-        reputationlocal = reputatione29
-    elif club1 == "Costa Rica":
-        clublocal = e30
-        reputationlocal = reputatione30
-    elif club1 == "Cuba":
-        clublocal = e31
-        reputationlocal = reputatione31 
-    elif club1 == "Honduras":
-        clublocal = e32
-        reputationlocal = reputatione32          
-    elif club1 == "Egipto":
-        clublocal = e33
-        reputationlocal = reputatione33
-    elif club1 == "Senegal":
-        clublocal = e34
-        reputationlocal = reputatione34
-    elif club1 == "Tunez":
-        clublocal = e35
-        reputationlocal = reputatione35    
-    elif club1 == "Camerun":
-        clublocal = e36
-        reputationlocal = reputatione36
-    elif club1 == "Marruecos":
-        clublocal = e37
-        reputationlocal = reputatione37
-    elif club1 == "Nigeria":
-        clublocal = e38
-        reputationlocal = reputatione38            
-    elif club1 == "Ghana":
-        clublocal = e39
-        reputationlocal = reputatione39    
-    elif club1 == "Argelia":
-        clublocal = e40
-        reputationlocal = reputatione40    
-    elif club1 == "Iran":
-        clublocal = e41
-        reputationlocal = reputatione41
-    elif club1 == "Corea del Sur":
-        clublocal = e42
-        reputationlocal = reputatione42
-    elif club1 == "Japon":
-        clublocal = e43
-        reputationlocal = reputatione43
-    elif club1 == "China":
-        clublocal = e44
-        reputationlocal = reputatione44
-    elif club1 == "Arabia Saudita":
-        clublocal = e45
-        reputationlocal = reputatione45
-    elif club1 == "Israel":
-        clublocal = e46
-        reputationlocal = reputatione46
-    elif club1 == "Australia":
-        clublocal = e47
-        reputationlocal = reputatione47     
-    elif club1 == "Qatar":
-        clublocal = e48
-        reputationlocal = reputatione48   
-    else:
-        print("sos medio dislexico papito no?")
-    if club2 == "España":
-        clubvisitor = e1
-        reputationvisitor = reputatione1
-    elif club2 == "Francia":
-        clubvisitor = e2
-        reputationvisitor = reputatione2
-    elif club2 == "Holanda":
-        clubvisitor = e3
-        reputationvisitor = reputatione3
-    elif club2 == "Inglaterra":
-        clubvisitor = e4
-        reputationvisitor = reputatione4
-    elif club2 == "Italia":
-        clubvisitor = e5
-        reputationvisitor = reputatione5
-    elif club2 == "Croacia":
-        clubvisitor = e6
-        reputationvisitor = reputatione6
-    elif club2 == "Belgica":
-        clubvisitor = e7        
-        reputationvisitor = reputatione7
-    elif club2 == "Portugal":
-        clubvisitor = e8
-        reputationvisitor = reputatione8
-    elif club2 == "Suiza":
-        clubvisitor = e9
-        reputationvisitor = reputatione9
-    elif club2 == "Dinamarca":
-        clubvisitor = e10
-        reputationvisitor = reputatione10
-    elif club2 == "Polonia":
-        clubvisitor = e11
-        reputationvisitor = reputatione11
-    elif club2 == "Noruega":
-        clubvisitor = e12
-        reputationvisitor = reputatione12
-    elif club2 == "Alemania":
-        clubvisitor = e13
-        reputationvisitor = reputatione13
-    elif club2 == "Gales":
-        clubvisitor = e14
-        reputationvisitor = reputatione14
-    elif club2 == "Serbia":
-        clubvisitor = e15
-        reputationvisitor = reputatione15
-    elif club2 == "Suecia":
-        clubvisitor = e16
-        reputationvisitor = reputatione16
-    elif club2 == "Argentina":
-        clubvisitor = e17
-        reputationvisitor = reputatione17
-    elif club2 == "Uruguay":
-        clubvisitor = e18
-        reputationvisitor = reputatione18
-    elif club2 == "Paraguay":
-        clubvisitor = e19
-        reputationvisitor = reputatione19
-    elif club2 == "Chile":
-        clubvisitor = e20
-        reputationvisitor = reputatione20
-    elif club2 == "Bolivia":
-        clubvisitor = e21
-        reputationvisitor = reputatione21    
-    elif club2 == "Brasil":
-        clubvisitor = e22
-        reputationvisitor = reputatione22
-    elif club2 == "Peru":
-        clubvisitor = e23
-        reputationvisitor = reputatione23
-    elif club2 == "Colombia":
-        clubvisitor = e24
-        reputationvisitor = reputatione24            
-    elif club2 == "Ecuador":
-        clubvisitor = e25
-        reputationvisitor = reputatione25    
-    elif club2 == "Venezuela":
-        clubvisitor = e26
-        reputationvisitor = reputatione26
-    elif club2 == "Mexico":
-        clubvisitor = e27
-        reputationvisitor = reputatione27
-    elif club2 == "Estados Unidos":
-        clubvisitor = e28
-        reputationvisitor = reputatione28    
-    elif club2 == "Canada":
-        clubvisitor = e29
-        reputationvisitor = reputatione29
-    elif club2 == "Costa Rica":
-        clubvisitor = e30
-        reputationvisitor = reputatione30
-    elif club2 == "Cuba":
-        clubvisitor = e31
-        reputationvisitor = reputatione31 
-    elif club2 == "Honduras":
-        clubvisitor = e32
-        reputationvisitor = reputatione32  
-    elif club2 == "Egipto":
-        clubvisitor = e33
-        reputationvisitor = reputatione33
-    elif club2 == "Senegal":
-        clubvisitor = e34
-        reputationvisitor = reputatione34
-    elif club2 == "Tunez":
-        clubvisitor = e35
-        reputationvisitor = reputatione35    
-    elif club2 == "Camerun":
-        clubvisitor = e36
-        reputationvisitor = reputatione36
-    elif club2 == "Marruecos":
-        clubvisitor = e37
-        reputationvisitor = reputatione37
-    elif club2 == "Nigeria":
-        clubvisitor = e38
-        reputationvisitor = reputatione38            
-    elif club2 == "Ghana":
-        clubvisitor = e39
-        reputationvisitor = reputatione39    
-    elif club2 == "Argelia":
-        clubvisitor = e40
-        reputationvisitor = reputatione40    
-    elif club2 == "Iran":
-        clubvisitor = e41        
-        reputationvisitor = reputatione41
-    elif club2 == "Corea del Sur":
-        clubvisitor = e42
-        reputationvisitor = reputatione42
-    elif club2 == "Japon":
-        clubvisitor = e43
-        reputationvisitor = reputatione43
-    elif club2 == "China":
-        clubvisitor = e44
-        reputationvisitor = reputatione44
-    elif club2 == "Arabia Saudita":
-        clubvisitor = e45
-        reputationvisitor = reputatione45
-    elif club2 == "Israel":
-        clubvisitor = e46
-        reputationvisitor = reputatione46
-    elif club2 == "Australia":
-        clubvisitor = e47
-        reputationvisitor = reputatione47
-    elif club2 == "Qatar":
-        clubvisitor = e48
-        reputationvisitor = reputatione48
-    else:
-        print("sos medio dislexico papito no?")
-        
-    reputation = (reputationlocal - reputationvisitor)    
-    if reputation == 0:
-        numeros = [0, 1, 2, 3, 4]
-        probabilidades = [0.39, 0.30, 0.19, 0.1, 0.02]
-        goallocal = random.choices(numeros, weights=probabilidades)[0]
-        numeros = [0, 1, 2, 3,4]
-        probabilidades = [0.39, 0.30, 0.19, 0.1, 0.02]
-        goalsvisitor = random.choices(numeros, weights=probabilidades)[0]
-    elif reputation == 1:
-        numeros = [0, 1, 2, 3, 4, 5, 6]
-        probabilidades = [0.30, 0.32, 0.18, 0.1, 0.05, 0.03, 0.02]
-        goallocal = random.choices(numeros, weights=probabilidades)[0]
-        numeros = [0, 1, 2, 3, 4, 5]
-        probabilidades = [0.36, 0.34, 0.15, 0.1, 0.03, 0.02]
-        goalsvisitor = random.choices(numeros, weights=probabilidades)[0]
-    elif reputation == 2:
-        numeros = [0, 1, 2, 3, 4, 5, 6]
-        probabilidades = [0.25, 0.32, 0.21, 0.12, 0.05, 0.03, 0.02]
-        goallocal = random.choices(numeros, weights=probabilidades)[0]
-        numeros = [0, 1, 2, 3, 4]
-        probabilidades = [0.41, 0.35, 0.12, 0.1, 0.02]
-        goalsvisitor = random.choices(numeros, weights=probabilidades)[0]
-    elif reputation == 3:
-        numeros = [0, 1, 2, 3, 4, 5, 6]
-        probabilidades = [0.20, 0.25, 0.25, 0.15, 0.08, 0.05, 0.02]
-        goallocal = random.choices(numeros, weights=probabilidades)[0]
-        numeros = [0, 1, 2, 3]
-        probabilidades = [0.45, 0.40, 0.1, 0.05]
-        goalsvisitor = random.choices(numeros, weights=probabilidades)[0]
-    elif reputation == 4:
-        numeros = [0, 1, 2, 3, 4, 5, 6]
-        probabilidades = [0.1, 0.20, 0.30, 0.20, 0.12, 0.06, 0.02]
-        goallocal = random.choices(numeros, weights=probabilidades)[0]
-        numeros = [0, 1, 2]
-        probabilidades = [0.6, 0.30, 0.11]
-        goalsvisitor = random.choices(numeros, weights=probabilidades)[0]
-    elif reputation == -1:
-        numeros = [0, 1, 2, 3, 4, 5]
-        probabilidades = [0.36, 0.34, 0.15, 0.1, 0.03, 0.02]
-        goallocal = random.choices(numeros, weights=probabilidades)[0]
-        numeros = [0, 1, 2, 3, 4, 5, 6]
-        probabilidades = [0.30, 0.32, 0.18, 0.1, 0.05, 0.03, 0.02]
-        goalsvisitor = random.choices(numeros, weights=probabilidades)[0] 
-    elif reputation == -2:
-        numeros = [0, 1, 2, 3, 4]
-        probabilidades = [0.41, 0.35, 0.12, 0.1, 0.02]
-        goallocal = random.choices(numeros, weights=probabilidades)[0]
-        numeros = [0, 1, 2, 3, 4, 5, 6]
-        probabilidades = [0.25, 0.32, 0.21, 0.12, 0.05, 0.03, 0.02]
-        goalsvisitor = random.choices(numeros, weights=probabilidades)[0] 
-    elif reputation == -3 :    
-        numeros = [0, 1, 2, 3, 4, 5, 6]
-        probabilidades = [0.20, 0.25, 0.25, 0.15, 0.08, 0.05, 0.02]
-        goalsvisitor = random.choices(numeros, weights=probabilidades)[0]
-        numeros = [0, 1, 2, 3]
-        probabilidades = [0.45, 0.40, 0.1, 0.05]
-        goallocal = random.choices(numeros, weights=probabilidades)[0]
-    elif reputation == -4:
-        numeros = [0, 1, 2, 3, 4, 5, 6]
-        probabilidades = [0.1, 0.20, 0.30, 0.20, 0.12, 0.06, 0.02]
-        goalsvisitor = random.choices(numeros, weights=probabilidades)[0]
-        numeros = [0, 1, 2]
-        probabilidades = [0.6, 0.30, 0.11]
-        goallocal = random.choices(numeros, weights=probabilidades)[0]
-        
-    result = print(f'{club1} {goallocal}-{goalsvisitor} {club2}') 
-    return result,club1,goallocal,goalsvisitor,club2
+def lesionados_totales(division):
+    if division == "p":
+        division = "premier"
+    elif division == "c":
+        division = "championship" 
+    elif division == "sa":
+        division = "serie A"
+    elif division == "sb":
+        division = "serie B"  
+    input("mostrar tabla de lesionados")  
+    print("")
+    jugadores_ordenados = sorted(jugadores, key=lambda j: j["lesion"], reverse=True)
+    contador = 0
+    import colorama
+    colorama.init()
+    for i, j in enumerate(jugadores_ordenados):
+        if j["division"] == division:
+            if contador == 10:
+                break
+            if contador == 0:
+                print(f"\033[32m{j['lesion']} - {j['nombre']} - {j['equipo']}\033[0m")
+            else:
+                print(f"{j['lesion']} - {j['nombre']} - {j['equipo']}")
+            contador += 1
+    print("") 
 
 def rojas_totales(division):
     if division == "p":
@@ -1602,17 +282,25 @@ def generar_partido(club1,club2,tabla):
     jugadores_sancionados_visitantes = sancionados(club2)
     desancionar(club1)
     desancionar(club2)
-    result,club1,goallocal,goalsvisitor,club2 = resultado(club1,club2)
+    jugadores_lesionados_locales = lesionados(club1)
+    jugadores_lesionados_visitantes = lesionados(club2)
+    deslesionar(club1)
+    deslesionar(club2)
+    result,club1,goallocal,goalsvisitor,club2 = fct.resultado(club1,club2)
     if goallocal != 0:
-        goles_totales = taq.goleadores(club1,goallocal,jugadores_sancionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+        goles_totales = taq.goleadores(club1,goallocal,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
         for i in goles_totales:
             sumar_gol(i)
-        asistencias_local = taq.asistentes(club1,goallocal,jugadores_sancionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+        asistencias_local = taq.asistentes(club1,goallocal,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
         if len(asistencias_local) != 0:
             for i in asistencias_local:
                 sumar_asistencia(i)
-    amarillas_locales = taq.amarillas(club1,jugadores_sancionados_locales,player["equipo"],player["valoracion"],player["nombre"])
-    rojas_locales = taq.rojas(club1,jugadores_sancionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+    amarillas_locales = taq.amarillas(club1,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+    rojas_locales = taq.rojas(club1,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+    lesionados_locales = taq.lesiones(club1,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+    if len(lesionados_locales) != 0:
+        for i in lesionados_locales:
+            actualizar_lesionados(i[0],i[1])
     if len(amarillas_locales) != 0:
         for i in amarillas_locales:
             actualizar_rustico(i,1,0)     
@@ -1620,15 +308,19 @@ def generar_partido(club1,club2,tabla):
         for i in rojas_locales:
             actualizar_rustico(i,0,1) 
     if goalsvisitor != 0:
-        goles_totalesv = taq.goleadores(club2,goalsvisitor,jugadores_sancionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+        goles_totalesv = taq.goleadores(club2,goalsvisitor,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
         for i in goles_totalesv:
             sumar_gol(i)
-        asistenciasvisitor = taq.asistentes(club2,goalsvisitor,jugadores_sancionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+        asistenciasvisitor = taq.asistentes(club2,goalsvisitor,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
         if len(asistenciasvisitor) != 0:
             for i in asistenciasvisitor:
                 sumar_asistencia(i)
-    amarillas_visitor = taq.amarillas(club2,jugadores_sancionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
-    rojas_visitor = taq.rojas(club2,jugadores_sancionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+    amarillas_visitor = taq.amarillas(club2,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+    rojas_visitor = taq.rojas(club2,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+    lesionados_visitantes = taq.lesiones(club2,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+    if len(lesionados_visitantes) != 0:
+        for i in lesionados_visitantes:
+            actualizar_lesionados(i[0],i[1])
     if len(amarillas_visitor) != 0:
         for i in amarillas_visitor:
             actualizar_rustico(i,1,0)
@@ -1636,18 +328,18 @@ def generar_partido(club1,club2,tabla):
         for i in rojas_visitor:
             actualizar_rustico(i,0,1) 
     if goallocal > goalsvisitor:
-        actualizar_tabla(tabla,club1,3,goallocal,goalsvisitor,1,0,0)
-        actualizar_tabla(tabla,club2,0,goalsvisitor,goallocal,0,0,1)
+        fct.actualizar_tabla(tabla,club1,3,goallocal,goalsvisitor,1,0,0)
+        fct.actualizar_tabla(tabla,club2,0,goalsvisitor,goallocal,0,0,1)
         sumar_ranking_club(club1,3)
         sumar_ranking_club(club2,0)
     elif goallocal < goalsvisitor:
-        actualizar_tabla(tabla,club1,0,goallocal,goalsvisitor,0,0,1)
-        actualizar_tabla(tabla,club2,3,goalsvisitor,goallocal,1,0,0)
+        fct.actualizar_tabla(tabla,club1,0,goallocal,goalsvisitor,0,0,1)
+        fct.actualizar_tabla(tabla,club2,3,goalsvisitor,goallocal,1,0,0)
         sumar_ranking_club(club1,0)
         sumar_ranking_club(club2,3)
     else:
-        actualizar_tabla(tabla,club1,1,goallocal,goalsvisitor,0,1,0)
-        actualizar_tabla(tabla,club2,1,goalsvisitor,goallocal,0,1,0)
+        fct.actualizar_tabla(tabla,club1,1,goallocal,goalsvisitor,0,1,0)
+        fct.actualizar_tabla(tabla,club2,1,goalsvisitor,goallocal,0,1,0)
         sumar_ranking_club(club1,1)
         sumar_ranking_club(club2,1)
 
@@ -2006,6 +698,9 @@ def resetear_tabla():
         jugador["sancion_europa"] = 0
         jugador["rojas_europa"] = 0
         jugador["amarillas_europa"] = 0
+        jugador["lesion"] = 0
+        jugador["lesionado"] = False
+        
     for jugador in jugadores_selecciones:
         jugador["goles"] = 0
         jugador["asistencias"] = 0
@@ -2857,7 +1552,6 @@ def divisionacomodar_i(tabla_serieA,tabla_serieB):
                 actualizar_jugadores_divisiones(club,"sb")
     return serieA_equipos,serieB_equipos     
 
-
 def playoff_carabao(club1,club2):
     print("")
     input("")
@@ -2865,17 +1559,25 @@ def playoff_carabao(club1,club2):
     jugadores_sancionados_visitantes = sancionados_carabao(club2)
     desancionar_carabao(club1)
     desancionar_carabao(club2)
-    result,club1,goallocal,goalsvisitor,club2 = resultado(club1,club2)
+    jugadores_lesionados_locales = lesionados(club1)
+    jugadores_lesionados_visitantes = lesionados(club2)
+    deslesionar(club1)
+    deslesionar(club2)
+    result,club1,goallocal,goalsvisitor,club2 = fct.resultado(club1,club2)
     if goallocal != 0:
-        goles_totales = taq.goleadores(club1,goallocal,jugadores_sancionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+        goles_totales = taq.goleadores(club1,goallocal,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
         for i in goles_totales:
             sumar_gol_carabao(i)
-        asistencias_local = taq.asistentes(club1,goallocal,jugadores_sancionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+        asistencias_local = taq.asistentes(club1,goallocal,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
         if len(asistencias_local) != 0:
             for i in asistencias_local:
                 sumar_asistencia_carabao(i)
-    amarillas_locales = taq.amarillas(club1,jugadores_sancionados_locales,player["equipo"],player["valoracion"],player["nombre"])
-    rojas_locales = taq.rojas(club1,jugadores_sancionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+    amarillas_locales = taq.amarillas(club1,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+    rojas_locales = taq.rojas(club1,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+    lesionados_locales = taq.lesiones(club1,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+    if len(lesionados_locales) != 0:
+        for i in lesionados_locales:
+            actualizar_lesionados(i[0],i[1])
     if len(amarillas_locales) != 0:
         for i in amarillas_locales:
             actualizar_rustico_carabao(i,1,0)     
@@ -2883,15 +1585,19 @@ def playoff_carabao(club1,club2):
         for i in rojas_locales:
             actualizar_rustico_carabao(i,0,1) 
     if goalsvisitor != 0:
-        goles_totalesv = taq.goleadores(club2,goalsvisitor,jugadores_sancionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+        goles_totalesv = taq.goleadores(club2,goalsvisitor,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
         for i in goles_totalesv:
             sumar_gol_carabao(i)
-        asistenciasvisitor = taq.asistentes(club2,goalsvisitor,jugadores_sancionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+        asistenciasvisitor = taq.asistentes(club2,goalsvisitor,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
         if len(asistenciasvisitor) != 0:
             for i in asistenciasvisitor:
                 sumar_asistencia_carabao(i)
-    amarillas_visitor = taq.amarillas(club2,jugadores_sancionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
-    rojas_visitor = taq.rojas(club2,jugadores_sancionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+    amarillas_visitor = taq.amarillas(club2,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+    rojas_visitor = taq.rojas(club2,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+    lesionados_visitantes = taq.lesiones(club2,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+    if len(lesionados_visitantes) != 0:
+        for i in lesionados_visitantes:
+            actualizar_lesionados(i[0],i[1])
     if len(amarillas_visitor) != 0:
         for i in amarillas_visitor:
             actualizar_rustico_carabao(i,1,0)
@@ -2912,8 +1618,8 @@ def playoff_carabao(club1,club2):
         sumar_ranking_club(club2,1)
         print("PENALES")
         input("")
-        penaleslocal = numero_random()
-        penales_visitor = numero_random()
+        penaleslocal = fct.numero_random()
+        penales_visitor = fct.numero_random()
         if penaleslocal == penales_visitor:
             penales_visitor -= 1
         print(f'{club1} {penaleslocal}-{penales_visitor} {club2}')
@@ -3168,6 +1874,7 @@ def mostrar_goleadores_asistentes():
                     logro = 'goleador de la Premier League'
                     logros.append(logro)
                     player["valoracion"] += 2
+                    player["dinero"] += 500000
             else:
                 print(f"{j['goles']} {j['nombre']} - {j['equipo']}")
             contador += 1
@@ -3187,6 +1894,7 @@ def mostrar_goleadores_asistentes():
                     logro = 'asistente de la Premier League'
                     logros.append(logro)
                     player["valoracion"] += 1
+                    player["dinero"] += 250000
             else:
                 print(f"{j['asistencias']} {j['nombre']} - {j['equipo']}")
             contador += 1
@@ -3206,6 +1914,7 @@ def mostrar_goleadores_asistentes():
                     logro = 'goleador de la Championship'
                     logros.append(logro)
                     player["valoracion"] += 2
+                    player["dinero"] += 500000
             else:
                 print(f"{j['goles']} {j['nombre']} - {j['equipo']}")
             contador += 1
@@ -3225,6 +1934,7 @@ def mostrar_goleadores_asistentes():
                     logro = 'asistente de la Championship'
                     logros.append(logro)
                     player["valoracion"] += 1
+                    player["dinero"] += 250000
             else:
                 print(f"{j['asistencias']} {j['nombre']} - {j['equipo']}")
             contador += 1
@@ -3240,6 +1950,7 @@ def mostrar_goleadores_asistentes():
                 logro = 'goleador de la Carabo Cup'
                 logros.append(logro)
                 player["valoracion"] += 2
+                player["dinero"] += 500000
         else:
             print(f" {j['goles_carabao']} {j['nombre']} - {j['equipo']}")
     print("")
@@ -3252,6 +1963,7 @@ def mostrar_goleadores_asistentes():
                 logro = 'asistente de la Carabo Cup'
                 logros.append(logro)
                 player["valoracion"] += 1
+                player["dinero"] += 250000
         else:
             print(f" {j['asistencias_carabao']} {j['nombre']} - {j['equipo']}")
     print("")
@@ -3271,6 +1983,7 @@ def mostrar_goleadores_asistentes():
                     logro = 'goleador de la Serie A'
                     logros.append(logro)
                     player["valoracion"] += 2
+                    player["dinero"] += 500000
             else:
                 print(f"{j['goles']} {j['nombre']} - {j['equipo']}")
             contador += 1
@@ -3290,6 +2003,7 @@ def mostrar_goleadores_asistentes():
                     logro = 'asistente de la Serie A'
                     logros.append(logro)
                     player["valoracion"] += 1
+                    player["dinero"] += 250000
             else:
                 print(f"{j['asistencias']} {j['nombre']} - {j['equipo']}")
             contador += 1
@@ -3310,6 +2024,7 @@ def mostrar_goleadores_asistentes():
                     logro = 'goleador de la Serie B'
                     logros.append(logro)
                     player["valoracion"] += 2
+                    player["dinero"] += 500000
             else:
                 print(f"{j['goles']} {j['nombre']} - {j['equipo']}")
             contador += 1
@@ -3329,6 +2044,7 @@ def mostrar_goleadores_asistentes():
                     logro = 'asistente de la Serie B'
                     logros.append(logro)
                     player["valoracion"] += 1
+                    player["dinero"] += 250000
             else:
                 print(f"{j['asistencias']} {j['nombre']} - {j['equipo']}")
             contador += 1
@@ -3343,6 +2059,7 @@ def mostrar_goleadores_asistentes():
                 logro = 'goleador de la Copa Italia'
                 logros.append(logro)
                 player["valoracion"] += 2
+                player["dinero"] += 500000
         else:
             print(f" {j['goles_carabao']} {j['nombre']} - {j['equipo']}")
     print("")
@@ -3355,6 +2072,7 @@ def mostrar_goleadores_asistentes():
                 logro = 'asistente de la Copa Italia'
                 logros.append(logro)
                 player["valoracion"] += 1
+                player["dinero"] += 250000
         else:
             print(f" {j['asistencias_carabao']} {j['nombre']} - {j['equipo']}")
     print("")
@@ -3367,6 +2085,7 @@ def mostrar_goleadores_asistentes():
                 logro = 'goleador de la Champions League'
                 logros.append(logro)
                 player["valoracion"] += 2
+                player["dinero"] += 500000
         else:
             print(f" {j['goles_champions']} {j['nombre']} - {j['equipo']}")        
     print("")
@@ -3379,6 +2098,7 @@ def mostrar_goleadores_asistentes():
                 logro = 'asistente de la Champions League'
                 logros.append(logro)
                 player["valoracion"] += 1
+                player["dinero"] += 250000
         else:
             print(f" {j['asistencias_champions']} {j['nombre']} - {j['equipo']}")          
     print("")
@@ -3391,6 +2111,7 @@ def mostrar_goleadores_asistentes():
                 logro = 'goleador de la Europa League'
                 logros.append(logro)
                 player["valoracion"] += 2
+                player["dinero"] += 500000
         else:
             print(f" {j['goles_europa']} {j['nombre']} - {j['equipo']}")        
     print("")
@@ -3403,6 +2124,7 @@ def mostrar_goleadores_asistentes():
                 logro = 'asistente de la Europa League'
                 logros.append(logro)
                 player["valoracion"] += 1
+                player["dinero"] += 250000
         else:
             print(f" {j['asistencias_europa']} {j['nombre']} - {j['equipo']}")   
     return logros     
@@ -3529,6 +2251,7 @@ def mvp_del_año():
         if j["nombre"] == player["nombre"]: 
             player["mvp del año anuales"].append(1)
             premio = 'mvp del año'
+            player["dinero"] += 5000000
             mvp.append(premio)
         else: player["mvp del año anuales"].append(0)
     return mvp 
@@ -3630,7 +2353,12 @@ def guardar_datos_anuales(vitrina,logros_anuales):
             player["equipo anual"].append(player["equipo"])
             player["vitrina"].append(vitrina)
             player["logros anuales"].append(logros_anuales)
- 
+            player["dinero"] += ((goles*5000)+(goles_carabao*2500)+(goles_champions*7500)+(goles_europa*6500)+(goles_seleccion*6500))
+            player["dinero"] += ((asistencias*2000)+(asistencias_carabao*1000)+(asistencias_champions*2500)+(asistencias_europa*1500)+(asistencias_seleccion*3000))
+            player["dinero"] -= ((amarillas*1000)+(amarillas_carabao*1000)+(amarillas_champions*1000)+(amarillas_europa*1000)+(amarillas_seleccion*1500))
+            player["dinero"] -= ((rojas*2000)+(rojas_carabao*2000)+(rojas_champions*2500)+(rojas_europa*2000)+(rojas_seleccion*3000))
+            player["dinero"] += (mvp_de_la_fecha*10000)
+            
 def mostrar_datos_anuales():
     goles_anuales = player["goles anuales"]
     asistencias_anuales = player["asistencias anuales"]
@@ -3642,6 +2370,7 @@ def mostrar_datos_anuales():
     equipo_anual = player["equipo anual"]  
     vitrina = player["vitrina"]
     logros = player["logros anuales"]
+    dinero = player["dinero"]
     contador = 2023
     print("")
     input("")
@@ -3745,6 +2474,10 @@ def mostrar_datos_anuales():
     for i in traspasos:   
         print(f"{contador}. {i}")
         contador += 1    
+    print("")
+    input("")
+    print("dinero")
+    print(f"dinero: {dinero}")
 def cambiar_equipo():
     reputacion5 = [
     Arsenal["equipo"],Chelsea["equipo"],Manchester_City["equipo"],Manchester_United["equipo"],Tottenham["equipo"],Liverpool["equipo"],
@@ -3765,7 +2498,7 @@ Bournemouth["equipo"],Luton_Town["equipo"],Coventry_City["equipo"],Blackburn_Rov
     ofertas = []
     if player["valoracion"] > 80:
         num = random.randint(0, 10)
-        plata = random.randint(100, 200)
+        plata = random.randint(100, 500)
         oferta = reputacion5[num]
         contrato = random.randint(1, 3)
         ofertaa = [oferta,plata,contrato]
@@ -3798,6 +2531,7 @@ Bournemouth["equipo"],Luton_Town["equipo"],Coventry_City["equipo"],Blackburn_Rov
     ofertaa = [oferta,plata,contrato]
     ofertas.append(ofertaa)
     contador = 1
+    arrray = []
     for i in ofertas:
         input("")
         print(f"oferta {contador}")
@@ -3806,61 +2540,69 @@ equipo: {i[0]}
 precio: ${i[1]}M
 años: {i[2]}
 ''')
+        arrray.append(contador)
         contador += 1
+    arrrray =[]
+    for i in arrray:
+        arrrray.append(str(i))
+    conttt = 1
+    while conttt == 1: 
+        eleccion = input("que oferta deseas tomar")
+        if eleccion in arrrray: 
+            conttt = 0
+            if eleccion == "1":
+                print(f"HAS FICHADO POR EL {ofertas[0][0]} POR ${ofertas[0][1]}M CON UNA DURACION DE {ofertas[0][2]} AÑOS")
+                ofertas[0]
+                equipo_anteriror = equipo_player
+                equipo_playerr = ofertas[0][0] 
+                player["equipo"] = ofertas[0][0]
+                player["contrato"] = ofertas[0][2]
+                if equipo_anteriror == equipo_playerr: 
+                    traspaso = f'Renovacion con el {equipo_playerr} por ${ofertas[0][1]}M'
+                else: 
+                    traspaso = f'Desde el {equipo_anteriror} al {equipo_playerr} por ${ofertas[0][1]}M' 
+                traspasos.append(traspaso)
+            elif eleccion == "2":
+                print(f"HAS FICHADO POR EL {ofertas[1][0]} POR ${ofertas[1][1]}M CON UNA DURACION DE {ofertas[1][2]} AÑOS")
+                ofertas[1]
+                equipo_anteriror = equipo_player
+                equipo_playerr =ofertas[1][0] 
+                player["equipo"] = ofertas[1][0]
+                player["contrato"] = ofertas[1][2]
+                if equipo_anteriror == equipo_playerr: traspaso = f'Renovacion con el {equipo_playerr} por ${ofertas[1][1]}M' 
+                else: traspaso = f'Desde el {equipo_anteriror} al {equipo_playerr} por ${ofertas[1][1]}M' 
+                traspasos.append(traspaso)
+            elif eleccion == "3": 
+                print(f"HAS FICHADO POR EL {ofertas[2][0]} POR ${ofertas[2][1]}M CON UNA DURACION DE {ofertas[2][2]} AÑOS")
+                ofertas[2]      
+                equipo_anteriror = equipo_player
+                equipo_playerr =ofertas[2][0] 
+                player["equipo"] = ofertas[2][0] 
+                player["contrato"] = ofertas[2][2]
+                if equipo_anteriror == equipo_playerr:traspaso = f'Renovacion con el {equipo_playerr} por ${ofertas[2][1]}M'
+                else:traspaso = f'Desde el {equipo_anteriror} al {equipo_playerr} por ${ofertas[2][1]}M' 
+                traspasos.append(traspaso)
+            elif eleccion == "4":
+                print(f"HAS FICHADO POR EL {ofertas[3][0]} POR ${ofertas[3][1]}M CON UNA DURACION DE {ofertas[3][2]} AÑOS")
+                ofertas[3]
+                equipo_anteriror = equipo_player
+                equipo_playerr =ofertas[3][0] 
+                player["equipo"] = ofertas[3][0]
+                player["contrato"] = ofertas[3][2]
+                if equipo_anteriror == equipo_playerr:traspaso = f'Renovacion con el {equipo_playerr} por ${ofertas[3][1]}M' 
+                else: traspaso = f'Desde el {equipo_anteriror} al {equipo_playerr} por ${ofertas[3][1]}M' 
+                traspasos.append(traspaso)
+            elif eleccion == "5":
+                print(f"HAS FICHADO POR EL {ofertas[4][0]} POR ${ofertas[4][1]}M CON UNA DURACION DE {ofertas[4][2]} AÑOS")
+                ofertas[4]
+                equipo_anteriror = equipo_player
+                equipo_playerr = ofertas[4][0] 
+                player["equipo"] = ofertas[4][0]
+                player["contrato"] = ofertas[4][2]
+                if equipo_anteriror == equipo_playerr: traspaso = f'Renovacion con el {equipo_playerr} por ${ofertas[4][1]}M'
+                else: traspaso = f'Desde el {equipo_anteriror} al {equipo_playerr} por ${ofertas[4][1]}M' 
+                traspasos.append(traspaso)
         
-    eleccion = input("que oferta deseas tomar")
-    if eleccion == "1":
-        print(f"HAS FICHADO POR EL {ofertas[0][0]} POR ${ofertas[0][1]}M CON UNA DURACION DE {ofertas[0][2]} AÑOS")
-        ofertas[0]
-        equipo_anteriror = equipo_player
-        equipo_playerr = ofertas[0][0] 
-        player["equipo"] = ofertas[0][0]
-        player["contrato"] = ofertas[0][2]
-        if equipo_anteriror == equipo_playerr: 
-            traspaso = f'Renovacion con el {equipo_playerr} por ${ofertas[0][1]}M'
-        else: 
-            traspaso = f'Desde el {equipo_anteriror} al {equipo_playerr} por ${ofertas[0][1]}M' 
-        traspasos.append(traspaso)
-    elif eleccion == "2":
-        print(f"HAS FICHADO POR EL {ofertas[1][0]} POR ${ofertas[1][1]}M CON UNA DURACION DE {ofertas[1][2]} AÑOS")
-        ofertas[1]
-        equipo_anteriror = equipo_player
-        equipo_playerr =ofertas[1][0] 
-        player["equipo"] = ofertas[1][0]
-        player["contrato"] = ofertas[1][2]
-        if equipo_anteriror == equipo_playerr: traspaso = f'Renovacion con el {equipo_playerr} por ${ofertas[1][1]}M' 
-        else: traspaso = f'Desde el {equipo_anteriror} al {equipo_playerr} por ${ofertas[1][1]}M' 
-        traspasos.append(traspaso)
-    elif eleccion == "3": 
-        print(f"HAS FICHADO POR EL {ofertas[2][0]} POR ${ofertas[2][1]}M CON UNA DURACION DE {ofertas[2][2]} AÑOS")
-        ofertas[2]      
-        equipo_anteriror = equipo_player
-        equipo_playerr =ofertas[2][0] 
-        player["equipo"] = ofertas[2][0] 
-        player["contrato"] = ofertas[2][2]
-        if equipo_anteriror == equipo_playerr:traspaso = f'Renovacion con el {equipo_playerr} por ${ofertas[2][1]}M'
-        else:traspaso = f'Desde el {equipo_anteriror} al {equipo_playerr} por ${ofertas[2][1]}M' 
-        traspasos.append(traspaso)
-    elif eleccion == "4":
-        print(f"HAS FICHADO POR EL {ofertas[3][0]} POR ${ofertas[3][1]}M CON UNA DURACION DE {ofertas[3][2]} AÑOS")
-        ofertas[3]
-        equipo_anteriror = equipo_player
-        equipo_playerr =ofertas[3][0] 
-        player["equipo"] = ofertas[3][0]
-        player["contrato"] = ofertas[3][2]
-        if equipo_anteriror == equipo_playerr:traspaso = f'Renovacion con el {equipo_playerr} por ${ofertas[3][1]}M' 
-        else: traspaso = f'Desde el {equipo_anteriror} al {equipo_playerr} por ${ofertas[3][1]}M' 
-        traspasos.append(traspaso)
-    elif eleccion == "5":
-        print(f"HAS FICHADO POR EL {ofertas[4][0]} POR ${ofertas[4][1]}M CON UNA DURACION DE {ofertas[4][2]} AÑOS")
-        ofertas[4]
-        equipo_anteriror = equipo_player
-        equipo_playerr = ofertas[4][0] 
-        player["equipo"] = ofertas[4][0]
-        player["contrato"] = ofertas[4][2]
-        if equipo_anteriror == equipo_playerr: traspaso = f'Renovacion con el {equipo_playerr} por ${ofertas[4][1]}M'
-        else: traspaso = f'Desde el {equipo_anteriror} al {equipo_playerr} por ${ofertas[4][1]}M' 
-        traspasos.append(traspaso)
     return equipo_playerr
 
 def generar_grupos(equipos):
@@ -4002,17 +2744,25 @@ def partidos_champions(club1,club2,tabla):
     jugadores_sancionados_visitantes = sancionados_champions(club2)
     desancionar_champions(club1)
     desancionar_champions(club2)
-    result,club1,goallocal,goalsvisitor,club2 = resultado(club1,club2)
+    jugadores_lesionados_locales = lesionados(club1)
+    jugadores_lesionados_visitantes = lesionados(club2)
+    deslesionar(club1)
+    deslesionar(club2)
+    result,club1,goallocal,goalsvisitor,club2 = fct.resultado(club1,club2)
     if goallocal != 0:
-        goles_totales = taq.goleadores(club1,goallocal,jugadores_sancionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+        goles_totales = taq.goleadores(club1,goallocal,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
         for i in goles_totales:
             sumar_gol_champions(i)
-        asistencias_local = taq.asistentes(club1,goallocal,jugadores_sancionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+        asistencias_local = taq.asistentes(club1,goallocal,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
         if len(asistencias_local) != 0:
             for i in asistencias_local:
                 sumar_asistencia_champions(i)
-    amarillas_locales = taq.amarillas(club1,jugadores_sancionados_locales,player["equipo"],player["valoracion"],player["nombre"])
-    rojas_locales = taq.rojas(club1,jugadores_sancionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+    amarillas_locales = taq.amarillas(club1,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+    rojas_locales = taq.rojas(club1,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+    lesionados_locales = taq.lesiones(club1,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+    if len(lesionados_locales) != 0:
+        for i in lesionados_locales:
+            actualizar_lesionados(i[0],i[1])
     if len(amarillas_locales) != 0:
         for i in amarillas_locales:
             actualizar_rustico_champions(i,1,0)     
@@ -4020,15 +2770,19 @@ def partidos_champions(club1,club2,tabla):
         for i in rojas_locales:
             actualizar_rustico_champions(i,0,1) 
     if goalsvisitor != 0:
-        goles_totalesv = taq.goleadores(club2,goalsvisitor,jugadores_sancionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+        goles_totalesv = taq.goleadores(club2,goalsvisitor,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
         for i in goles_totalesv:
             sumar_gol_champions(i)
-        asistenciasvisitor = taq.asistentes(club2,goalsvisitor,jugadores_sancionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+        asistenciasvisitor = taq.asistentes(club2,goalsvisitor,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
         if len(asistenciasvisitor) != 0:
             for i in asistenciasvisitor:
                 sumar_asistencia_champions(i)
-    amarillas_visitor = taq.amarillas(club2,jugadores_sancionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
-    rojas_visitor = taq.rojas(club2,jugadores_sancionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+    amarillas_visitor = taq.amarillas(club2,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+    rojas_visitor = taq.rojas(club2,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+    lesionados_visitantes = taq.lesiones(club2,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+    if len(lesionados_visitantes) != 0:
+        for i in lesionados_visitantes:
+            actualizar_lesionados(i[0],i[1])
     if len(amarillas_visitor) != 0:
         for i in amarillas_visitor:
             actualizar_rustico_champions(i,1,0)
@@ -4036,18 +2790,18 @@ def partidos_champions(club1,club2,tabla):
         for i in rojas_visitor:
             actualizar_rustico_champions(i,0,1) 
     if goallocal > goalsvisitor:
-        actualizar_tabla(tabla,club1,3,goallocal,goalsvisitor,1,0,0)
-        actualizar_tabla(tabla,club2,0,goalsvisitor,goallocal,0,0,1)
+        fct.actualizar_tabla(tabla,club1,3,goallocal,goalsvisitor,1,0,0)
+        fct.actualizar_tabla(tabla,club2,0,goalsvisitor,goallocal,0,0,1)
         sumar_ranking_club(club1,3)
         sumar_ranking_club(club2,0)
     elif goallocal < goalsvisitor:
-        actualizar_tabla(tabla,club1,0,goallocal,goalsvisitor,0,0,1)
-        actualizar_tabla(tabla,club2,3,goalsvisitor,goallocal,1,0,0)
+        fct.actualizar_tabla(tabla,club1,0,goallocal,goalsvisitor,0,0,1)
+        fct.actualizar_tabla(tabla,club2,3,goalsvisitor,goallocal,1,0,0)
         sumar_ranking_club(club1,0)
         sumar_ranking_club(club2,3)
     else:
-        actualizar_tabla(tabla,club1,1,goallocal,goalsvisitor,0,1,0)
-        actualizar_tabla(tabla,club2,1,goalsvisitor,goallocal,0,1,0)
+        fct.actualizar_tabla(tabla,club1,1,goallocal,goalsvisitor,0,1,0)
+        fct.actualizar_tabla(tabla,club2,1,goalsvisitor,goallocal,0,1,0)
         sumar_ranking_club(club1,1)
         sumar_ranking_club(club2,1)
 
@@ -4095,59 +2849,6 @@ def mostrar_rojas_champions():
         else:
             print(f" {j['rojas_champions']} {j['nombre']} - {j['equipo']}")
     print("")
-    input("")
-
-def actualizar_tablaaa_copas(equiposs):
-    equipos_ordenados = sorted(equiposs, key=lambda x: (x[list(x.keys())[0]]['PTS'], x[list(x.keys())[0]]['GD']), reverse=True)
-    return equipos_ordenados
-def mostrar_tabla_copas(equipos_ordenados):
-    tabla = []
-    for i, equipo in enumerate(equipos_ordenados, start=1):
-        nombre_equipo = list(equipo.keys())[0]
-        puntos = equipo[nombre_equipo]['PTS']
-        goles = equipo[nombre_equipo]['GF']
-        vic = equipo[nombre_equipo]['V']
-        emp = equipo[nombre_equipo]['E']
-        der = equipo[nombre_equipo]['D']
-        diferencia_goles = equipo[nombre_equipo]['GD']
-        golesencontra = equipo[nombre_equipo]['GC']
-        tabla.append([i, nombre_equipo, puntos,vic,emp,der, goles,golesencontra, diferencia_goles])
-
-    headers = ["POS", "EQUIPO", "PTS","V","E","D" ,"GF","GC", "GD"]
-    print(tabulate(tabla, headers=headers, tablefmt="pretty"))
-
-def mostrar_tablas_fecha_fin(tabla1,tabla2,tabla3,tabla4):
-    print("")
-    input("mostrar tablas")
-    print("")
-    print("tabla grupo 1")
-    equipos_ordenados = actualizar_tablaaa_copas(tabla1)
-    mostrar_tabla_copas(equipos_ordenados)
-    input("")
-    print("tabla grupo 2")
-    equipos_ordenados = actualizar_tablaaa_copas(tabla2)
-    mostrar_tabla_copas(equipos_ordenados)
-    input("")
-    print("tabla grupo 3")
-    equipos_ordenados = actualizar_tablaaa_copas(tabla3)
-    mostrar_tabla_copas(equipos_ordenados)
-    input("")
-    print("tabla grupo 4")
-    equipos_ordenados = actualizar_tablaaa_copas(tabla4)
-    mostrar_tabla_copas(equipos_ordenados)
-    input("")
-
-def mostrar_tablas_fecha_fin_(tabla1,tabla2):
-    print("")
-    input("mostrar tablas")
-    print("")
-    print("tabla grupo 1")
-    equipos_ordenados = actualizar_tablaaa_copas(tabla1)
-    mostrar_tabla_copas(equipos_ordenados)
-    input("")
-    print("tabla grupo 2")
-    equipos_ordenados = actualizar_tablaaa_copas(tabla2)
-    mostrar_tabla_copas(equipos_ordenados)
     input("")
 
 def fecha_1(fixture,n,tabla):
@@ -4198,17 +2899,25 @@ def partidos_europa(club1,club2,tabla):
     jugadores_sancionados_visitantes = sancionados_europa(club2)
     desancionar_europa(club1)
     desancionar_europa(club2)
-    result,club1,goallocal,goalsvisitor,club2 = resultado(club1,club2)
+    jugadores_lesionados_locales = lesionados(club1)
+    jugadores_lesionados_visitantes = lesionados(club2)
+    deslesionar(club1)
+    deslesionar(club2)
+    result,club1,goallocal,goalsvisitor,club2 = fct.resultado(club1,club2)
     if goallocal != 0:
-        goles_totales = taq.goleadores(club1,goallocal,jugadores_sancionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+        goles_totales = taq.goleadores(club1,goallocal,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
         for i in goles_totales:
             sumar_gol_europa(i)
-        asistencias_local = taq.asistentes(club1,goallocal,jugadores_sancionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+        asistencias_local = taq.asistentes(club1,goallocal,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
         if len(asistencias_local) != 0:
             for i in asistencias_local:
                 sumar_asistencia_europa(i)
-    amarillas_locales = taq.amarillas(club1,jugadores_sancionados_locales,player["equipo"],player["valoracion"],player["nombre"])
-    rojas_locales = taq.rojas(club1,jugadores_sancionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+    amarillas_locales = taq.amarillas(club1,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+    rojas_locales = taq.rojas(club1,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+    lesionados_locales = taq.lesiones(club1,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+    if len(lesionados_locales) != 0:
+        for i in lesionados_locales:
+            actualizar_lesionados(i[0],i[1])
     if len(amarillas_locales) != 0:
         for i in amarillas_locales:
             actualizar_rustico_europa(i,1,0)     
@@ -4216,15 +2925,19 @@ def partidos_europa(club1,club2,tabla):
         for i in rojas_locales:
             actualizar_rustico_europa(i,0,1) 
     if goalsvisitor != 0:
-        goles_totalesv = taq.goleadores(club2,goalsvisitor,jugadores_sancionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+        goles_totalesv = taq.goleadores(club2,goalsvisitor,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
         for i in goles_totalesv:
             sumar_gol_europa(i)
-        asistenciasvisitor = taq.asistentes(club2,goalsvisitor,jugadores_sancionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+        asistenciasvisitor = taq.asistentes(club2,goalsvisitor,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
         if len(asistenciasvisitor) != 0:
             for i in asistenciasvisitor:
                 sumar_asistencia_europa(i)
-    amarillas_visitor = taq.amarillas(club2,jugadores_sancionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
-    rojas_visitor = taq.rojas(club2,jugadores_sancionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+    amarillas_visitor = taq.amarillas(club2,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+    rojas_visitor = taq.rojas(club2,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+    lesionados_visitantes = taq.lesiones(club2,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+    if len(lesionados_visitantes) != 0:
+        for i in lesionados_visitantes:
+            actualizar_lesionados(i[0],i[1])
     if len(amarillas_visitor) != 0:
         for i in amarillas_visitor:
             actualizar_rustico_europa(i,1,0)
@@ -4232,18 +2945,18 @@ def partidos_europa(club1,club2,tabla):
         for i in rojas_visitor:
             actualizar_rustico_europa(i,0,1) 
     if goallocal > goalsvisitor:
-        actualizar_tabla(tabla,club1,3,goallocal,goalsvisitor,1,0,0)
-        actualizar_tabla(tabla,club2,0,goalsvisitor,goallocal,0,0,1)
+        fct.actualizar_tabla(tabla,club1,3,goallocal,goalsvisitor,1,0,0)
+        fct.actualizar_tabla(tabla,club2,0,goalsvisitor,goallocal,0,0,1)
         sumar_ranking_club(club1,3)
         sumar_ranking_club(club2,0)
     elif goallocal < goalsvisitor:
-        actualizar_tabla(tabla,club1,0,goallocal,goalsvisitor,0,0,1)
-        actualizar_tabla(tabla,club2,3,goalsvisitor,goallocal,1,0,0)
+        fct.actualizar_tabla(tabla,club1,0,goallocal,goalsvisitor,0,0,1)
+        fct.actualizar_tabla(tabla,club2,3,goalsvisitor,goallocal,1,0,0)
         sumar_ranking_club(club1,0)
         sumar_ranking_club(club2,3)
     else:
-        actualizar_tabla(tabla,club1,1,goallocal,goalsvisitor,0,1,0)
-        actualizar_tabla(tabla,club2,1,goalsvisitor,goallocal,0,1,0)
+        fct.actualizar_tabla(tabla,club1,1,goallocal,goalsvisitor,0,1,0)
+        fct.actualizar_tabla(tabla,club2,1,goalsvisitor,goallocal,0,1,0)
         sumar_ranking_club(club1,1)
         sumar_ranking_club(club2,1)
 
@@ -4308,17 +3021,25 @@ def partidos_europa_ida(club1,club2):
     jugadores_sancionados_visitantes = sancionados_europa(club2)
     desancionar_europa(club1)
     desancionar_europa(club2)
-    result,club1,goallocal,goalsvisitor,club2 = resultado(club1,club2)
+    jugadores_lesionados_locales = lesionados(club1)
+    jugadores_lesionados_visitantes = lesionados(club2)
+    deslesionar(club1)
+    deslesionar(club2)
+    result,club1,goallocal,goalsvisitor,club2 = fct.resultado(club1,club2)
     if goallocal != 0:
-        goles_totales = taq.goleadores(club1,goallocal,jugadores_sancionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+        goles_totales = taq.goleadores(club1,goallocal,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
         for i in goles_totales:
             sumar_gol_europa(i)
-        asistencias_local = taq.asistentes(club1,goallocal,jugadores_sancionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+        asistencias_local = taq.asistentes(club1,goallocal,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
         if len(asistencias_local) != 0:
             for i in asistencias_local:
                 sumar_asistencia_europa(i)
-    amarillas_locales = taq.amarillas(club1,jugadores_sancionados_locales,player["equipo"],player["valoracion"],player["nombre"])
-    rojas_locales = taq.rojas(club1,jugadores_sancionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+    amarillas_locales = taq.amarillas(club1,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+    rojas_locales = taq.rojas(club1,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+    lesionados_locales = taq.lesiones(club1,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+    if len(lesionados_locales) != 0:
+        for i in lesionados_locales:
+            actualizar_lesionados(i[0],i[1])
     if len(amarillas_locales) != 0:
         for i in amarillas_locales:
             actualizar_rustico_europa(i,1,0)     
@@ -4326,15 +3047,19 @@ def partidos_europa_ida(club1,club2):
         for i in rojas_locales:
             actualizar_rustico_europa(i,0,1) 
     if goalsvisitor != 0:
-        goles_totalesv = taq.goleadores(club2,goalsvisitor,jugadores_sancionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+        goles_totalesv = taq.goleadores(club2,goalsvisitor,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
         for i in goles_totalesv:
             sumar_gol_europa(i)
-        asistenciasvisitor = taq.asistentes(club2,goalsvisitor,jugadores_sancionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+        asistenciasvisitor = taq.asistentes(club2,goalsvisitor,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
         if len(asistenciasvisitor) != 0:
             for i in asistenciasvisitor:
                 sumar_asistencia_europa(i)
-    amarillas_visitor = taq.amarillas(club2,jugadores_sancionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
-    rojas_visitor = taq.rojas(club2,jugadores_sancionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+    amarillas_visitor = taq.amarillas(club2,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+    rojas_visitor = taq.rojas(club2,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+    lesionados_visitantes = taq.lesiones(club2,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+    if len(lesionados_visitantes) != 0:
+        for i in lesionados_visitantes:
+            actualizar_lesionados(i[0],i[1])
     if len(amarillas_visitor) != 0:
         for i in amarillas_visitor:
             actualizar_rustico_europa(i,1,0)
@@ -4475,15 +3200,6 @@ def mostrar_rojas_europa():
             print(f" {j['rojas_europa']} {j['nombre']} - {j['equipo']}")
     print("")
     input("")
-def obtener_primer_y_segundo_equipo(equipos):
-    equipos_ordenados = sorted(equipos, key=lambda x: (x[list(x.keys())[0]]['PTS'], x[list(x.keys())[0]]['GD']), reverse=True)
-    
-    if len(equipos_ordenados) >= 2:
-        primer_equipo = list(equipos_ordenados[0].keys())[0]
-        segundo_equipo = list(equipos_ordenados[1].keys())[0]
-        return primer_equipo, segundo_equipo
-    
-    return None, None
 
 def partidos_champions_ida(club1,club2):
     print("")
@@ -4492,17 +3208,25 @@ def partidos_champions_ida(club1,club2):
     jugadores_sancionados_visitantes = sancionados_champions(club2)
     desancionar_champions(club1)
     desancionar_champions(club2)
-    result,club1,goallocal,goalsvisitor,club2 = resultado(club1,club2)
+    jugadores_lesionados_locales = lesionados(club1)
+    jugadores_lesionados_visitantes = lesionados(club2)
+    deslesionar(club1)
+    deslesionar(club2)
+    result,club1,goallocal,goalsvisitor,club2 = fct.resultado(club1,club2)
     if goallocal != 0:
-        goles_totales = taq.goleadores(club1,goallocal,jugadores_sancionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+        goles_totales = taq.goleadores(club1,goallocal,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
         for i in goles_totales:
             sumar_gol_champions(i)
-        asistencias_local = taq.asistentes(club1,goallocal,jugadores_sancionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+        asistencias_local = taq.asistentes(club1,goallocal,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
         if len(asistencias_local) != 0:
             for i in asistencias_local:
                 sumar_asistencia_champions(i)
-    amarillas_locales = taq.amarillas(club1,jugadores_sancionados_locales,player["equipo"],player["valoracion"],player["nombre"])
-    rojas_locales = taq.rojas(club1,jugadores_sancionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+    amarillas_locales = taq.amarillas(club1,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+    rojas_locales = taq.rojas(club1,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+    lesionados_locales = taq.lesiones(club1,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+    if len(lesionados_locales) != 0:
+        for i in lesionados_locales:
+            actualizar_lesionados(i[0],i[1])
     if len(amarillas_locales) != 0:
         for i in amarillas_locales:
             actualizar_rustico_champions(i,1,0)     
@@ -4510,15 +3234,19 @@ def partidos_champions_ida(club1,club2):
         for i in rojas_locales:
             actualizar_rustico_champions(i,0,1) 
     if goalsvisitor != 0:
-        goles_totalesv = taq.goleadores(club2,goalsvisitor,jugadores_sancionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+        goles_totalesv = taq.goleadores(club2,goalsvisitor,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
         for i in goles_totalesv:
             sumar_gol_champions(i)
-        asistenciasvisitor = taq.asistentes(club2,goalsvisitor,jugadores_sancionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+        asistenciasvisitor = taq.asistentes(club2,goalsvisitor,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
         if len(asistenciasvisitor) != 0:
             for i in asistenciasvisitor:
                 sumar_asistencia_champions(i)
-    amarillas_visitor = taq.amarillas(club2,jugadores_sancionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
-    rojas_visitor = taq.rojas(club2,jugadores_sancionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+    amarillas_visitor = taq.amarillas(club2,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+    rojas_visitor = taq.rojas(club2,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+    lesionados_visitantes = taq.lesiones(club2,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+    if len(lesionados_visitantes) != 0:
+        for i in lesionados_visitantes:
+            actualizar_lesionados(i[0],i[1])
     if len(amarillas_visitor) != 0:
         for i in amarillas_visitor:
             actualizar_rustico_champions(i,1,0)
@@ -4544,17 +3272,25 @@ def partidos_champions_vuelta(club1,club2,goles_locales,goles_visitnates):
     jugadores_sancionados_visitantes = sancionados_champions(club2)
     desancionar_champions(club1)
     desancionar_champions(club2)
-    result,club1,goallocal,goalsvisitor,club2 = resultado(club1,club2)
+    jugadores_lesionados_locales = lesionados(club1)
+    jugadores_lesionados_visitantes = lesionados(club2)
+    deslesionar(club1)
+    deslesionar(club2)
+    result,club1,goallocal,goalsvisitor,club2 = fct.resultado(club1,club2)
     if goallocal != 0:
-        goles_totales = taq.goleadores(club1,goallocal,jugadores_sancionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+        goles_totales = taq.goleadores(club1,goallocal,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
         for i in goles_totales:
             sumar_gol_champions(i)
-        asistencias_local = taq.asistentes(club1,goallocal,jugadores_sancionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+        asistencias_local = taq.asistentes(club1,goallocal,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
         if len(asistencias_local) != 0:
             for i in asistencias_local:
                 sumar_asistencia_champions(i)
-    amarillas_locales = taq.amarillas(club1,jugadores_sancionados_locales,player["equipo"],player["valoracion"],player["nombre"])
-    rojas_locales =taq.rojas(club1,jugadores_sancionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+    amarillas_locales = taq.amarillas(club1,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+    rojas_locales =taq.rojas(club1,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+    lesionados_locales = taq.lesiones(club1,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+    if len(lesionados_locales) != 0:
+        for i in lesionados_locales:
+            actualizar_lesionados(i[0],i[1])
     if len(amarillas_locales) != 0:
         for i in amarillas_locales:
             actualizar_rustico_champions(i,1,0)     
@@ -4562,15 +3298,19 @@ def partidos_champions_vuelta(club1,club2,goles_locales,goles_visitnates):
         for i in rojas_locales:
             actualizar_rustico_champions(i,0,1) 
     if goalsvisitor != 0:
-        goles_totalesv = taq.goleadores(club2,goalsvisitor,jugadores_sancionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+        goles_totalesv = taq.goleadores(club2,goalsvisitor,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
         for i in goles_totalesv:
             sumar_gol_champions(i)
-        asistenciasvisitor = taq.asistentes(club2,goalsvisitor,jugadores_sancionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+        asistenciasvisitor = taq.asistentes(club2,goalsvisitor,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
         if len(asistenciasvisitor) != 0:
             for i in asistenciasvisitor:
                 sumar_asistencia_champions(i)
-    amarillas_visitor = taq.amarillas(club2,jugadores_sancionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
-    rojas_visitor = taq.rojas(club2,jugadores_sancionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+    amarillas_visitor = taq.amarillas(club2,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+    rojas_visitor = taq.rojas(club2,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+    lesionados_visitantes = taq.lesiones(club2,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+    if len(lesionados_visitantes) != 0:
+        for i in lesionados_visitantes:
+            actualizar_lesionados(i[0],i[1])
     if len(amarillas_visitor) != 0:
         for i in amarillas_visitor:
             actualizar_rustico_champions(i,1,0)
@@ -4597,8 +3337,8 @@ def partidos_champions_vuelta(club1,club2,goles_locales,goles_visitnates):
         print(f"PASA {club2}")
         ganador = club2
     else:
-        penalty_local = numero_random() 
-        penalty_visitor = numero_random()
+        penalty_local = fct.numero_random() 
+        penalty_visitor = fct.numero_random()
         if penalty_local == penalty_visitor:
             aux = penalty_visitor - 1
             penalty_visitor = aux    
@@ -4619,17 +3359,25 @@ def partidos_europa_vuelta(club1,club2,goles_locales,goles_visitnates):
     jugadores_sancionados_visitantes = sancionados_europa(club2)
     desancionar_europa(club1)
     desancionar_europa(club2)
-    result,club1,goallocal,goalsvisitor,club2 = resultado(club1,club2)
+    jugadores_lesionados_locales = lesionados(club1)
+    jugadores_lesionados_visitantes = lesionados(club2)
+    deslesionar(club1)
+    deslesionar(club2)
+    result,club1,goallocal,goalsvisitor,club2 = fct.resultado(club1,club2)
     if goallocal != 0:
-        goles_totales = taq.goleadores(club1,goallocal,jugadores_sancionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+        goles_totales = taq.goleadores(club1,goallocal,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
         for i in goles_totales:
             sumar_gol_europa(i)
-        asistencias_local = taq.asistentes(club1,goallocal,jugadores_sancionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+        asistencias_local = taq.asistentes(club1,goallocal,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
         if len(asistencias_local) != 0:
             for i in asistencias_local:
                 sumar_asistencia_europa(i)
-    amarillas_locales = taq.amarillas(club1,jugadores_sancionados_locales,player["equipo"],player["valoracion"],player["nombre"])
-    rojas_locales =taq.rojas(club1,jugadores_sancionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+    amarillas_locales = taq.amarillas(club1,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+    rojas_locales =taq.rojas(club1,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+    lesionados_locales = taq.lesiones(club1,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+    if len(lesionados_locales) != 0:
+        for i in lesionados_locales:
+            actualizar_lesionados(i[0],i[1])
     if len(amarillas_locales) != 0:
         for i in amarillas_locales:
             actualizar_rustico_europa(i,1,0)     
@@ -4637,15 +3385,19 @@ def partidos_europa_vuelta(club1,club2,goles_locales,goles_visitnates):
         for i in rojas_locales:
             actualizar_rustico_europa(i,0,1) 
     if goalsvisitor != 0:
-        goles_totalesv = taq.goleadores(club2,goalsvisitor,jugadores_sancionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+        goles_totalesv = taq.goleadores(club2,goalsvisitor,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
         for i in goles_totalesv:
             sumar_gol_europa(i)
-        asistenciasvisitor = taq.asistentes(club2,goalsvisitor,jugadores_sancionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+        asistenciasvisitor = taq.asistentes(club2,goalsvisitor,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
         if len(asistenciasvisitor) != 0:
             for i in asistenciasvisitor:
                 sumar_asistencia_europa(i)
-    amarillas_visitor = taq.amarillas(club2,jugadores_sancionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
-    rojas_visitor = taq.rojas(club2,jugadores_sancionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+    amarillas_visitor = taq.amarillas(club2,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+    rojas_visitor = taq.rojas(club2,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+    lesionados_visitantes = taq.lesiones(club2,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+    if len(lesionados_visitantes) != 0:
+        for i in lesionados_visitantes:
+            actualizar_lesionados(i[0],i[1])
     if len(amarillas_visitor) != 0:
         for i in amarillas_visitor:
             actualizar_rustico_europa(i,1,0)
@@ -4672,8 +3424,8 @@ def partidos_europa_vuelta(club1,club2,goles_locales,goles_visitnates):
         print(f"PASA {club2}")
         ganador = club2
     else:
-        penalty_local = numero_random() 
-        penalty_visitor = numero_random()
+        penalty_local = fct.numero_random() 
+        penalty_visitor = fct.numero_random()
         if penalty_local == penalty_visitor:
             aux = penalty_visitor - 1
             penalty_visitor = aux    
@@ -4685,9 +3437,7 @@ def partidos_europa_vuelta(club1,club2,goles_locales,goles_visitnates):
         else:
             ganador = club2    
     return ganador
-def agregar_dato(ruta_archivo,contenido):
-    with open(ruta_archivo, "w") as archivo:
-        json.dump(contenido, archivo)
+
 def sancionados_eurocopa(club,apto):
     jugadores_sancionados = []
     for jugador in jugadores_selecciones:
@@ -4911,6 +3661,7 @@ def definir_datos_fin(division,catogoria):
                         if j['nombre'] == player["nombre"]:
                             logro = f'goleador de la eurocopa'
                             logros_anuales.append(logro)
+                            player["dinero"] += 500000
                             player["valoracion"] += 2
                     else:
                         print(f"{j['goles']} {j['nombre']} - {j['equipo']}")
@@ -4931,6 +3682,7 @@ def definir_datos_fin(division,catogoria):
                         if j['nombre'] == player["nombre"]:
                             logro = f'asistente de la eurocopa'
                             logros_anuales.append(logro)
+                            player["dinero"] += 250000
                             player["valoracion"] += 2
                     else:
                         print(f"{j['asistencias']} {j['nombre']} - {j['equipo']}")
@@ -4954,6 +3706,7 @@ def definir_datos_fin(division,catogoria):
                             logro = f'goleador de la clasificacion al mundial europea'
                             logros_anuales.append(logro)
                             player["valoracion"] += 2
+                            player["dinero"] += 500000
                     else:
                         print(f"{j['goles']} {j['nombre']} - {j['equipo']}")
                     contador += 1
@@ -4999,6 +3752,7 @@ def definir_datos_fin(division,catogoria):
                             logro = f'goleador de la copa america'
                             logros_anuales.append(logro)
                             player["valoracion"] += 2
+                            player["dinero"] += 500000
                     else:
                         print(f"{j['goles']} {j['nombre']} - {j['equipo']}")
                     contador += 1
@@ -5018,6 +3772,7 @@ def definir_datos_fin(division,catogoria):
                         if j['nombre'] == player["nombre"]:
                             logro = f'asistente de la copa america'
                             logros_anuales.append(logro)
+                            player["dinero"] += 250000
                             player["valoracion"] += 2
                     else:
                         print(f"{j['asistencias']} {j['nombre']} - {j['equipo']}")
@@ -5086,6 +3841,7 @@ def definir_datos_fin(division,catogoria):
                             logro = f'goleador de la copa africana'
                             logros_anuales.append(logro)
                             player["valoracion"] += 2
+                            player["dinero"] += 500000
                     else:
                         print(f"{j['goles']} {j['nombre']} - {j['equipo']}")
                     contador += 1
@@ -5106,6 +3862,7 @@ def definir_datos_fin(division,catogoria):
                             logro = f'asistente de la copa africana'
                             logros_anuales.append(logro)
                             player["valoracion"] += 2
+                            player["dinero"] += 250000
                     else:
                         print(f"{j['asistencias']} {j['nombre']} - {j['equipo']}")
                     contador += 1
@@ -5173,6 +3930,7 @@ def definir_datos_fin(division,catogoria):
                             logro = f'goleador de la copa asiatica'
                             logros_anuales.append(logro)
                             player["valoracion"] += 2
+                            player["dinero"] += 500000
                     else:
                         print(f"{j['goles']} {j['nombre']} - {j['equipo']}")
                     contador += 1
@@ -5193,6 +3951,7 @@ def definir_datos_fin(division,catogoria):
                             logro = f'asistente de la copa asiatica'
                             logros_anuales.append(logro)
                             player["valoracion"] += 2
+                            player["dinero"] += 250000
                     else:
                         print(f"{j['asistencias']} {j['nombre']} - {j['equipo']}")
                     contador += 1
@@ -5242,7 +4001,6 @@ def definir_datos_fin(division,catogoria):
                     
             print("") 
 
-
 def mostrar_datos_selecciones(division):
     if division == 1:
         goleadores_selecciones("e")
@@ -5272,7 +4030,7 @@ def partido_eurocopa(club1,club2,apto):
     jugadores_sancionados_visitantes = sancionados_eurocopa(club2,apto)
     desancionar_eurocopa(club1)
     desancionar_eurocopa(club2)
-    result,club1,goallocal,goalsvisitor,club2 = resultado_selecciones(club1,club2)
+    result,club1,goallocal,goalsvisitor,club2 = fct.resultado_selecciones(club1,club2)
     if goallocal != 0:
         goles_totales = taq.goleadores_selecciones(club1,goallocal,jugadores_sancionados_locales,player["nacionalidad"],player["valoracion"],player["nombre"],apto)
         for i in goles_totales:
@@ -5312,8 +4070,8 @@ def partido_eurocopa(club1,club2,apto):
     else:
         print("PENALES")
         input("")
-        penaleslocal = numero_random()
-        penales_visitor = numero_random()
+        penaleslocal = fct.numero_random()
+        penales_visitor = fct.numero_random()
         if penaleslocal == penales_visitor:
             penales_visitor -= 1
         print(f'{club1} {penaleslocal}-{penales_visitor} {club2}')
@@ -5338,7 +4096,7 @@ def partido_eurocopa_c(club1,club2,apto,tabla):
     jugadores_sancionados_visitantes = sancionados_eurocopa(club2,apto)
     desancionar_eurocopa(club1)
     desancionar_eurocopa(club2)
-    result,club1,goallocal,goalsvisitor,club2 = resultado_selecciones(club1,club2)
+    result,club1,goallocal,goalsvisitor,club2 = fct.resultado_selecciones(club1,club2)
     if goallocal != 0:
         goles_totales = taq.goleadores_selecciones(club1,goallocal,jugadores_sancionados_locales,player["nacionalidad"],player["valoracion"],player["nombre"],apto)
         for i in goles_totales:
@@ -5372,14 +4130,14 @@ def partido_eurocopa_c(club1,club2,apto,tabla):
         for i in rojas_visitor:
             actualizar_rustico_eurocopa(i,0,1) 
     if goallocal > goalsvisitor:
-        actualizar_tabla(tabla,club1,3,goallocal,goalsvisitor,1,0,0)
-        actualizar_tabla(tabla,club2,0,goalsvisitor,goallocal,0,0,1)
+        fct.actualizar_tabla(tabla,club1,3,goallocal,goalsvisitor,1,0,0)
+        fct.actualizar_tabla(tabla,club2,0,goalsvisitor,goallocal,0,0,1)
     elif goallocal < goalsvisitor:
-        actualizar_tabla(tabla,club1,0,goallocal,goalsvisitor,0,0,1)
-        actualizar_tabla(tabla,club2,3,goalsvisitor,goallocal,1,0,0)
+        fct.actualizar_tabla(tabla,club1,0,goallocal,goalsvisitor,0,0,1)
+        fct.actualizar_tabla(tabla,club2,3,goalsvisitor,goallocal,1,0,0)
     else:
-        actualizar_tabla(tabla,club1,1,goallocal,goalsvisitor,0,1,0)
-        actualizar_tabla(tabla,club2,1,goalsvisitor,goallocal,0,1,0)
+        fct.actualizar_tabla(tabla,club1,1,goallocal,goalsvisitor,0,1,0)
+        fct.actualizar_tabla(tabla,club2,1,goalsvisitor,goallocal,0,1,0)
     if goallocal > goalsvisitor:
         sumar_ranking_selecion(club1,3)
         sumar_ranking_selecion(club2,0)
@@ -6051,7 +4809,7 @@ def jugar_mundial(apto):
     fecha_1_s(fixure_mundial_2,2,apto,tabla_mundial_2)
     fecha_1_s(fixure_mundial_3,3,apto,tabla_mundial_3)
     fecha_1_s(fixure_mundial_4,4,apto,tabla_mundial_4)
-    mostrar_tablas_fecha_fin(tabla_mundial_1,tabla_mundial_2,tabla_mundial_3,tabla_mundial_4)   
+    fct.mostrar_tablas_fecha_fin(tabla_mundial_1,tabla_mundial_2,tabla_mundial_3,tabla_mundial_4)   
     mostrar_datos_mundiales()
     input("")
     print("FECHA 2 DEL MUNDIAL")
@@ -6060,7 +4818,7 @@ def jugar_mundial(apto):
     fecha_2_s(fixure_mundial_2,2,apto,tabla_mundial_2)
     fecha_2_s(fixure_mundial_3,3,apto,tabla_mundial_3)
     fecha_2_s(fixure_mundial_4,4,apto,tabla_mundial_4)
-    mostrar_tablas_fecha_fin(tabla_mundial_1,tabla_mundial_2,tabla_mundial_3,tabla_mundial_4) 
+    fct.mostrar_tablas_fecha_fin(tabla_mundial_1,tabla_mundial_2,tabla_mundial_3,tabla_mundial_4) 
     mostrar_datos_mundiales()
     input("")
     print("FECHA 3 DEL MUNDIAL")
@@ -6069,12 +4827,12 @@ def jugar_mundial(apto):
     fecha_3_s(fixure_mundial_2,2,apto,tabla_mundial_2)
     fecha_3_s(fixure_mundial_3,3,apto,tabla_mundial_3)
     fecha_3_s(fixure_mundial_4,4,apto,tabla_mundial_4)
-    mostrar_tablas_fecha_fin(tabla_mundial_1,tabla_mundial_2,tabla_mundial_3,tabla_mundial_4) 
+    fct.mostrar_tablas_fecha_fin(tabla_mundial_1,tabla_mundial_2,tabla_mundial_3,tabla_mundial_4) 
     mostrar_datos_mundiales()
-    primero_mun_1,segundo_mun_1 = obtener_primer_y_segundo_equipo(tabla_mundial_1)
-    primero_mun_2,segundo_mun_2 = obtener_primer_y_segundo_equipo(tabla_mundial_2)
-    primero_mun_3,segundo_mun_3 = obtener_primer_y_segundo_equipo(tabla_mundial_3)
-    primero_mun_4,segundo_mun_4 = obtener_primer_y_segundo_equipo(tabla_mundial_4)
+    primero_mun_1,segundo_mun_1 = fct.obtener_primer_y_segundo_equipo(tabla_mundial_1)
+    primero_mun_2,segundo_mun_2 = fct.obtener_primer_y_segundo_equipo(tabla_mundial_2)
+    primero_mun_3,segundo_mun_3 = fct.obtener_primer_y_segundo_equipo(tabla_mundial_3)
+    primero_mun_4,segundo_mun_4 = fct.obtener_primer_y_segundo_equipo(tabla_mundial_4)
     primeros = [primero_mun_1,primero_mun_2,primero_mun_3,primero_mun_4]
     segundos = [segundo_mun_1,segundo_mun_2,segundo_mun_3,segundo_mun_4]
     primeros_ = primeros.copy()
@@ -6158,6 +4916,7 @@ def mostrar_datos_mundiales_fin():
                 logro = f'goleador del mundial'
                 logros_anuales.append(logro)
                 player["valoracion"] += 2
+                player["dinero"] += 1000000
         else:
             print(f" {j['goles']} {j['nombre']} - {j['equipo']}")
     input("")
@@ -6171,6 +4930,7 @@ def mostrar_datos_mundiales_fin():
                 logro = f'asistente del mundial'
                 logros_anuales.append(logro)
                 player["valoracion"] += 2
+                player["dinero"] += 500000
         else:
             print(f" {j['asistencias']} {j['nombre']} - {j['equipo']}")
    
@@ -6202,20 +4962,22 @@ def actualizar_ranking_mostrar():
             print(f"{j['promedio']} {j['nombre']}")
     print("")    
     
-   
-    
 nacionalidadd = ""
 equipo_player = "libre"
-nacion = input('''
+cont = 1
+contt = 1
+while cont == 1:
+    nacion = input('''
 que continente desear representar 
 1. Europa
 2. America         
 3. Asia
 4. Africa    
 .''')
-if nacion == "2":
-    division_seleccion = "america"
-    nacionn = input('''
+    if nacion == "2":
+        division_seleccion = "america"
+        while contt == 1:
+            nacionn = input('''
 que seleccion elijes
 1. Argentina
 2. Uruguay
@@ -6234,25 +4996,27 @@ que seleccion elijes
 15. Cuba
 16. Honduras
 .''')
-    if nacionn == "1": nacionalidad = "Argentina"
-    elif nacionn == "2":nacionalidad = "Uruguay"
-    elif nacionn == "3":nacionalidad = "Paraguay"
-    elif nacionn == "4":nacionalidad = "Chile"
-    elif nacionn == "5":nacionalidad = "Bolivia"
-    elif nacionn == "6":nacionalidad = "Brasil"
-    elif nacionn == "7":nacionalidad = "Peru"
-    elif nacionn == "8":nacionalidad = "Colombia"
-    elif nacionn == "9":nacionalidad = "Ecuador"
-    elif nacionn == "10":nacionalidad = "Venezuela"
-    elif nacionn == "11":nacionalidad = "Mexico"
-    elif nacionn == "12":nacionalidad = "Estados Unidos"
-    elif nacionn == "13":nacionalidad = "Canada"
-    elif nacionn == "14":nacionalidad = "Costa Rica"
-    elif nacionn == "15":nacionalidad = "Cuba"
-    elif nacionn == "16":nacionalidad = "Honduras"
-if nacion == "1":
-    division_seleccion = "europa"
-    nacionn = input('''
+            if nacionn == "1": nacionalidad = "Argentina"
+            elif nacionn == "2":nacionalidad = "Uruguay"
+            elif nacionn == "3":nacionalidad = "Paraguay"
+            elif nacionn == "4":nacionalidad = "Chile"
+            elif nacionn == "5":nacionalidad = "Bolivia"
+            elif nacionn == "6":nacionalidad = "Brasil"
+            elif nacionn == "7":nacionalidad = "Peru"
+            elif nacionn == "8":nacionalidad = "Colombia"
+            elif nacionn == "9":nacionalidad = "Ecuador"
+            elif nacionn == "10":nacionalidad = "Venezuela"
+            elif nacionn == "11":nacionalidad = "Mexico"
+            elif nacionn == "12":nacionalidad = "Estados Unidos"
+            elif nacionn == "13":nacionalidad = "Canada"
+            elif nacionn == "14":nacionalidad = "Costa Rica"
+            elif nacionn == "15":nacionalidad = "Cuba"
+            elif nacionn == "16":nacionalidad = "Honduras"
+            if nacionn in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16'] : contt = 0
+    elif nacion == "1":
+        division_seleccion = "europa"
+        while contt == 1:
+            nacionn = input('''
 que seleccion elijes
 1. España
 2. Francia
@@ -6271,25 +5035,27 @@ que seleccion elijes
 15. Serbia
 16. Suecia
 .''')
-    if nacionn == "1": nacionalidad = "España"
-    elif nacionn == "2":nacionalidad = "Francia"
-    elif nacionn == "3":nacionalidad = "Holanda"
-    elif nacionn == "4":nacionalidad = "Inglaterra"
-    elif nacionn == "5":nacionalidad = "Italia"
-    elif nacionn == "6":nacionalidad = "Croacia"
-    elif nacionn == "7":nacionalidad = "Belgica"
-    elif nacionn == "8":nacionalidad = "Portugal"
-    elif nacionn == "9":nacionalidad = "Suiza"
-    elif nacionn == "10":nacionalidad = "Dinamarca"
-    elif nacionn == "11":nacionalidad = "Polonia"
-    elif nacionn == "12":nacionalidad = "Noruega"
-    elif nacionn == "13":nacionalidad = "Alemania"
-    elif nacionn == "14":nacionalidad = "Gales"
-    elif nacionn == "15":nacionalidad = "Serbia"
-    elif nacionn == "16":nacionalidad = "Suecia"
-if nacion == "3":
-    division_seleccion = "asia"
-    nacionn = input('''
+            if nacionn == "1": nacionalidad = "España"
+            elif nacionn == "2":nacionalidad = "Francia"
+            elif nacionn == "3":nacionalidad = "Holanda"
+            elif nacionn == "4":nacionalidad = "Inglaterra"
+            elif nacionn == "5":nacionalidad = "Italia"
+            elif nacionn == "6":nacionalidad = "Croacia"
+            elif nacionn == "7":nacionalidad = "Belgica"
+            elif nacionn == "8":nacionalidad = "Portugal"
+            elif nacionn == "9":nacionalidad = "Suiza"
+            elif nacionn == "10":nacionalidad = "Dinamarca"
+            elif nacionn == "11":nacionalidad = "Polonia"
+            elif nacionn == "12":nacionalidad = "Noruega"
+            elif nacionn == "13":nacionalidad = "Alemania"
+            elif nacionn == "14":nacionalidad = "Gales"
+            elif nacionn == "15":nacionalidad = "Serbia"
+            elif nacionn == "16":nacionalidad = "Suecia"
+            if nacionn in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16'] : contt = 0
+    elif nacion == "3":
+        division_seleccion = "asia"
+        while contt == 1:
+            nacionn = input('''
 que seleccion elijes
 1. Iran
 2. Corea del Sur
@@ -6300,17 +5066,19 @@ que seleccion elijes
 7. Australia
 8. Qatar
 .''')
-    if nacionn == "1": nacionalidad = "Iran"
-    elif nacionn == "2":nacionalidad = "Corea del Sur"
-    elif nacionn == "3":nacionalidad = "Japon"
-    elif nacionn == "4":nacionalidad = "China"
-    elif nacionn == "5":nacionalidad = "Arabia Saudita"
-    elif nacionn == "6":nacionalidad = "Israel"
-    elif nacionn == "7":nacionalidad = "Australia"
-    elif nacionn == "8":nacionalidad = "Qatar"
-if nacion == "4":
-    division_seleccion = "africa"
-    nacionn = input('''
+            if nacionn == "1": nacionalidad = "Iran"
+            elif nacionn == "2":nacionalidad = "Corea del Sur"
+            elif nacionn == "3":nacionalidad = "Japon"
+            elif nacionn == "4":nacionalidad = "China"
+            elif nacionn == "5":nacionalidad = "Arabia Saudita"
+            elif nacionn == "6":nacionalidad = "Israel"
+            elif nacionn == "7":nacionalidad = "Australia"
+            elif nacionn == "8":nacionalidad = "Qatar"
+            if nacionn in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16'] : contt = 0
+    elif nacion == "4":
+        division_seleccion = "africa"
+        while contt == 1:
+            nacionn = input('''
 que seleccion elijes
 1. Egipto
 2. Senegal
@@ -6321,15 +5089,18 @@ que seleccion elijes
 7. Ghana
 8. Argelia
 .''')
-    if nacionn == "1": nacionalidad = "Egipto"
-    elif nacionn == "2":nacionalidad = "Senegal"
-    elif nacionn == "3":nacionalidad = "Tunez"
-    elif nacionn == "4":nacionalidad = "Camerun"
-    elif nacionn == "5":nacionalidad = "Marruecos"
-    elif nacionn == "6":nacionalidad = "Nigeria"
-    elif nacionn == "7":nacionalidad = "Ghana"
-    elif nacionn == "8":nacionalidad = "Argelia"
-
+            if nacionn == "1": nacionalidad = "Egipto"
+            elif nacionn == "2":nacionalidad = "Senegal"
+            elif nacionn == "3":nacionalidad = "Tunez"
+            elif nacionn == "4":nacionalidad = "Camerun"
+            elif nacionn == "5":nacionalidad = "Marruecos"
+            elif nacionn == "6":nacionalidad = "Nigeria"
+            elif nacionn == "7":nacionalidad = "Ghana"
+            elif nacionn == "8":nacionalidad = "Argelia"
+            if nacionn in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16'] : contt = 0
+    if nacion in ['1', '2', '3', '4']: cont = 0
+ 
+dinero = 0
 nacionalidadd = nacionalidad
 edad = 16
 traspasos = []
@@ -6352,6 +5123,7 @@ player = {
     "logros anuales": [],
     "traspasos": traspasos,
     "contrato": 0,
+    "dinero":dinero,
 }
 Arsenal = {
 "equipo":"Arsenal",
@@ -6359,7 +5131,7 @@ Arsenal = {
 "tabla" : {'Arsenal':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Arsenal':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Arsenal':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores": ["Martinelli","Gabriel Jesus","Trossard","Saka","Odegaard"]
+"jugadores": ["Martinelli", "Gabriel Jesus", "Havertz", "Saka", "Odegaard"]
 }
 Aston_Villa = {
 "equipo":"Aston Villa",
@@ -6367,7 +5139,7 @@ Aston_Villa = {
 "tabla" : {'Aston Villa':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Aston Villa':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Aston Villa':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores": ["Coutinho","Watkins","Ramsey","Buendía"]
+"jugadores": ["Coutinho", "Watkins", "Ramsey", "Buendía"]
 }
 Bournemouth = {
 "equipo":"Bournemouth",
@@ -6375,7 +5147,7 @@ Bournemouth = {
 "tabla" : {'Bournemouth':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Bournemouth':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Bournemouth':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores": ["Semenyo","Solanke","Lerma","Christie"]
+"jugadores": ["Semenyo", "Solanke", "Adams", "Christie"]
 }
 Brentford = {
 "equipo":"Brentford",
@@ -6383,7 +5155,7 @@ Brentford = {
 "tabla" : {'Brentford':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Brentford':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Brentford':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores": ["Toney","Mbeumo","Schade","Ghoddos"]
+"jugadores": ["Toney", "Mbeumo", "Schade", "Ghoddos"]
 }
 Brigthon = {
 "equipo":"Brigthon",
@@ -6391,7 +5163,7 @@ Brigthon = {
 "tabla" : {'Brigthon':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Brigthon':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Brigthon':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["MacAllister","Welbeck","Mitoma","Enciso","Undav"]
+"jugadores":["Fati", "Welbeck", "Mitoma", "Enciso", "Ferguson"]
 }
 Chelsea = {
 "equipo":"Chelsea",
@@ -6399,7 +5171,7 @@ Chelsea = {
 "tabla" : {'Chelsea':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Chelsea':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Chelsea':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Félix","Havertz","Sterling","Fernandez","Pulisic"]
+"jugadores":["Sterling", "Fernandez", "Nkunku", "Mudryk", "Palmer"]
 }
 Crystal_Palace = {
 "equipo":"Crystal Palace",
@@ -6407,7 +5179,7 @@ Crystal_Palace = {
 "tabla" : {'Crystal Palace':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Crystal Palace':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Crystal Palace':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Zaha","Ayew(cp)","Milivojevic","Edouard"]
+"jugadores":["Ayew(cp)", "Mateta", "Doucoure", "Edouard"]
 }
 Everton = {
 "equipo":"Everton",
@@ -6415,7 +5187,7 @@ Everton = {
 "tabla" : {'Everton':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Everton':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Everton':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Doucouré","McNeil","Calvert-Lewin","Maupay"]
+"jugadores":["Beto", "McNeil", "Calvert-Lewin", "Danjuma"]
 }
 Fulham = {
 "equipo":"Fulham",
@@ -6423,7 +5195,7 @@ Fulham = {
 "tabla" : {'Fulham':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Fulham':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Fulham':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Mitrovic","Willian","Cairney","Reid"]
+"jugadores":["Traore", "Jimenez", "Iwobi", "Willian"]
 }
 Leeds_United = {
 "equipo":"Leeds United",
@@ -6431,7 +5203,7 @@ Leeds_United = {
 "tabla" : {'Leeds United':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Leeds United':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Leeds United':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Greenwood","Moreno","McKennie","Bamford"]
+"jugadores":["Rutter","Summerville","Gnoto","Gray"]
 }
 Leicester_City = {
 "equipo":"Leicester City",
@@ -6439,7 +5211,7 @@ Leicester_City = {
 "tabla" : {'Leicester City':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Leicester City':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Leicester City':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Vardy","Maddison","Barnes","Iheanacho"]
+"jugadores":["Vardy","Iheanacho","Akgün","Mavididi"]
 }
 Liverpool = {
 "equipo":"Liverpool",
@@ -6447,7 +5219,7 @@ Liverpool = {
 "tabla" : {'Liverpool':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Liverpool':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Liverpool':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Salah","Firmino","Núñez","Luis Díaz","Diogo Jota"]
+"jugadores":["Salah", "MacAllister", "Núñez", "Luis Díaz", "Diogo Jota", "Gakpo"]
 }
 Manchester_City = {
 "equipo":"Manchester City",
@@ -6455,7 +5227,7 @@ Manchester_City = {
 "tabla" : {'Manchester City':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Manchester City':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Manchester City':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Haaland","Foden","Mahrez","Álvarez","Grealish"]
+"jugadores":["Haaland", "Foden", "Grealish", "Álvarez", "De Bruyne"]
 }
 Manchester_United = {
 "equipo":"Manchester United",
@@ -6463,7 +5235,7 @@ Manchester_United = {
 "tabla" : {'Manchester United':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Manchester United':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Manchester United':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Rashford","Sancho","Bruno Fernandes","Martial","Weghorst"]
+"jugadores":["Rashford", "Mount", "Bruno Fernandes", "Martial", "Sancho", "Antony"]
 }
 Newcastle = {
 "equipo":"Newcastle",
@@ -6471,7 +5243,7 @@ Newcastle = {
 "tabla" : {'Newcastle':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Newcastle':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Newcastle':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Isak","Guimarães","Joelinton","Saint-Maximin","Murphy"]
+"jugadores":["Isak", "Guimarães", "Joelinton", "Tonali", "Murphy"]
 }
 Nottingham_Forest = {
 "equipo":"Nottingham Forest",
@@ -6479,7 +5251,7 @@ Nottingham_Forest = {
 "tabla" : {'Nottingham Forest':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Nottingham Forest':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Nottingham Forest':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Awoniyi","Gibbs-White","Ayew","Danilo"]
+"jugadores":["Awoniyi", "Gibbs-White", "Origi", "Danilo"]
 }
 Southampton = {
 "equipo":"Southampton",
@@ -6487,7 +5259,7 @@ Southampton = {
 "tabla" : {'Southampton':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Southampton':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Southampton':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Adams","Alcaraz","Ward-Prowse","Edozie"]
+"jugadores":["Adams","Alcaraz","Armstrong","Edozie"]
 }
 Tottenham = {
 "equipo":"Tottenham",
@@ -6495,7 +5267,7 @@ Tottenham = {
 "tabla" : {'Tottenham':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Tottenham':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Tottenham':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Kane","Richarlison","Son","Lucas Moura","Kulusevski"]
+"jugadores":["Richarlison", "Son", "Sarr", "Kulusevski", "Perisic"]
 }
 West_ham = {
 "equipo":"West ham",
@@ -6503,7 +5275,7 @@ West_ham = {
 "tabla" : {'West ham':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'West ham':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'West ham':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Antonio","Paquetá","Benrahma","Ings"]
+"jugadores":["Antonio", "Paquetá", "Benrahma", "Ings"]
 }
 Wolverhampton = {
 "equipo":"Wolverhampton",
@@ -6528,7 +5300,7 @@ Sheffield_United = {
 "tabla" : {'Sheffield United':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Sheffield United':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Sheffield United':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Ndiaye","McBurnie","Sharp","Brewster"]
+"jugadores":["Osula", "Jebbison", "Archer", "Brewster"]
 }
 Luton_Town = {
 "equipo":"Luton Town",
@@ -6536,7 +5308,7 @@ Luton_Town = {
 "tabla" : {'Luton Town':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Luton Town':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Luton Town':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Morris","Adebayo","Woodrow","Muskwe"]
+"jugadores":["Adebayo", "Lokonga", "Morris", "Ogbene"]
 }
 Middlesbrough = {
 "equipo":"Middlesbrough",
@@ -6544,7 +5316,7 @@ Middlesbrough = {
 "tabla" : {'Middlesbrough':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Middlesbrough':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Middlesbrough':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Muniz","Akpom","Archer","Forss"]
+"jugadores":["Greenwood","Silvera","Jones","Forss"]
 }
 Coventry_City = {
 "equipo":"Coventry City",
@@ -6552,7 +5324,7 @@ Coventry_City = {
 "tabla" : {'Coventry City':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Coventry City':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Coventry City':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Godden","Walker","Tavares","Bapaga"]
+"jugadores":["Godden","Simms","Tavares","Wright"]
 }
 Sunderland = {
 "equipo":"Sunderland",
@@ -6560,7 +5332,7 @@ Sunderland = {
 "tabla" : {'Sunderland':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Sunderland':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Sunderland':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Diallo","Stewart","Gelhardt","Gooch"]
+"jugadores":["Clarke","Bennette","Semedo","Rigg"]
 }
 Blackburn_Rovers = {
 "equipo":"Blackburn Rovers",
@@ -6568,7 +5340,7 @@ Blackburn_Rovers = {
 "tabla" : {'Blackburn Rovers':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Blackburn Rovers':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Blackburn Rovers':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Ben Brereton Díaz","Gallagher","Vale","Hedges"]
+"jugadores":["Leonard","Gallagher","Ennis","Hedges"]
 }
 Millwall= {
 "equipo":"Millwall",
@@ -6576,8 +5348,7 @@ Millwall= {
 "tabla" : {'Millwall':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Millwall':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Millwall':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Bradshaw","Burey","Watmore","Burke"]
-}
+"jugadores":["Bradshaw","Nisbet","Watmore","Emakhu"]}
 West_Bromwich_Albion = {
 "equipo":"West Bromwich Albion",
 "reputacion" : 5,
@@ -6592,7 +5363,7 @@ Swansea = {
 "tabla" : {'Swansea':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Swansea':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Swansea':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Piroe","Whittaker","Cooper","Cullen"]
+"jugadores":["Lowe","Ginnelly","Cooper","Cullen"]
 }
 Watford = {
 "equipo":"Watford",
@@ -6600,7 +5371,7 @@ Watford = {
 "tabla" : {'Watford':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Watford':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Watford':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Pedro","Davis","Sarr","Martins"]
+"jugadores":["Bayo","Martins","Healeyr","Ince"]
 }
 Preston_North_End = {
 "equipo":"Preston North End",
@@ -6608,7 +5379,7 @@ Preston_North_End = {
 "tabla" : {'Preston North End':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Preston North End':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Preston North End':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Delap","Parrott","Riis","Cannon"]
+"jugadores":["Keane","Holmes","Riis","McCann"]
 }
 Norwich = {
 "equipo":"Norwich",
@@ -6616,7 +5387,7 @@ Norwich = {
 "tabla" : {'Norwich':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Norwich':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Norwich':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Pukki","Sara","Gibbs","Dowell"]
+"jugadores":["Barnes","Sargent","Gibbs","Idah"]
 }
 Bristol_City = {
 "equipo":"Bristol City",
@@ -6624,15 +5395,14 @@ Bristol_City = {
 "tabla" : {'Bristol City':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Bristol City':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Bristol City':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Wells","Cornick","Bell","Conway"]
-}
+"jugadores":["Wells","Cornick","Bell","Conway"]}
 Hull_City = {
 "equipo":"Hull City",
 "reputacion" : 5,
 "tabla" : {'Hull City':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Hull City':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Hull City':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Estupiñan","Ebiowei","Tetteh","Connolly"]
+"jugadores":["Delap","Lokilo","Sinik","Connolly"]
 }
 Stoke_City = {
 "equipo":"Stoke City",
@@ -6640,7 +5410,7 @@ Stoke_City = {
 "tabla" : {'Stoke City':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Stoke City':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Stoke City':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Brown","Campbell","Powell","Gayle"]
+"jugadores":["Gooch","Campbell","Mmaee","Gayle"]
 }
 Birmingham = {
 "equipo":"Birmingham",
@@ -6648,7 +5418,7 @@ Birmingham = {
 "tabla" : {'Birmingham':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Birmingham':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Birmingham':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Hogan","Graham","Chong","Hannibal",]
+"jugadores":["Hogan","Jutkiewicz","Roberts","Stansfield"]
 }
 Huddersfield_Town = {
 "equipo":"Huddersfield Town",
@@ -6656,15 +5426,14 @@ Huddersfield_Town = {
 "tabla" : {'Huddersfield Town':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Huddersfield Town':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Huddersfield Town':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Hungbo","Knockaert","Ward","Kamberi"]
-}
+"jugadores":["Koroma","Burgzorg","Ward","Hudlin"]}
 Cardiff_City = {
 "equipo":"Cardiff City",
 "reputacion" : 5,
 "tabla" : {'Cardiff City':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Cardiff City':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Cardiff City':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Ojo","Robinson","Harris","Wickham"]
+"jugadores":["Ugbo","Robinson","Bowler","Grant"]
 }
 Queens_Park_Rangers = {
 "equipo":"Queens Park Rangers",
@@ -6672,7 +5441,7 @@ Queens_Park_Rangers = {
 "tabla" : {'Queens Park Rangers':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Queens Park Rangers':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Queens Park Rangers':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Dykes","Adomah","Willock","Roberts"]
+"jugadores":["Dykes","Adomah","Willock","Smyth"]
 }
 
 Napoli = {
@@ -6681,7 +5450,7 @@ Napoli = {
 "tabla" : {'Napoli':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Napoli':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Napoli':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Osimhen","Raspadori","Simeone","Lozano","Kvaratskhelia"]
+"jugadores":["Osimhen","Raspadori","Simeone","Politano","Kvaratskhelia"]
 }
 Lazio = {
 "equipo":"Lazio",
@@ -6689,7 +5458,7 @@ Lazio = {
 "tabla" : {'Lazio':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Lazio':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Lazio':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Immobile","Milinkovic-Savic","Pedro","Basic","Lazzari"]
+"jugadores":["Immobile","Anderson","Pedro(L)","Basic","Isaksen"]
 }
 Inter = {
 "equipo":"Inter",
@@ -6697,7 +5466,7 @@ Inter = {
 "tabla" : {'Inter':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Inter':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Inter':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Martinez","Lukaku","Mkhitaryan","Calhanoglu","Dzeko"]
+"jugadores":["Martinez","Alexis Sánchez","Arnautovic","Calhanoglu","Mkhitaryan"]
 }
 Milan = {
 "equipo":"Milan",
@@ -6705,7 +5474,7 @@ Milan = {
 "tabla" : {'Milan':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Milan':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Milan':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Giroud","Leão","Ibrahimovic","Tonali","B.Diaz"]
+"jugadores":["Giroud","Leão","Pulisic","Jović","Romero"]
 }
 Atalanta = {
 "equipo":"Atalanta",
@@ -6713,7 +5482,7 @@ Atalanta = {
 "tabla" : {'Atalanta':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Atalanta':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Atalanta':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Muriel","Zapata","Hojlund","Colombo","Pasalic"]
+"jugadores": ["Muriel","Scamacca","Pasalic","Lookman","Adopo"]
 }
 Roma = {
 "equipo":"Roma",
@@ -6721,7 +5490,7 @@ Roma = {
 "tabla" : {'Roma':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Roma':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Roma':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Dybala","Belotti","El Shaarawy","Pellegrini","Wijnaldum"]
+"jugadores":["Dybala","Belotti","El Shaarawy","Lukaku","Pellegrini"]
 }
 Juventus = {
 "equipo":"Juventus",
@@ -6729,7 +5498,7 @@ Juventus = {
 "tabla" : {'Juventus':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Juventus':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Juventus':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Di Maria","Kean","Chiesa","Milik","Vlahovic"]
+"jugadores":["Vlahovic","Kean","Chiesa","Milik","Pogba"]
 }
 Fiorentina = {
 "equipo":"Fiorentina",
@@ -6737,15 +5506,14 @@ Fiorentina = {
 "tabla" : {'Fiorentina':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Fiorentina':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Fiorentina':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["N.Gonzalez","Arthur","Jovic","Sottil","Kouamé"]
-}
+"jugadores":["N.Gonzalez","Arthur","Beltrán","Sottil","Kouamé"]}
 Bologna = {
 "equipo":"Bologna",
 "reputacion" : 3,
 "tabla" : {'Bologna':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Bologna':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Bologna':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Arnautovic","Sansone","Orsolini","Raimondo"]
+"jugadores":["Karlsson","Ndoye","Orsolini","Hooijdonk"]
 }
 Torino = {
 "equipo":"Torino",
@@ -6761,15 +5529,14 @@ Monza = {
 "tabla" : {'Monza':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Monza':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Monza':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Petagna","Ciurria","Maric","Gytkjær"]
-}
+"jugadores":["Carvalho","Colombo","Maric","Ciurria"]}
 Udinese = {
 "equipo":"Udinese",
 "reputacion" : 5,
 "tabla" : {'Udinese':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Udinese':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Udinese':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Deulofeu","Nestorovski","Ebosele","Beto"]
+"jugadores":["Deulofeu","Thauvin","Brenner"," Success"]
 }
 Sassuolo = {
 "equipo":"Sassuolo",
@@ -6777,7 +5544,7 @@ Sassuolo = {
 "tabla" : {'Sassuolo':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Sassuolo':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Sassuolo':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Berardi","Lauriente","Pinamonti","Ceide"]
+"jugadores":["Berardi","Lauriente","Mulattieri","Pinamonti"]
 }
 Empoli = {
 "equipo":"Empoli",
@@ -6785,7 +5552,7 @@ Empoli = {
 "tabla" : {'Empoli':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Empoli':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Empoli':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Satriano","Cambiaghi","Piccoli","Destro"]
+"jugadores":["Caputo","Cambiaghi","Gyasi","Destro"]
 }
 Salernitana = {
 "equipo":"Salernitana",
@@ -6793,7 +5560,7 @@ Salernitana = {
 "tabla" : {'Salernitana':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Salernitana':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Salernitana':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Botheim","Piatek","Bonazzoli","Maggiore"]
+"jugadores":["Botheim","Candreva","Ikwuemesi","Maggiore"]
 }
 Lecce = {
 "equipo":"Lecce",
@@ -6801,7 +5568,7 @@ Lecce = {
 "tabla" : {'Lecce':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Lecce':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Lecce':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Ceesay","Persson","Corfitzen","Oudin"]
+"jugadores":["Piccoli","Krstovic","Banda","Burnete"]
 }
 Hellas_Verona = {
 "equipo":"Hellas Verona",
@@ -6809,7 +5576,7 @@ Hellas_Verona = {
 "tabla" : {'Hellas Verona':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Hellas Verona':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Hellas Verona':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Gaich","Djuric","Braaf","Ngonge"]
+"jugadores":["Mboula","Djuric","Braaf","Ngonge"]
 }
 Spezia = {
 "equipo":"Spezia",
@@ -6817,7 +5584,7 @@ Spezia = {
 "tabla" : {'Spezia':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Spezia':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Spezia':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Nzola","Krollis","Shomurodov","Gyasi"]
+"jugadores":["Moro","Krollis","Verde","Elia"]
 }
 Cremonese = {
 "equipo":"Cremonese",
@@ -6825,7 +5592,7 @@ Cremonese = {
 "tabla" : {'Cremonese':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Cremonese':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Cremonese':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Ciofani","Buonaiuto","Dessers","Okereke"]
+"jugadores":["Ciofani","Buonaiuto","Coda","Zanimacchia"]
 }
 Sampdoria = {
 "equipo":"Sampdoria",
@@ -6833,7 +5600,7 @@ Sampdoria = {
 "tabla" : {'Sampdoria':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Sampdoria':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Sampdoria':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Quagliarella","Gabbiadini","Montevago","Ivanovic"]
+"jugadores":["Estanis","Borini","Gumina","Monache"]
 }
 Frosinone = {
 "equipo":"Frosinone",
@@ -6841,7 +5608,7 @@ Frosinone = {
 "tabla" : {'Frosinone':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Frosinone':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Frosinone':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Moro","Garritano","Bolocs","Gelli"]
+"jugadores":["Cheddira","Kvernadze","Soule","Cuni"]
 }
 Genoa = {
 "equipo":"Genoa",
@@ -6849,23 +5616,21 @@ Genoa = {
 "tabla" : {'Genoa':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Genoa':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Genoa':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Yalcin","Puscas","Badelj","Coda"]
-}
+"jugadores":["Retegui","Gudmundsson","Ekuban","Fini"]}
 Bari = {
 "equipo":"Bari",
 "reputacion" : 5,
 "tabla" : {'Bari':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Bari':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Bari':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Esposito","Cheddira","Maita","Maiello"]
-}
+"jugadores":["Diaw","Nasti","Maita","Sibilli"]}
 Parma = {
 "equipo":"Parma",
 "reputacion" : 5,
 "tabla" : {'Parma':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Parma':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Parma':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Vázquez","Juric","Benedyczak","Mihaila"]
+"jugadores":["Colak","Benedyczak","Begic","Mihaila"]
 }
 Cagliari = {
 "equipo":"Cagliari",
@@ -6873,7 +5638,7 @@ Cagliari = {
 "tabla" : {'Cagliari':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Cagliari':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Cagliari':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Lapadula","Pavoletti","Pereiro","Zito"]
+"jugadores":["Lapadula","Pavoletti","Petagna","Zito"]
 }
 Sudtirol = {
 "equipo":"Sudtirol",
@@ -6881,7 +5646,7 @@ Sudtirol = {
 "tabla" : {'Sudtirol':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Sudtirol':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Sudtirol':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Mazzocchi","Odogwu","Tait","Belardinelli"]
+"jugadores":["Rover","Odogwu","Pecorino","Cisco"]
 }
 Reggina = {
 "equipo":"Reggina",
@@ -6889,7 +5654,7 @@ Reggina = {
 "tabla" : {'Reggina':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Reggina':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Reggina':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Canotto","Majer","Fabbian","Strelec"]
+"jugadores":["Gondo","Lanini","Pettinari","Vido"]
 }
 Venezia = {
 "equipo":"Venezia",
@@ -6897,7 +5662,7 @@ Venezia = {
 "tabla" : {'Venezia':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Venezia':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Venezia':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Johsen","Zampano","Tessmann","Pohjanpalo"]
+"jugadores":["Johsen","Pierini","Tessmann","Pohjanpalo"]
 }
 Palermo = {
 "equipo":"Palermo",
@@ -6905,7 +5670,7 @@ Palermo = {
 "tabla" : {'Palermo':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Palermo':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Palermo':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Tutino","Brunori","Buttaro","Segre"]
+"jugadores":["Mancuso","Brunori","Soleri","Segre"]
 }
 Modena = {
 "equipo":"Modena",
@@ -6913,7 +5678,7 @@ Modena = {
 "tabla" : {'Modena':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Modena':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Modena':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Armellino","Diaw","Giovannini","Gerli"]
+"jugadores":["Falcinelli","Manconi","Giovannini","Gerli"]
 }
 Pisa = {
 "equipo":"Pisa",
@@ -6921,7 +5686,7 @@ Pisa = {
 "tabla" : {'Pisa':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Pisa':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Pisa':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Sibili","Torregrossa","Tramoni","Nagy"]
+"jugadores":["Mlakar","Torregrossa","Tramoni","Nagy"]
 }
 Ascoli = {
 "equipo":"Ascoli",
@@ -6929,7 +5694,7 @@ Ascoli = {
 "tabla" : {'Ascoli':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Ascoli':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Ascoli':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Gondo","Forte","Dionisi","Caligara"]
+"jugadores":["Pedro Mendes","Millico","Nestorovski","Caligara"]
 }
 Como = {
 "equipo":"Como",
@@ -6937,7 +5702,7 @@ Como = {
 "tabla" : {'Como':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Como':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Como':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Cutrone","Gabrielloni","Vigna","Cerri"]
+"jugadores":["Cutrone","Gabrielloni","Baselli","Cerri"]
 }
 Ternana = {
 "equipo":"Ternana",
@@ -6945,7 +5710,7 @@ Ternana = {
 "tabla" : {'Ternana':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Ternana':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Ternana':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Favili","Falletti","Partipilo","Proietti"]
+"jugadores":["Favili","Dionisi","Raimondo","Proietti"]
 }
 Brescia = {
 "equipo":"Brescia",
@@ -6953,7 +5718,7 @@ Brescia = {
 "tabla" : {'Brescia':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Brescia':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Brescia':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Aye","P.Rodriguez","Bisoli","Listkowski"]
+"jugadores":["Moncini","Bianchi","Bisoli","Ferro"]
 }
 Cittadella = {
 "equipo":"Cittadella",
@@ -6961,7 +5726,7 @@ Cittadella = {
 "tabla" : {'Cittadella':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Cittadella':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Cittadella':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Magrassi","Ambrosino","Antonucci","Danzi"]
+"jugadores":["Magrassi","Maistrello","Pittarello","Danzi"]
 }
 Cosenza = {
 "equipo":"Cosenza",
@@ -6969,7 +5734,7 @@ Cosenza = {
 "tabla" : {'Cosenza':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Cosenza':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Cosenza':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Nasti","Voca","Florenzi","Brescianini"]
+"jugadores":["Forte","Tutino","Novello","Crespi"]
 }
 Perugia = {
 "equipo":"Perugia",
@@ -6977,7 +5742,7 @@ Perugia = {
 "tabla" : {'Perugia':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Perugia':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Perugia':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Di Carmine","Di Serio","Luperini","Vulic"]
+"jugadores":["Matos","Cudrig","Cudrig","Seghetti"]
 }
 Spal = {
 "equipo":"Spal",
@@ -6985,7 +5750,7 @@ Spal = {
 "tabla" : {'Spal':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Spal':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Spal':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Rabbi","Moncini","Celia","Rauti"]
+"jugadores":["Antenucci","Dalmonte","Siligardi","Rabbi"]
 }
 Benevento = {
 "equipo":"Benevento",
@@ -6993,110 +5758,108 @@ Benevento = {
 "tabla" : {'Benevento':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla premier" : {'Benevento':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
 "tabla europa" : {'Benevento':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Ciano","Farias","Karic","Foulon"]
+"jugadores":["Improta","Ciano","Marotta","Bolsius"]
 }
 
 psg = {
 "equipo":"PSG",
 "tabla premier" :{'PSG':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Messi","Mbappe","Neymar","Pereira","Sanches"]
+"jugadores": ["Mbappe","Asensio","O.Dembele","Muani","Barcola"]
 }
 
 Barcelona ={
 "equipo":"Barcelona",
 "tabla premier" : {'Barcelona':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Lewandowski","Gavi","Fati","Raphinha","O.Dembélé"]
+"jugadores":["Lewandowski","Gavi","Felix","Raphinha","Torres"]
 }
 Real_Madrid ={
 "equipo": "Real Madrid",
 "tabla premier" : {'Real Madrid':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Benzema","Vinicius","Rodrygo","Modric","Tchouameni"]
+"jugadores":["Bellingham","Vinicius","Rodrygo","Modric","Tchouameni"]
 }
 B_Dortmund = {
 "equipo":"B.Dortmund",
 "tabla premier" : {'B.Dortmund':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Haller","Moukoko","Bellingham","Reus","Reyna"]
+"jugadores":["Haller","Moukoko","Adeyemi","Reus","Reyna"]
 }
 Bayern_Munich = {
 "equipo":"Bayern Munich",
 "tabla premier" :{'Bayern Munich':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Gnabry","Mané","Müller","Musiala","Sané"]
+"jugadores":["Kane","Gnabry","Müller","Musiala","Sané"]
 }
 Ajax ={
 "equipo" : "Ajax",
 "tabla premier" : {'Ajax':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Tadic","Kudus","Conceição","Bergwijn","Ocampos"]
+"jugadores":["Bergwijn","Akpom","Mikautadze","Godts","Tahirovic"]
 }
 Shakhtar = {
 "equipo" : "Shakhtar",
 "tabla premier" : {'Shakhtar':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Traore","Sikan","Petryak","Kryskiv","Bondarenko"]
+"jugadores":["Traore","Sikan","Petryak","Zubkov","Bondarenko"]
 }
 Brugge = {
 "equipo":"Brugge",
 "tabla europa" : {'Brugge':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Sowah","Nusa","Jutglà","Onyedika","Vanaken"]
-}
+"jugadores":["Buchanan","Nusa","Jutglà","Vermant","Olsen"]}
 Lyon ={
 "equipo":"O.Lyon",
 "tabla premier" : {'O.Lyon':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Lacazette","M.Dembele","Sarr(O.L)","Tolisso","Tagliafico"]
+"jugadores":["Lacazette","Baldé","Jeffinho","Tolisso","Tagliafico"]
 }
 
 Atl_Madrid ={
 "equipo": "Atl.Madrid",
 "tabla premier" : {'Atl.Madrid':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Griezmann","Morata","de Paul","Koke","Lemar"]
-}
+"jugadores":["Griezmann","Morata","de Paul","Koke","Lemar"]}
 B_Leverkusen = {
 "equipo":"B.Leverkusen",
 "tabla europa" : {'B.Leverkusen':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Diaby","Azmoun","Wirtz","Adli","Hlozek"]
+"jugadores":["Tella","Hložek","Hofmann","Adli","Boniface"]
 }
 Sporting_Lisboa = {
 "equipo":"Sporting Lisboa",
 "tabla europa" : {'Sporting Lisboa':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Paulinho","Trincao","Edwards","Santos","Gomes"]
+"jugadores":["Paulinho","Trincao","Edwards","Santos","Goncalves"]
 }
 Frankfurt = {
 "equipo":"Frankfurt",
 "tabla europa" : {'Frankfurt':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Götze","Muani","Borre","Alario","Lindstrom"]
+"jugadores":["Götze","Marmoush","Ngankam","Alario","Rode"]
 }
 Marsella = {
 "equipo":"O.Marsella",
 "tabla europa" : {'O.Marsella':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Payet","Sánchez","Harit","Ünder","Gueye"]
+"jugadores":["Aubameyang","Sarr(M)","Correa","Ndiaye","Gueye"]
 }
 Sevilla = {
 "equipo":"Sevilla",
 "tabla europa" : {'Sevilla':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Dolberg","En-Nesyri","Suso","Gomez","Lamela"]
+"jugadores":["Zakharyan","En-Nesyri","Suso","Ocampos","Rakitić"]
 }
 Benfica = {
 "equipo" : "Benfica",
 "tabla premier" : {'Benfica':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Neres","Rafa","Ramos","Musa","Aursnes"]
+"jugadores":["Neres","Rafa","Di María","Musa","Gouveia"]
 }
 Leipzig = {
 "equipo":"Leipzig",
 "tabla europa" : {'Leipzig':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Silva","Werner","Forsberg","Olmo","Nkunku"]
+"jugadores":["Poulsen","Werner","Sesko","Olmo","Openda"]
 }
 Monaco = {
 "equipo": "Monaco",
 "tabla europa" : {'Monaco':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Ben Yedder","Volland","Embolo","Seghir","Camara"]
+"jugadores":["Ben Yedder","Martins(M)","Embolo","Seghir","Camara"]
 }
 psv = {
 "equipo":"PSV",
 "tabla europa":{'PSV':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["de Jong","Bakayoko","Simons","Veerman","F.Silva"]
+"jugadores":["de Jong","Bakayoko","Til","Veerman","Lang"]
 }
 Real_Sociedad = {
 "equipo":"Real Sociedad",
 "tabla europa":{'Real Sociedad':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},
-"jugadores":["Illarramendi","Navarro","Karrikaburu","Kubo","Guevara"]
+"jugadores":["Sadiq","Oyarzabal","Andre Silva","Kubo","Zakharyan"]
 }
 
 España = {"equipo":"España","tabla":{'España':{'PTS':0,'GF': 0, 'GC': 0, 'GD': 0,'V':0,'E':0,'D':0},},}
@@ -7763,467 +6526,551 @@ jugadores_selecciones = [
     ]
 
 jugadores = [
-    {"nombre": player["nombre"],"goles": 0,"equipo":equipo_player,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"partidos":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Martinelli","asistencias":0,"goles":0,"equipo":"Arsenal","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Gabriel Jesus","goles":0,"equipo":"Arsenal","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Trossard", "goles": 0,"equipo":"Arsenal","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Saka", "goles": 0,"equipo":"Arsenal","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Odegaard", "goles": 0,"equipo":"Arsenal","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Coutinho","goles": 0,"equipo":"Aston Villa","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Watkins","goles": 0,"equipo":"Aston Villa","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Ramsey","goles": 0,"equipo":"Aston Villa","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Buendía","goles": 0,"equipo":"Aston Villa","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Semenyo","goles": 0,"equipo":"Bournemouth","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Solanke","goles": 0,"equipo":"Bournemouth","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Lerma","goles": 0,"equipo":"Bournemouth","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Christie","goles": 0,"equipo":"Bournemouth","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre": "Toney","goles": 0,"equipo":"Brentford","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre": "Mbeumo","goles": 0,"equipo":"Brentford","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre": "Schade","goles": 0,"equipo":"Brentford","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre": "Ghoddos","goles": 0,"equipo":"Brentford","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre": "MacAllister","goles": 0,"equipo":"Brigthon","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre": "Welbeck","goles": 0,"equipo":"Brigthon","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre": "Mitoma","goles": 0,"equipo":"Brigthon","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre": "Enciso","goles": 0,"equipo":"Brigthon","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre": "Undav","goles": 0,"equipo":"Brigthon","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre": "Félix","goles": 0,"equipo":"Chelsea","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre": "Havertz","goles": 0,"equipo":"Chelsea","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre": "Sterling","goles": 0,"equipo":"Chelsea","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre": "Fernandez","goles": 0,"equipo":"Chelsea","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre": "Pulisic","goles": 0,"equipo":"Chelsea","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre": "Zaha","goles": 0,"equipo":"Crystal Palace","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre": "Ayew(cp)","goles": 0,"equipo":"Crystal Palace","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre": "Milivojevic","goles": 0,"equipo":"Crystal Palace","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre": "Edouard","goles": 0,"equipo":"Crystal Palace","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre": "Doucouré","goles": 0,"equipo":"Everton","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre": "McNeil","goles":0,"equipo":"Everton","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre": "Calvert-Lewin","goles": 0,"equipo":"Everton","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre": "Maupay","goles": 0,"equipo":"Everton","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre": "Mitrovic","goles": 0,"equipo":"Fulham","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Willian","goles": 0,"equipo":"Fulham","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Cairney","goles": 0,"equipo":"Fulham","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Reid","goles": 0,"equipo":"Fulham","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Greenwood","goles": 0,"equipo":"Leeds United","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Moreno","goles": 0,"equipo":"Leeds United","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "McKennie","goles": 0,"equipo":"Leeds United","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Bamford","goles": 0,"equipo":"Leeds United","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Vardy","goles": 0,"equipo":"Leicester City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Maddison","goles": 0,"equipo":"Leicester City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Barnes","goles": 0,"equipo":"Leicester City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Iheanacho","goles": 0,"equipo":"Leicester City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Salah","goles": 0,"equipo":"Liverpool","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Firmino","goles": 0,"equipo":"Liverpool","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Núñez","goles": 0,"equipo":"Liverpool","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Luis Díaz","goles": 0,"equipo":"Liverpool","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Diogo Jota","goles": 0,"equipo":"Liverpool","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Haaland","goles": 0,"equipo":"Manchester City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Foden","goles": 0,"equipo":"Manchester City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Mahrez","goles": 0,"equipo":"Manchester City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Álvarez","goles": 0,"equipo":"Manchester City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Grealish","goles": 0,"equipo":"Manchester City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Rashford","goles": 0,"equipo":"Manchester United","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Sancho","goles": 0,"equipo":"Manchester United","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Bruno Fernandes","goles": 0,"equipo":"Manchester United","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Martial","goles": 0,"equipo":"Manchester United","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Weghorst","goles": 0,"equipo":"Manchester United","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Isak","goles": 0,"equipo":"Newcastle","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Guimarães","goles": 0,"equipo":"Newcastle","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Joelinton","goles": 0,"equipo":"Newcastle","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Saint-Maximin","goles": 0,"equipo":"Newcastle","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Murphy","goles": 0,"equipo":"Newcastle","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Awoniyi","goles": 0,"equipo":"Nottingham Forest","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Gibbs-White","goles": 0,"equipo":"Nottingham Forest","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Ayew","goles": 0,"equipo":"Nottingham Forest","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Danilo","goles": 0,"equipo":"Nottingham Forest","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Adams","goles": 0,"equipo":"Southampton","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Alcaraz","goles": 0,"equipo":"Southampton","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Ward-Prowse","equipo":"Southampton","goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Edozie","goles": 0,"equipo":"Southampton","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Kane","goles": 0,"equipo":"Tottenham","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Richarlison","goles": 0,"equipo":"Tottenham","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Son","goles": 0,"equipo":"Tottenham","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Lucas Moura","goles": 0,"equipo":"Tottenham","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Kulusevski","goles": 0,"equipo":"Tottenham","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Antonio","goles": 0,"equipo":"West ham","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Paquetá","goles": 0,"equipo":"West ham","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Benrahma","goles": 0,"equipo":"West ham","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Ings","goles": 0,"equipo":"West ham","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Diego Costa","goles": 0,"equipo":"Wolverhampton","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Cunha","goles": 0,"equipo":"Wolverhampton","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Adama Traoré","goles": 0,"equipo":"Wolverhampton","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Sarabia","goles": 0,"equipo":"Wolverhampton","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
+{"nombre": player["nombre"],"goles": 0,"equipo":equipo_player,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"partidos":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Martinelli","asistencias":0,"goles":0,"equipo":"Arsenal","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Gabriel Jesus","goles":0,"equipo":"Arsenal","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Havertz", "goles": 0,"equipo":"Arsenal","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Saka", "goles": 0,"equipo":"Arsenal","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Odegaard", "goles": 0,"equipo":"Arsenal","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre":"Coutinho","goles": 0,"equipo":"Aston Villa","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Watkins","goles": 0,"equipo":"Aston Villa","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Ramsey","goles": 0,"equipo":"Aston Villa","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Buendía","goles": 0,"equipo":"Aston Villa","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre":"Semenyo","goles": 0,"equipo":"Bournemouth","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Solanke","goles": 0,"equipo":"Bournemouth","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Adams","goles": 0,"equipo":"Bournemouth","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Christie","goles": 0,"equipo":"Bournemouth","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre": "Toney","goles": 0,"equipo":"Brentford","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre": "Mbeumo","goles": 0,"equipo":"Brentford","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre": "Schade","goles": 0,"equipo":"Brentford","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre": "Ghoddos","goles": 0,"equipo":"Brentford","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre": "Fati","goles": 0,"equipo":"Brigthon","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre": "Welbeck","goles": 0,"equipo":"Brigthon","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre": "Mitoma","goles": 0,"equipo":"Brigthon","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre": "Enciso","goles": 0,"equipo":"Brigthon","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre": "Ferguson","goles": 0,"equipo":"Brigthon","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre": "Palmer","goles": 0,"equipo":"Chelsea","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre": "Mudryk","goles": 0,"equipo":"Chelsea","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre": "Sterling","goles": 0,"equipo":"Chelsea","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre": "Fernandez","goles": 0,"equipo":"Chelsea","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre": "Nkunku","goles": 0,"equipo":"Chelsea","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre": "Mateta","goles": 0,"equipo":"Crystal Palace","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre": "Ayew(cp)","goles": 0,"equipo":"Crystal Palace","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre": "Doucoure","goles": 0,"equipo":"Crystal Palace","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre": "Edouard","goles": 0,"equipo":"Crystal Palace","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre": "Beto","goles": 0,"equipo":"Everton","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre": "McNeil","goles":0,"equipo":"Everton","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre": "Calvert-Lewin","goles": 0,"equipo":"Everton","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre": "Danjuma","goles": 0,"equipo":"Everton","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre": "Traore","goles": 0,"equipo":"Fulham","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Willian","goles": 0,"equipo":"Fulham","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Jimenez","goles": 0,"equipo":"Fulham","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Iwobi","goles": 0,"equipo":"Fulham","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
     
-    {"nombre": "Tella","goles": 0,"equipo":"Burnley","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Hedilazio","goles": 0,"equipo":"Burnley","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Rodríguez","goles": 0,"equipo":"Burnley","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Barnes","goles": 0,"equipo":"Burnley","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Ndiaye","goles": 0,"equipo":"Sheffield United","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "McBurnie","goles": 0,"equipo":"Sheffield United","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Sharp","goles": 0,"equipo":"Sheffield United","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Brewster","goles": 0,"equipo":"Sheffield United","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Morris","goles": 0,"equipo":"Luton Town","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Adebayo","goles": 0,"equipo":"Luton Town","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Woodrow","goles": 0,"equipo":"Luton Town","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Muskwe","goles": 0,"equipo":"Luton Town","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Muniz","goles": 0,"equipo":"Middlesbrough","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Akpom","goles": 0,"equipo":"Middlesbrough","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Archer","goles": 0,"equipo":"Middlesbrough","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Forss","goles": 0,"equipo":"Middlesbrough","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Godden","goles": 0,"equipo":"Coventry City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Walker","goles": 0,"equipo":"Coventry City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Tavares","goles": 0,"equipo":"Coventry City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Bapaga","goles": 0,"equipo":"Coventry City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Diallo","goles": 0,"equipo":"Sunderland","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Stewart","goles": 0,"equipo":"Sunderland","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Gelhardt","goles": 0,"equipo":"Sunderland","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Gooch","goles": 0,"equipo":"Sunderland","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Ben Brereton Díaz","goles": 0,"equipo":"Blackburn Rovers","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Gallagher","goles": 0,"equipo":"Blackburn Rovers","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Vale","goles": 0,"equipo":"Blackburn Rovers","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Hedges","goles": 0,"equipo":"Blackburn Rovers","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Bradshaw","goles": 0,"equipo":"Millwall","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Burey","goles": 0,"equipo":"Millwall","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Watmore","goles": 0,"equipo":"Millwall","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Burke","goles": 0,"equipo":"Millwall","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Dike","goles": 0,"equipo":"West Bromwich Albion","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Wallace","goles": 0,"equipo":"West Bromwich Albion","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Diangana","goles": 0,"equipo":"West Bromwich Albion","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Phillips","goles": 0,"equipo":"West Bromwich Albion","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Piroe","goles": 0,"equipo":"Swansea","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Whittaker","goles": 0,"equipo":"Swansea","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Cooper","goles": 0,"equipo":"Swansea","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Cullen","goles": 0,"equipo":"Swansea","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Pedro","goles": 0,"equipo":"Watford","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Davis","goles": 0,"equipo":"Watford","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Sarr","goles": 0,"equipo":"Watford","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Martins","goles": 0,"equipo":"Watford","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Delap","goles": 0,"equipo":"Preston North End","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Parrott","goles": 0,"equipo":"Preston North End","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Riis","goles": 0,"equipo":"Preston North End","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Cannon","goles": 0,"equipo":"Preston North End","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Pukki","goles": 0,"equipo":"Norwich","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Sara","goles": 0,"equipo":"Norwich","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Gibbs","goles": 0,"equipo":"Norwich","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Dowell","goles": 0,"equipo":"Norwich","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Wells","goles": 0,"equipo":"Bristol City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Cornick","goles": 0,"equipo":"Bristol City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Bell","goles": 0,"equipo":"Bristol City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Conway","goles": 0,"equipo":"Bristol City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Estupiñan","goles": 0,"equipo":"Hull City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Ebiowei","goles": 0,"equipo":"Hull City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Tetteh","goles": 0,"equipo":"Hull City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Connolly","goles": 0,"equipo":"Hull City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Brown","goles": 0,"equipo":"Stoke City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Campbell","goles": 0,"equipo":"Stoke City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Powell","goles": 0,"equipo":"Stoke City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Gayle","goles": 0,"equipo":"Stoke City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Hogan","goles": 0,"equipo":"Birmingham","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Graham","goles": 0,"equipo":"Birmingham","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Chong","goles": 0,"equipo":"Birmingham","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Hannibal","goles": 0,"equipo":"Birmingham","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Hungbo","goles": 0,"equipo":"Huddersfield Town","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Knockaert","goles": 0,"equipo":"Huddersfield Town","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Ward","goles": 0,"equipo":"Huddersfield Town","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Kamberi","goles": 0,"equipo":"Huddersfield Town","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Ojo","goles": 0,"equipo":"Cardiff City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Robinson","goles": 0,"equipo":"Cardiff City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Harris","goles": 0,"equipo":"Cardiff City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Wickham","goles": 0,"equipo":"Cardiff City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Dykes","goles": 0,"equipo":"Queens Park Rangers","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Adomah","goles": 0,"equipo":"Queens Park Rangers","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Willock","goles": 0,"equipo":"Queens Park Rangers","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-    {"nombre": "Roberts","goles": 0,"equipo":"Queens Park Rangers","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
+    {"nombre": "Rutter","goles": 0,"equipo":"Leeds United","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Summerville","goles": 0,"equipo":"Leeds United","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Gnoto","goles": 0,"equipo":"Leeds United","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Gray","goles": 0,"equipo":"Leeds United","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    
+    {"nombre": "Vardy","goles": 0,"equipo":"Leicester City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Akgün","goles": 0,"equipo":"Leicester City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Mavididi","goles": 0,"equipo":"Leicester City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Iheanacho","goles": 0,"equipo":"Leicester City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    
+    {"nombre": "Salah","goles": 0,"equipo":"Liverpool","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "MacAllister","goles": 0,"equipo":"Liverpool","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Núñez","goles": 0,"equipo":"Liverpool","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Luis Díaz","goles": 0,"equipo":"Liverpool","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Diogo Jota","goles": 0,"equipo":"Liverpool","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    
+    {"nombre": "Haaland","goles": 0,"equipo":"Manchester City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Foden","goles": 0,"equipo":"Manchester City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "De Bruyne","goles": 0,"equipo":"Manchester City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Álvarez","goles": 0,"equipo":"Manchester City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Grealish","goles": 0,"equipo":"Manchester City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    
+    {"nombre": "Rashford","goles": 0,"equipo":"Manchester United","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Sancho","goles": 0,"equipo":"Manchester United","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Bruno Fernandes","goles": 0,"equipo":"Manchester United","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Martial","goles": 0,"equipo":"Manchester United","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Mount","goles": 0,"equipo":"Manchester United","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    
+    {"nombre": "Isak","goles": 0,"equipo":"Newcastle","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Guimarães","goles": 0,"equipo":"Newcastle","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Joelinton","goles": 0,"equipo":"Newcastle","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Tonali","goles": 0,"equipo":"Newcastle","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Murphy","goles": 0,"equipo":"Newcastle","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    
+    {"nombre": "Awoniyi","goles": 0,"equipo":"Nottingham Forest","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Gibbs-White","goles": 0,"equipo":"Nottingham Forest","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Origi","goles": 0,"equipo":"Nottingham Forest","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Danilo","goles": 0,"equipo":"Nottingham Forest","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    
+    {"nombre": "Adams","goles": 0,"equipo":"Southampton","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Alcaraz","goles": 0,"equipo":"Southampton","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Armstrong","equipo":"Southampton","goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Edozie","goles": 0,"equipo":"Southampton","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    
+    {"nombre": "Sarr","goles": 0,"equipo":"Tottenham","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Richarlison","goles": 0,"equipo":"Tottenham","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Son","goles": 0,"equipo":"Tottenham","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Kulusevski","goles": 0,"equipo":"Tottenham","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Perisic","goles": 0,"equipo":"Tottenham","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    
+    {"nombre": "Antonio","goles": 0,"equipo":"West ham","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Paquetá","goles": 0,"equipo":"West ham","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Benrahma","goles": 0,"equipo":"West ham","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Ings","goles": 0,"equipo":"West ham","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    
+    {"nombre": "Silva","goles": 0,"equipo":"Wolverhampton","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Cunha","goles": 0,"equipo":"Wolverhampton","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Kalajdzic","goles": 0,"equipo":"Wolverhampton","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Sarabia","goles": 0,"equipo":"Wolverhampton","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    
+    {"nombre": "Foster","goles": 0,"equipo":"Burnley","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Redmond","goles": 0,"equipo":"Burnley","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Amdouni","goles": 0,"equipo":"Burnley","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Brownhill","goles": 0,"equipo":"Burnley","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    
+    {"nombre": "Osula","goles": 0,"equipo":"Sheffield United","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Jebbison","goles": 0,"equipo":"Sheffield United","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Archer","goles": 0,"equipo":"Sheffield United","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Brewster","goles": 0,"equipo":"Sheffield United","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    
+    {"nombre": "Morris","goles": 0,"equipo":"Luton Town","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Adebayo","goles": 0,"equipo":"Luton Town","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Lokonga","goles": 0,"equipo":"Luton Town","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Ogbene","goles": 0,"equipo":"Luton Town","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    
+    {"nombre": "Greenwood","goles": 0,"equipo":"Middlesbrough","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Silvera","goles": 0,"equipo":"Middlesbrough","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Jones","goles": 0,"equipo":"Middlesbrough","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Forss","goles": 0,"equipo":"Middlesbrough","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    
+    {"nombre": "Godden","goles": 0,"equipo":"Coventry City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Simms","goles": 0,"equipo":"Coventry City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Tavares","goles": 0,"equipo":"Coventry City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Wright","goles": 0,"equipo":"Coventry City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    
+    {"nombre": "Clarke","goles": 0,"equipo":"Sunderland","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Bennette","goles": 0,"equipo":"Sunderland","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Semedo","goles": 0,"equipo":"Sunderland","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Rigg","goles": 0,"equipo":"Sunderland","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    
+    {"nombre": "Leonard","goles": 0,"equipo":"Blackburn Rovers","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Gallagher","goles": 0,"equipo":"Blackburn Rovers","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Ennis","goles": 0,"equipo":"Blackburn Rovers","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Hedges","goles": 0,"equipo":"Blackburn Rovers","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    
+    {"nombre": "Bradshaw","goles": 0,"equipo":"Millwall","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Nisbet","goles": 0,"equipo":"Millwall","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Watmore","goles": 0,"equipo":"Millwall","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Emakhu","goles": 0,"equipo":"Millwall","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    
+    {"nombre": "Dike","goles": 0,"equipo":"West Bromwich Albion","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Wallace","goles": 0,"equipo":"West Bromwich Albion","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Diangana","goles": 0,"equipo":"West Bromwich Albion","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Phillips","goles": 0,"equipo":"West Bromwich Albion","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    
+    {"nombre": "Lowe","goles": 0,"equipo":"Swansea","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Ginnelly","goles": 0,"equipo":"Swansea","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Cooper","goles": 0,"equipo":"Swansea","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Cullen","goles": 0,"equipo":"Swansea","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    
+    {"nombre": "Bayo","goles": 0,"equipo":"Watford","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Martins","goles": 0,"equipo":"Watford","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Healeyr","goles": 0,"equipo":"Watford","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Ince","goles": 0,"equipo":"Watford","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    
+    {"nombre": "Keane","goles": 0,"equipo":"Preston North End","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Holmes","goles": 0,"equipo":"Preston North End","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Riis","goles": 0,"equipo":"Preston North End","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "McCann","goles": 0,"equipo":"Preston North End","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    
+    {"nombre": "Barnes","goles": 0,"equipo":"Norwich","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Sargent","goles": 0,"equipo":"Norwich","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Gibbs","goles": 0,"equipo":"Norwich","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Idah","goles": 0,"equipo":"Norwich","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    
+    {"nombre": "Wells","goles": 0,"equipo":"Bristol City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Cornick","goles": 0,"equipo":"Bristol City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Bell","goles": 0,"equipo":"Bristol City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Conway","goles": 0,"equipo":"Bristol City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    
+    {"nombre": "Delap","goles": 0,"equipo":"Hull City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Lokilo","goles": 0,"equipo":"Hull City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Sinik","goles": 0,"equipo":"Hull City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Connolly","goles": 0,"equipo":"Hull City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    
+    {"nombre": "Gooch","goles": 0,"equipo":"Stoke City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Campbell","goles": 0,"equipo":"Stoke City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Mmaee","goles": 0,"equipo":"Stoke City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Gayle","goles": 0,"equipo":"Stoke City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    
+    {"nombre": "Hogan","goles": 0,"equipo":"Birmingham","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Jutkiewicz","goles": 0,"equipo":"Birmingham","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Roberts","goles": 0,"equipo":"Birmingham","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Stansfield","goles": 0,"equipo":"Birmingham","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    
+    {"nombre": "Koroma","goles": 0,"equipo":"Huddersfield Town","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Burgzorg","goles": 0,"equipo":"Huddersfield Town","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Ward","goles": 0,"equipo":"Huddersfield Town","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Hudlin","goles": 0,"equipo":"Huddersfield Town","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    
+    {"nombre": "Ugbo","goles": 0,"equipo":"Cardiff City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Robinson","goles": 0,"equipo":"Cardiff City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Bowler","goles": 0,"equipo":"Cardiff City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Grant","goles": 0,"equipo":"Cardiff City","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    
+    {"nombre": "Dykes","goles": 0,"equipo":"Queens Park Rangers","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Adomah","goles": 0,"equipo":"Queens Park Rangers","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Willock","goles": 0,"equipo":"Queens Park Rangers","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+    {"nombre": "Smyth","goles": 0,"equipo":"Queens Park Rangers","MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"championship","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
     
     
-    {"nombre":"Messi","goles":0,"equipo":"PSG","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Mbappe","goles":0,"equipo":"PSG","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Neymar","goles":0,"equipo":"PSG","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Pereira","goles":0,"equipo":"PSG","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Sanches","goles":0,"equipo":"PSG","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
+ {"nombre":"Asensio","goles":0,"equipo":"PSG","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Mbappe","goles":0,"equipo":"PSG","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"O.Dembele","goles":0,"equipo":"PSG","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Muani","goles":0,"equipo":"PSG","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Barcola","goles":0,"equipo":"PSG","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
 
-{"nombre":"Lacazette","goles":0,"equipo":"Lyon","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"M.Dembele","goles":0,"equipo":"Lyon","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Sarr","goles":0,"equipo":"Lyon","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Tolisso","goles":0,"equipo":"Lyon","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Tagliafico","goles":0,"equipo":"Lyon","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
+{"nombre":"Lacazette","goles":0,"equipo":"Lyon","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Baldé","goles":0,"equipo":"Lyon","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Jeffinho","goles":0,"equipo":"Lyon","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Tolisso","goles":0,"equipo":"Lyon","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Tagliafico","goles":0,"equipo":"Lyon","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
 
-{"nombre":"Griezmann","goles":0,"equipo":"Atl.Madrid","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Morata","goles":0,"equipo":"Atl.Madrid","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"de Paul","goles":0,"equipo":"Atl.Madrid","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Koke","goles":0,"equipo":"Atl.Madrid","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Lemar","goles":0,"equipo":"Atl.Madrid","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Lewandowski","goles":0,"equipo":"Barcelona","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Gavi","goles":0,"equipo":"Barcelona","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Fati","goles":0,"equipo":"Barcelona","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Raphinha","goles":0,"equipo":"Barcelona","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"O.Dembélé","goles":0,"equipo":"Barcelona","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Benzema","goles":0,"equipo":"Real Madrid","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Vinicius","goles":0,"equipo":"Real Madrid","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Rodrygo","goles":0,"equipo":"Real Madrid","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Modric","goles":0,"equipo":"Real Madrid","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Tchouameni","goles":0,"equipo":"Real Madrid","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Haller","goles":0,"equipo":"B.Dortmund","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Moukoko","goles":0,"equipo":"B.Dortmund","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Bellingham","goles":0,"equipo":"B.Dortmund","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Reus","goles":0,"equipo":"B.Dortmund","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Reyna","goles":0,"equipo":"B.Dortmund","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Gnabry","goles":0,"equipo":"Bayern Munich","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Mané","goles":0,"equipo":"Bayern Munich","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Müller","goles":0,"equipo":"Bayern Munich","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Musiala","goles":0,"equipo":"Bayern Munich","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Sané","goles":0,"equipo":"Bayern Munich","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
+{"nombre":"Griezmann","goles":0,"equipo":"Atl.Madrid","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Morata","goles":0,"equipo":"Atl.Madrid","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"de Paul","goles":0,"equipo":"Atl.Madrid","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Koke","goles":0,"equipo":"Atl.Madrid","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Lemar","goles":0,"equipo":"Atl.Madrid","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
 
-{"nombre":"Diaby","goles":0,"equipo":"B.Leverkusen","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Azmoun","goles":0,"equipo":"B.Leverkusen","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Wirtz","goles":0,"equipo":"B.Leverkusen","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Adli","goles":0,"equipo":"B.Leverkusen","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Hlozek","goles":0,"equipo":"B.Leverkusen","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
+{"nombre":"Lewandowski","goles":0,"equipo":"Barcelona","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Gavi","goles":0,"equipo":"Barcelona","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Felix","goles":0,"equipo":"Barcelona","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Raphinha","goles":0,"equipo":"Barcelona","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Torres","goles":0,"equipo":"Barcelona","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
 
-{"nombre":"Paulinho","goles":0,"equipo":"Sporting Lisboa","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Trincao","goles":0,"equipo":"Sporting Lisboa","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Edwards","goles":0,"equipo":"Sporting Lisboa","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Santos","goles":0,"equipo":"Sporting Lisboa","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Gomes","goles":0,"equipo":"Sporting Lisboa","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
+{"nombre":"Bellingham","goles":0,"equipo":"Real Madrid","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Vinicius","goles":0,"equipo":"Real Madrid","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Rodrygo","goles":0,"equipo":"Real Madrid","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Modric","goles":0,"equipo":"Real Madrid","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Tchouameni","goles":0,"equipo":"Real Madrid","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
 
-{"nombre":"Götze","goles":0,"equipo":"Frankfurt","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Muani","goles":0,"equipo":"Frankfurt","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Borre","goles":0,"equipo":"Frankfurt","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Alario","goles":0,"equipo":"Frankfurt","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Lindstrom","goles":0,"equipo":"Frankfurt","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Payet","goles":0,"equipo":"Marsella","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Sánchez","goles":0,"equipo":"Marsella","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Harit","goles":0,"equipo":"Marsella","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Ünder","goles":0,"equipo":"Marsella","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},{"nombre":"Gueye","goles":0,"equipo":"Marsella","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
+{"nombre":"Haller","goles":0,"equipo":"B.Dortmund","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Moukoko","goles":0,"equipo":"B.Dortmund","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Adeyemi","goles":0,"equipo":"B.Dortmund","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Reus","goles":0,"equipo":"B.Dortmund","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Reyna","goles":0,"equipo":"B.Dortmund","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
 
-{"nombre":"Dolberg","goles":0,"equipo":"Sevilla","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"En-Nesyri","goles":0,"equipo":"Sevilla","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Suso","goles":0,"equipo":"Sevilla","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Gomez","goles":0,"equipo":"Sevilla","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Lamela","goles":0,"equipo":"Sevilla","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Neres","goles":0,"equipo":"Benfica","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Rafa","goles":0,"equipo":"Benfica","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Ramos","goles":0,"equipo":"Benfica","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Musa","goles":0,"equipo":"Benfica","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Aursnes","goles":0,"equipo":"Benfica","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
+{"nombre":"Gnabry","goles":0,"equipo":"Bayern Munich","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Kane","goles":0,"equipo":"Bayern Munich","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Müller","goles":0,"equipo":"Bayern Munich","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Musiala","goles":0,"equipo":"Bayern Munich","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Sané","goles":0,"equipo":"Bayern Munich","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
 
-{"nombre":"Silva","goles":0,"equipo":"Leipzig","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Werner","goles":0,"equipo":"Leipzig","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Forsberg","goles":0,"equipo":"Leipzig","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Olmo","goles":0,"equipo":"Leipzig","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Nkunku","goles":0,"equipo":"Leipzig","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Tadic","goles":0,"equipo":"Ajax","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Kudus","goles":0,"equipo":"Ajax","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Conceição","goles":0,"equipo":"Ajax","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Bergwijn","goles":0,"equipo":"Ajax","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Ocampos","goles":0,"equipo":"Ajax","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Ben Yedder","goles":0,"equipo":"Monaco","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Volland","goles":0,"equipo":"Monaco","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Embolo","goles":0,"equipo":"Monaco","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Seghir","goles":0,"equipo":"Monaco","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Camara","goles":0,"equipo":"Monaco","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Traore","goles":0,"equipo":"Shakhtar","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Sikan","goles":0,"equipo":"Shakhtar","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Petryak","goles":0,"equipo":"Shakhtar","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Kryskiv","goles":0,"equipo":"Shakhtar","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Bondarenko","goles":0,"equipo":"Shakhtar","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Sowah","goles":0,"equipo":"Brugge","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Nusa","goles":0,"equipo":"Brugge","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Jutglà","goles":0,"equipo":"Brugge","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Onyedika","goles":0,"equipo":"Brugge","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Vanaken","goles":0,"equipo":"Brugge","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"de Jong","goles":0,"equipo":"PSV","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Bakayoko","goles":0,"equipo":"PSV","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Simons","goles":0,"equipo":"PSV","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Veerman","goles":0,"equipo":"PSV","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"F.Silva","goles":0,"equipo":"PSV","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
+{"nombre":"Tella","goles":0,"equipo":"B.Leverkusen","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Hložek","goles":0,"equipo":"B.Leverkusen","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Hofmann","goles":0,"equipo":"B.Leverkusen","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Adli","goles":0,"equipo":"B.Leverkusen","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Boniface","goles":0,"equipo":"B.Leverkusen","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
 
-{"nombre":"Illarramendi","goles":0,"equipo":"Real Sociedad","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Navarro","goles":0,"equipo":"Real Sociedad","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Karrikaburu","goles":0,"equipo":"Real Sociedad","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Kubo","goles":0,"equipo":"Real Sociedad","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Guevara","goles":0,"equipo":"Real Sociedad","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"premier","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
+{"nombre":"Paulinho","goles":0,"equipo":"Sporting Lisboa","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Trincao","goles":0,"equipo":"Sporting Lisboa","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Edwards","goles":0,"equipo":"Sporting Lisboa","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Santos","goles":0,"equipo":"Sporting Lisboa","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Goncalves","goles":0,"equipo":"Sporting Lisboa","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
 
+{"nombre":"Götze","goles":0,"equipo":"Frankfurt","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Marmoush","goles":0,"equipo":"Frankfurt","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Ngankam","goles":0,"equipo":"Frankfurt","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Alario","goles":0,"equipo":"Frankfurt","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Rode","goles":0,"equipo":"Frankfurt","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
 
+{"nombre":"Aubameyang","goles":0,"equipo":"Marsella","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Correa","goles":0,"equipo":"Marsella","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Sarr(M)","goles":0,"equipo":"Marsella","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Ndiaye","goles":0,"equipo":"Marsella","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},{"nombre":"Gueye","goles":0,"equipo":"Marsella","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
 
+{"nombre":"Zakharyan","goles":0,"equipo":"Sevilla","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"En-Nesyri","goles":0,"equipo":"Sevilla","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Suso","goles":0,"equipo":"Sevilla","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Ocampos","goles":0,"equipo":"Sevilla","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Rakitić","goles":0,"equipo":"Sevilla","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
 
+{"nombre":"Neres","goles":0,"equipo":"Benfica","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Rafa","goles":0,"equipo":"Benfica","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Di María","goles":0,"equipo":"Benfica","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Musa","goles":0,"equipo":"Benfica","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Gouveia","goles":0,"equipo":"Benfica","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
 
-{"nombre":"Martinez","goles":0,"equipo":"Inter","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Lukaku","goles":0,"equipo":"Inter","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Mkhitaryan","goles":0,"equipo":"Inter","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Calhanoglu","goles":0,"equipo":"Inter","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Dzeko","goles":0,"equipo":"Inter","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Di Maria","goles":0,"equipo":"Juventus","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Kean","goles":0,"equipo":"Juventus","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Chiesa","goles":0,"equipo":"Juventus","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Milik","goles":0,"equipo":"Juventus","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Vlahovic","goles":0,"equipo":"Juventus","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Giroud","goles":0,"equipo":"Milan","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Leão","goles":0,"equipo":"Milan","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Ibrahimovic","goles":0,"equipo":"Milan","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Tonali","goles":0,"equipo":"Milan","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"B.Diaz","goles":0,"equipo":"Milan","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
+{"nombre":"Poulsen","goles":0,"equipo":"Leipzig","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Werner","goles":0,"equipo":"Leipzig","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Sesko","goles":0,"equipo":"Leipzig","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Olmo","goles":0,"equipo":"Leipzig","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Openda","goles":0,"equipo":"Leipzig","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
 
+{"nombre":"Bergwijn","goles":0,"equipo":"Ajax","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Akpom","goles":0,"equipo":"Ajax","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Mikautadze","goles":0,"equipo":"Ajax","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Godts","goles":0,"equipo":"Ajax","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Tahirovic","goles":0,"equipo":"Ajax","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
 
+{"nombre":"Ben Yedder","goles":0,"equipo":"Monaco","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Martins(M)","goles":0,"equipo":"Monaco","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Embolo","goles":0,"equipo":"Monaco","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Seghir","goles":0,"equipo":"Monaco","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Camara","goles":0,"equipo":"Monaco","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
 
-{"nombre":"Osimhen","goles":0,"equipo":"Napoli","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Raspadori","goles":0,"equipo":"Napoli","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Simeone","goles":0,"equipo":"Napoli","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Lozano","goles":0,"equipo":"Napoli","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Kvaratskhelia","goles":0,"equipo":"Napoli","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
+{"nombre":"Traore","goles":0,"equipo":"Shakhtar","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Sikan","goles":0,"equipo":"Shakhtar","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Petryak","goles":0,"equipo":"Shakhtar","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Zubkov","goles":0,"equipo":"Shakhtar","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Bondarenko","goles":0,"equipo":"Shakhtar","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
 
- {"nombre":"Dybala","goles":0,"equipo":"Roma","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
- {"nombre":"Belotti","goles":0,"equipo":"Roma","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
- {"nombre":"El Shaarawy","goles":0,"equipo":"Roma","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
- {"nombre":"Pellegrini","goles":0,"equipo":"Roma","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
- {"nombre":"Wijnaldum","goles":0,"equipo":"Roma","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
+{"nombre":"Buchanan","goles":0,"equipo":"Brugge","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Nusa","goles":0,"equipo":"Brugge","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Jutglà","goles":0,"equipo":"Brugge","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Vermant","goles":0,"equipo":"Brugge","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Olsen","goles":0,"equipo":"Brugge","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre":"de Jong","goles":0,"equipo":"PSV","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Bakayoko","goles":0,"equipo":"PSV","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Til","goles":0,"equipo":"PSV","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Veerman","goles":0,"equipo":"PSV","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Lang","goles":0,"equipo":"PSV","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre":"Sadiq","goles":0,"equipo":"Real Sociedad","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Oyarzabal","goles":0,"equipo":"Real Sociedad","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Andre Silva","goles":0,"equipo":"Real Sociedad","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Kubo","goles":0,"equipo":"Real Sociedad","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Zakharyan","goles":0,"equipo":"Real Sociedad","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"champions","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
 
 
 
 
-{"nombre":"Immobile","goles":0,"equipo":"Lazio","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Milinkovic-Savic","goles":0,"equipo":"Lazio","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Pedro(L)","goles":0,"equipo":"Lazio","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Basic","goles":0,"equipo":"Lazio","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Lazzari","goles":0,"equipo":"Lazio","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
 
-{"nombre":"Muriel","goles":0,"equipo":"Atalanta","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Zapata","goles":0,"equipo":"Atalanta","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Hojlund","goles":0,"equipo":"Atalanta","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Colombo","goles":0,"equipo":"Atalanta","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Pasalic","goles":0,"equipo":"Atalanta","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"N.Gonzalez","goles":0,"equipo":"Fiorentina","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Arthur","goles":0,"equipo":"Fiorentina","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Jovic","goles":0,"equipo":"Fiorentina","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Sottil","goles":0,"equipo":"Fiorentina","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Kouamé","goles":0,"equipo":"Fiorentina","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Arnautovic","goles":0,"equipo":"Bologna","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Sansone","goles":0,"equipo":"Bologna","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Orsolini","goles":0,"equipo":"Bologna","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Raimondo","goles":0,"equipo":"Bologna","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Pellegri","goles":0,"equipo":"Torino","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Radonjic","goles":0,"equipo":"Torino","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Sanabria","goles":0,"equipo":"Torino","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Vlasic","goles":0,"equipo":"Torino","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Petagna","goles":0,"equipo":"Monza","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Ciurria","goles":0,"equipo":"Monza","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Maric","goles":0,"equipo":"Monza","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Gytkjær","goles":0,"equipo":"Monza","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Deulofeu","goles":0,"equipo":"Udinese","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Nestorovski","goles":0,"equipo":"Udinese","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Ebosele","goles":0,"equipo":"Udinese","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Beto","goles":0,"equipo":"Udinese","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Berardi","goles":0,"equipo":"Sassuolo","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Lauriente","goles":0,"equipo":"Sassuolo","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Pinamonti","goles":0,"equipo":"Sassuolo","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Ceide","goles":0,"equipo":"Sassuolo","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Satriano","goles":0,"equipo":"Empoli","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Cambiaghi","goles":0,"equipo":"Empoli","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Piccoli","goles":0,"equipo":"Empoli","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Destro","goles":0,"equipo":"Empoli","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Botheim","goles":0,"equipo":"Salernitana","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Piatek","goles":0,"equipo":"Salernitana","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Bonazzoli","goles":0,"equipo":"Salernitana","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Maggiore","goles":0,"equipo":"Salernitana","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Ceesay","goles":0,"equipo":"Lecce","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Persson","goles":0,"equipo":"Lecce","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Corfitzen","goles":0,"equipo":"Lecce","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Oudin","goles":0,"equipo":"Lecce","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Gaich","goles":0,"equipo":"Hellas Verona","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Djuric","goles":0,"equipo":"Hellas Verona","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Braaf","goles":0,"equipo":"Hellas Verona","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Ngonge","goles":0,"equipo":"Hellas Verona","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Nzola","goles":0,"equipo":"Spezia","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Krollis","goles":0,"equipo":"Spezia","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Shomurodov","goles":0,"equipo":"Spezia","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Gyasi","goles":0,"equipo":"Spezia","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Ciofani","goles":0,"equipo":"Cremonese","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Buonaiuto","goles":0,"equipo":"Cremonese","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Dessers","goles":0,"equipo":"Cremonese","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Okereke","goles":0,"equipo":"Cremonese","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Quagliarella","goles":0,"equipo":"Sampdoria","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Gabbiadini","goles":0,"equipo":"Sampdoria","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Montevago","goles":0,"equipo":"Sampdoria","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Ivanovic","goles":0,"equipo":"Sampdoria","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Moro","goles":0,"equipo":"Frosinone","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Garritano","goles":0,"equipo":"Frosinone","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Bolocs","goles":0,"equipo":"Frosinone","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Gelli","goles":0,"equipo":"Frosinone","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Yalcin","goles":0,"equipo":"Genoa","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Puscas","goles":0,"equipo":"Genoa","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Badelj","goles":0,"equipo":"Genoa","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Coda","goles":0,"equipo":"Genoa","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Esposito","goles":0,"equipo":"Bari","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Cheddira","goles":0,"equipo":"Bari","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Maita","goles":0,"equipo":"Bari","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Maiello","goles":0,"equipo":"Bari","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Vázquez","goles":0,"equipo":"Parma","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Juric","goles":0,"equipo":"Parma","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Benedyczak","goles":0,"equipo":"Parma","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Mihaila","goles":0,"equipo":"Parma","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Lapadula","goles":0,"equipo":"Cagliari","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Pavoletti","goles":0,"equipo":"Cagliari","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Pereiro","goles":0,"equipo":"Cagliari","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Zito","goles":0,"equipo":"Cagliari","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Mazzocchi","goles":0,"equipo":"Sudtirol","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Odogwu","goles":0,"equipo":"Sudtirol","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Tait","goles":0,"equipo":"Sudtirol","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Belardinelli","goles":0,"equipo":"Sudtirol","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Canotto","goles":0,"equipo":"Reggina","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Majer","goles":0,"equipo":"Reggina","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Fabbian","goles":0,"equipo":"Reggina","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Strelec","goles":0,"equipo":"Reggina","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Johsen","goles":0,"equipo":"Venezia","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Zampano","goles":0,"equipo":"Venezia","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Tessmann","goles":0,"equipo":"Venezia","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Pohjanpalo","goles":0,"equipo":"Venezia","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Tutino","goles":0,"equipo":"Palermo","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Brunori","goles":0,"equipo":"Palermo","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Buttaro","goles":0,"equipo":"Palermo","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Segre","goles":0,"equipo":"Palermo","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"Modena":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Armellino","goles":0,"equipo":"Modena","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Diaw","goles":0,"equipo":"Modena","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Giovannini","goles":0,"equipo":"Modena","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Gerli","goles":0,"equipo":"Modena","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Sibili","goles":0,"equipo":"Pisa","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Torregrossa","goles":0,"equipo":"Pisa","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Tramoni","goles":0,"equipo":"Pisa","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Nagy","goles":0,"equipo":"Pisa","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Gondo","goles":0,"equipo":"Ascoli","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Forte","goles":0,"equipo":"Ascoli","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Dionisi","goles":0,"equipo":"Ascoli","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Caligara","goles":0,"equipo":"Ascoli","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Cutrone","goles":0,"equipo":"Como","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Gabrielloni","goles":0,"equipo":"Como","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Vigna","goles":0,"equipo":"Como","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Cerri","goles":0,"equipo":"Como","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Favili","goles":0,"equipo":"Ternana","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Falletti","goles":0,"equipo":"Ternana","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Partipilo","goles":0,"equipo":"Ternana","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Proietti","goles":0,"equipo":"Ternana","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Aye","goles":0,"equipo":"Brescia","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"P.Rodriguez","goles":0,"equipo":"Brescia","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Bisoli","goles":0,"equipo":"Brescia","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Listkowski","goles":0,"equipo":"Brescia","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Magrassi","goles":0,"equipo":"Cittadella","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Ambrosino","goles":0,"equipo":"Cittadella","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Antonucci","goles":0,"equipo":"Cittadella","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Danzi","goles":0,"equipo":"Cittadella","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Nasti","goles":0,"equipo":"Cosenza","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Voca","goles":0,"equipo":"Cosenza","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Florenzi","goles":0,"equipo":"Cosenza","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Brescianini","goles":0,"equipo":"Cosenza","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Di Carmine","goles":0,"equipo":"Perugia","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Di Serio","goles":0,"equipo":"Perugia","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Luperini","goles":0,"equipo":"Perugia","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Vulic","goles":0,"equipo":"Perugia","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Rabbi","goles":0,"equipo":"Spal","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Moncini","goles":0,"equipo":"Spal","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Celia","goles":0,"equipo":"Spal","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Rauti","goles":0,"equipo":"Spal","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Ciano","goles":0,"equipo":"Benevento","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Farias","goles":0,"equipo":"Benevento","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Karic","goles":0,"equipo":"Benevento","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
-{"nombre":"Foulon","goles":0,"equipo":"Benevento","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0},
+{"nombre":"Martinez","goles":0,"equipo":"Inter","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Alexis Sánchez","goles":0,"equipo":"Inter","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Mkhitaryan","goles":0,"equipo":"Inter","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Calhanoglu","goles":0,"equipo":"Inter","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Arnautovic","goles":0,"equipo":"Inter","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre":"Kean","goles":0,"equipo":"Juventus","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Pogba","goles":0,"equipo":"Juventus","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Chiesa","goles":0,"equipo":"Juventus","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Milik","goles":0,"equipo":"Juventus","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Vlahovic","goles":0,"equipo":"Juventus","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre":"Giroud","goles":0,"equipo":"Milan","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Leão","goles":0,"equipo":"Milan","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Pulisic","goles":0,"equipo":"Milan","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Jović","goles":0,"equipo":"Milan","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Romero","goles":0,"equipo":"Milan","sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"goles": 0,"MVP":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+
+
+{"nombre":"Osimhen","goles":0,"equipo":"Napoli","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Raspadori","goles":0,"equipo":"Napoli","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Simeone","goles":0,"equipo":"Napoli","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Politano","goles":0,"equipo":"Napoli","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Kvaratskhelia","goles":0,"equipo":"Napoli","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+ {"nombre":"Dybala","goles":0,"equipo":"Roma","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+ {"nombre":"Belotti","goles":0,"equipo":"Roma","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+ {"nombre":"El Shaarawy","goles":0,"equipo":"Roma","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+ {"nombre":"Pellegrini","goles":0,"equipo":"Roma","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+ {"nombre":"Lukaku","goles":0,"equipo":"Roma","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+
+
+
+{"nombre":"Immobile","goles":0,"equipo":"Lazio","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Anderson","goles":0,"equipo":"Lazio","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Pedro(L)","goles":0,"equipo":"Lazio","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Basic","goles":0,"equipo":"Lazio","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Isaksen","goles":0,"equipo":"Lazio","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre":"Muriel","goles":0,"equipo":"Atalanta","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Scamacca","goles":0,"equipo":"Atalanta","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Pasalic","goles":0,"equipo":"Atalanta","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Lookman","goles":0,"equipo":"Atalanta","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Adopo","goles":0,"equipo":"Atalanta","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre":"N.Gonzalez","goles":0,"equipo":"Fiorentina","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Arthur","goles":0,"equipo":"Fiorentina","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Beltrán","goles":0,"equipo":"Fiorentina","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Sottil","goles":0,"equipo":"Fiorentina","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Kouamé","goles":0,"equipo":"Fiorentina","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre":"Karlsson","goles":0,"equipo":"Bologna","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Ndoye","goles":0,"equipo":"Bologna","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Orsolini","goles":0,"equipo":"Bologna","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Hooijdonk","goles":0,"equipo":"Bologna","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre":"Pellegri","goles":0,"equipo":"Torino","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Radonjic","goles":0,"equipo":"Torino","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Sanabria","goles":0,"equipo":"Torino","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Vlasic","goles":0,"equipo":"Torino","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre":"Carvalho","goles":0,"equipo":"Monza","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Ciurria","goles":0,"equipo":"Monza","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Maric","goles":0,"equipo":"Monza","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Colombo","goles":0,"equipo":"Monza","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre":"Deulofeu","goles":0,"equipo":"Udinese","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Thauvin","goles":0,"equipo":"Udinese","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Brenner","goles":0,"equipo":"Udinese","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Success","goles":0,"equipo":"Udinese","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre":"Berardi","goles":0,"equipo":"Sassuolo","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Lauriente","goles":0,"equipo":"Sassuolo","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Pinamonti","goles":0,"equipo":"Sassuolo","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Ceide","goles":0,"equipo":"Sassuolo","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Mulattieri","goles":0,"equipo":"Empoli","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre":"Cambiaghi","goles":0,"equipo":"Empoli","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Caputo","goles":0,"equipo":"Empoli","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Destro","goles":0,"equipo":"Empoli","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Gyasi","goles":0,"equipo":"Salernitana","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre":"Botheim","goles":0,"equipo":"Salernitana","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Candreva","goles":0,"equipo":"Salernitana","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Ikwuemesi","goles":0,"equipo":"Salernitana","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Burnete","goles":0,"equipo":"Lecce","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre":"Piccoli","goles":0,"equipo":"Lecce","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Krstovic","goles":0,"equipo":"Lecce","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Banda","goles":0,"equipo":"Lecce","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre":"Mboula","goles":0,"equipo":"Hellas Verona","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Djuric","goles":0,"equipo":"Hellas Verona","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Braaf","goles":0,"equipo":"Hellas Verona","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Ngonge","goles":0,"equipo":"Hellas Verona","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre":"Moro","goles":0,"equipo":"Spezia","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Krollis","goles":0,"equipo":"Spezia","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Verde","goles":0,"equipo":"Spezia","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Elia","goles":0,"equipo":"Spezia","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre":"Ciofani","goles":0,"equipo":"Cremonese","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Buonaiuto","goles":0,"equipo":"Cremonese","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Coda","goles":0,"equipo":"Cremonese","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Zanimacchia","goles":0,"equipo":"Cremonese","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre":"Estanis","goles":0,"equipo":"Sampdoria","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Borini","goles":0,"equipo":"Sampdoria","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Gumina","goles":0,"equipo":"Sampdoria","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Monache","goles":0,"equipo":"Sampdoria","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie A","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre":"Cheddira","goles":0,"equipo":"Frosinone","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Kvernadze","goles":0,"equipo":"Frosinone","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Soule","goles":0,"equipo":"Frosinone","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Cuni","goles":0,"equipo":"Frosinone","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre":"Retegui","goles":0,"equipo":"Genoa","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Gudmundsson","goles":0,"equipo":"Genoa","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Ekuban","goles":0,"equipo":"Genoa","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Fini","goles":0,"equipo":"Genoa","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre":"Diaw","goles":0,"equipo":"Bari","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Nasti","goles":0,"equipo":"Bari","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Maita","goles":0,"equipo":"Bari","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Sibilli","goles":0,"equipo":"Bari","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre":"Colak","goles":0,"equipo":"Parma","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Benedyczak","goles":0,"equipo":"Parma","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Begic","goles":0,"equipo":"Parma","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Mihaila","goles":0,"equipo":"Parma","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre":"Lapadula","goles":0,"equipo":"Cagliari","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Pavoletti","goles":0,"equipo":"Cagliari","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Petagna","goles":0,"equipo":"Cagliari","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Zito","goles":0,"equipo":"Cagliari","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre":"Rover","goles":0,"equipo":"Sudtirol","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Odogwu","goles":0,"equipo":"Sudtirol","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Pecorino","goles":0,"equipo":"Sudtirol","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Cisco","goles":0,"equipo":"Sudtirol","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre":"Gondo","goles":0,"equipo":"Reggina","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Lanini","goles":0,"equipo":"Reggina","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Pettinari","goles":0,"equipo":"Reggina","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Vido","goles":0,"equipo":"Reggina","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre":"Johsen","goles":0,"equipo":"Venezia","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Pierini","goles":0,"equipo":"Venezia","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Tessmann","goles":0,"equipo":"Venezia","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Pohjanpalo","goles":0,"equipo":"Venezia","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre":"Mancuso","goles":0,"equipo":"Palermo","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Brunori","goles":0,"equipo":"Palermo","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Soleri","goles":0,"equipo":"Palermo","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Segre","goles":0,"equipo":"Palermo","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"Modena":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre":"Falcinelli","goles":0,"equipo":"Modena","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Manconi","goles":0,"equipo":"Modena","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Giovannini","goles":0,"equipo":"Modena","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Gerli","goles":0,"equipo":"Modena","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre":"Mlakar","goles":0,"equipo":"Pisa","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Torregrossa","goles":0,"equipo":"Pisa","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Tramoni","goles":0,"equipo":"Pisa","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Nagy","goles":0,"equipo":"Pisa","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre":"Pedro Mendes","goles":0,"equipo":"Ascoli","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Millico","goles":0,"equipo":"Ascoli","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Nestorovski","goles":0,"equipo":"Ascoli","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Caligara","goles":0,"equipo":"Ascoli","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre":"Cutrone","goles":0,"equipo":"Como","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Gabrielloni","goles":0,"equipo":"Como","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Baselli","goles":0,"equipo":"Como","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Cerri","goles":0,"equipo":"Como","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre":"Favili","goles":0,"equipo":"Ternana","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Dionisi","goles":0,"equipo":"Ternana","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Raimondo","goles":0,"equipo":"Ternana","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Proietti","goles":0,"equipo":"Ternana","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre":"Moncini","goles":0,"equipo":"Brescia","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Bianchi","goles":0,"equipo":"Brescia","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Bisoli","goles":0,"equipo":"Brescia","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Ferro","goles":0,"equipo":"Brescia","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre":"Magrassi","goles":0,"equipo":"Cittadella","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Maistrello","goles":0,"equipo":"Cittadella","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Pittarello","goles":0,"equipo":"Cittadella","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Danzi","goles":0,"equipo":"Cittadella","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre":"Forte","goles":0,"equipo":"Cosenza","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Tutino","goles":0,"equipo":"Cosenza","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Novello","goles":0,"equipo":"Cosenza","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Crespi","goles":0,"equipo":"Cosenza","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre":"Matos","goles":0,"equipo":"Perugia","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Cudrig","goles":0,"equipo":"Perugia","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Julitanmo","goles":0,"equipo":"Perugia","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Seghetti","goles":0,"equipo":"Perugia","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre":"Antenucci","goles":0,"equipo":"Spal","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Dalmonte","goles":0,"equipo":"Spal","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Siligardi","goles":0,"equipo":"Spal","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Rabbi","goles":0,"equipo":"Spal","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+
+{"nombre":"Ciano","goles":0,"equipo":"Benevento","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Improta","goles":0,"equipo":"Benevento","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Marotta","goles":0,"equipo":"Benevento","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
+{"nombre":"Bolsius","goles":0,"equipo":"Benevento","asistencias":0,"amarillas":0,"rojas":0,"sancion":0,"sancionado":False,"MVP":0,"MVP de la fecha":0,"mvpcontrol":0,"goles_carabao":0,"amarillas_carabao":0,"asistencias_carabao":0,"rojas_carabao":0,"sancion_carabao":0,"sancionado_carabao":False,"division":"serie B","asistencias":0,"sancionado_champions":False,"goles_champions":0,"asistencias_champions":0,"sancion_champions":0,"rojas_champions":0,"amarillas_champions":0,"sancionado_europa":False,"goles_europa":0,"asistencias_europa":0,"sancion_europa":0,"rojas_europa":0,"amarillas_europa":0,"lesion":0,"lesionado":False},
 
 ]
 
@@ -8427,7 +7274,6 @@ while (contador < 21):
             ronda_vuelta.append((partido[1], partido[0]))
         fixture_vuelta_serieB.append(ronda_vuelta)
 
-
     ronda_ida_num = 1
     input("")
     for ronda_premier, ronda_championship, ronda_serieA, ronda_serieB in zip(fixture_ida_premier, fixture_ida_championship,fixture_ida_serieA,fixture_ida_serieB):
@@ -8439,7 +7285,7 @@ while (contador < 21):
             generar_partido(partido[0],partido[1],tabla_premier)
             input("")
         input("")
-        mostrar_tabla(tabla_premier)
+        fct.mostrar_tabla(tabla_premier)
         input("")
         goleadores_totales("p")
         input("")
@@ -8448,6 +7294,8 @@ while (contador < 21):
         amarillas_totales("p")
         input("")
         rojas_totales("p")
+        input("")
+        lesionados_totales("p")
         input("")
         ver_mvp_fecha_premier()
  
@@ -8458,7 +7306,7 @@ while (contador < 21):
         for partido in ronda_championship:
             generar_partido(partido[0],partido[1],tabla_championship)
             input("")
-        mostrar_tabla(tabla_championship)
+        fct.mostrar_tabla(tabla_championship)
         input("")
         goleadores_totales("c")
         input("")
@@ -8467,6 +7315,8 @@ while (contador < 21):
         amarillas_totales("c")
         input("")
         rojas_totales("c")
+        input("")
+        lesionados_totales("c")
         input("")
         ver_mvp_fecha_championship()
         
@@ -8478,7 +7328,7 @@ while (contador < 21):
             generar_partido(partido[0],partido[1],tabla_serieA)
             input("")
         input("")
-        mostrar_tabla(tabla_serieA)
+        fct.mostrar_tabla(tabla_serieA)
         input("")
         goleadores_totales("sa")
         input("")
@@ -8487,6 +7337,8 @@ while (contador < 21):
         amarillas_totales("sa")
         input("")
         rojas_totales("sa")
+        input("")
+        lesionados_totales("sa")
         input("")
         ver_mvp_fecha_seriea()
         
@@ -8498,7 +7350,7 @@ while (contador < 21):
             generar_partido(partido[0],partido[1],tabla_serieB)
             input("")
         input("")
-        mostrar_tabla(tabla_serieB)
+        fct.mostrar_tabla(tabla_serieB)
         input("")
         goleadores_totales("sb")
         input("")
@@ -8507,6 +7359,8 @@ while (contador < 21):
         amarillas_totales("sb")
         input("")
         rojas_totales("sb")
+        input("")
+        lesionados_totales("sb")
         input("")
         ver_mvp_fecha_serieb()
         ver_datos_player()
@@ -8785,7 +7639,6 @@ while (contador < 21):
             elif club == "Benevento":
                 equipo_europa_i.append(Benevento)
     
-    
     bombo1 = [equipo_europa_[0],equipo_europa_[1],equipo_europa_[2],psv]
     bombo2 = [equipo_europa_i[0],equipo_europa_i[1],Sporting_Lisboa,equipo_europa_i[2]]
     bombo3 = [Monaco,Real_Sociedad,Marsella,Sevilla]
@@ -8813,7 +7666,7 @@ while (contador < 21):
     fecha_1_e(fixure_ida_2_europa,2,tabla2_europa)
     fecha_1_e(fixure_ida_3_europa,3,tabla3_europa)
     fecha_1_e(fixure_ida_4_europa,4,tabla4_europa)
-    mostrar_tablas_fecha_fin(tabla1_europa,tabla2_europa,tabla3_europa,tabla4_europa)
+    fct.mostrar_tablas_fecha_fin(tabla1_europa,tabla2_europa,tabla3_europa,tabla4_europa)
     goleadores_totales_europa()
     asistentes_totales_europa()
     mostrar_ama_europa()
@@ -9014,7 +7867,7 @@ while (contador < 21):
     fecha_1(fixure_ida_2,2,tabla2_champions)
     fecha_1(fixure_ida_3,3,tabla3_champions)
     fecha_1(fixure_ida_4,4,tabla4_champions)
-    mostrar_tablas_fecha_fin(tabla1_champions,tabla2_champions,tabla3_champions,tabla4_champions)
+    fct.mostrar_tablas_fecha_fin(tabla1_champions,tabla2_champions,tabla3_champions,tabla4_champions)
     goleadores_totales_champions()
     asistentes_totales_champions()
     mostrar_ama_champions()
@@ -9198,22 +8051,27 @@ while (contador < 21):
                 player["valoracion"] += 5   
                 trofeo = f"Eurocopa ({campeon_eurocopa1})"
                 vitrina.append(trofeo)
+                player["dinero"] += 2000000
             if campeon_copa_america1 == player["nacionalidad"]:
                 player["valoracion"] += 5   
                 trofeo = f"Copa America ({campeon_copa_america1})"
                 vitrina.append(trofeo)
+                player["dinero"] += 2000000
             if campeon_copa_asia1 == player["nacionalidad"]:
                 player["valoracion"] += 5   
                 trofeo = f"Copa Asia ({campeon_copa_asia1})"
                 vitrina.append(trofeo)
+                player["dinero"] += 2000000
             if campeon_copa_africa1 == player["nacionalidad"]:
                 player["valoracion"] += 5   
                 trofeo = f"Copa Africa ({campeon_copa_africa1})"
                 vitrina.append(trofeo)
+                player["dinero"] += 2000000
             if campeon_finalisima1 == player["nacionalidad"]:
                 player["valoracion"] += 3 
                 trofeo = f"Finalissima ({campeon_finalisima1})"
                 vitrina.append(trofeo)
+                player["dinero"] += 1000000
     if contador == 3:    
         campeon_eurocopa2 = jugar_eurocopa()
         campeon_copa_america2 = jugar_copa_america()
@@ -9242,22 +8100,27 @@ while (contador < 21):
                 player["valoracion"] += 5   
                 trofeo = f"Eurocopa ({campeon_eurocopa2})"
                 vitrina.append(trofeo)
+                player["dinero"] += 2000000
             if campeon_copa_america2 == player["nacionalidad"]:
                 player["valoracion"] += 5   
                 trofeo = f"Copa America ({campeon_copa_america2})"
                 vitrina.append(trofeo)
+                player["dinero"] += 2000000
             if campeon_copa_asia2 == player["nacionalidad"]:
                 player["valoracion"] += 5   
                 trofeo = f"Copa Asia ({campeon_copa_asia2})"
                 vitrina.append(trofeo)
+                player["dinero"] += 2000000
             if campeon_copa_africa2 == player["nacionalidad"]:
                 player["valoracion"] += 5   
                 trofeo = f"Copa Africa ({campeon_copa_africa2})"
                 vitrina.append(trofeo)
+                player["dinero"] += 2000000
             if campeon_finalisima2 == player["nacionalidad"]:
                 player["valoracion"] += 3  
                 trofeo = f"Finalissima ({campeon_finalisima2})"
                 vitrina.append(trofeo)
+                player["dinero"] += 1000000
     if contador == 5:    
         campeon_eurocopa3 = jugar_eurocopa()
         campeon_copa_america3 = jugar_copa_america()
@@ -9285,22 +8148,27 @@ while (contador < 21):
                 player["valoracion"] += 5   
                 trofeo = f"Copa America ({campeon_copa_america3})"
                 vitrina.append(trofeo)
+                player["dinero"] += 2000000
             if campeon_eurocopa3 == player["nacionalidad"]:
                 player["valoracion"] += 5   
                 trofeo = f"Eurocopa ({campeon_eurocopa3})"
                 vitrina.append(trofeo)
+                player["dinero"] += 2000000
             if campeon_copa_asia3 == player["nacionalidad"]:
                 player["valoracion"] += 5   
                 trofeo = f"Copa Asia ({campeon_copa_asia3})"
                 vitrina.append(trofeo)
+                player["dinero"] += 2000000
             if campeon_copa_africa3 == player["nacionalidad"]:
                 player["valoracion"] += 5   
                 trofeo = f"Copa Africa ({campeon_copa_africa3})"
                 vitrina.append(trofeo)
+                player["dinero"] += 2000000
             if campeon_finalisima3 == player["nacionalidad"]:
                 player["valoracion"] += 3 
                 trofeo = f"Finalissima ({campeon_finalisima3})"
                 vitrina.append(trofeo)
+                player["dinero"] += 1000000
     if contador == 7:    
         campeon_eurocopa4 = jugar_eurocopa()
         campeon_copa_america4 = jugar_copa_america()
@@ -9329,22 +8197,27 @@ while (contador < 21):
                 player["valoracion"] += 5   
                 trofeo = f"Copa America ({campeon_copa_america4})"
                 vitrina.append(trofeo)
+                player["dinero"] += 2000000
             if campeon_eurocopa4 == player["nacionalidad"]:
                 player["valoracion"] += 5   
                 trofeo = f"Eurocopa ({campeon_eurocopa4})"
                 vitrina.append(trofeo)
+                player["dinero"] += 2000000
             if campeon_copa_asia4 == player["nacionalidad"]:
                 player["valoracion"] += 5   
                 trofeo = f"Copa Asia ({campeon_copa_asia4})"
                 vitrina.append(trofeo)
+                player["dinero"] += 2000000
             if campeon_copa_africa4 == player["nacionalidad"]:
                 player["valoracion"] += 5   
                 trofeo = f"Copa Africa ({campeon_copa_africa4})"
                 vitrina.append(trofeo)
+                player["dinero"] += 2000000
             if campeon_finalisima4 == player["nacionalidad"]:
                 player["valoracion"] += 3  
                 trofeo = f"Finalissima ({campeon_finalisima4})"
                 vitrina.append(trofeo)
+                player["dinero"] += 1000000
     if contador == 9:    
         campeon_eurocopa5 = jugar_eurocopa()
         campeon_copa_america5 = jugar_copa_america()
@@ -9372,22 +8245,27 @@ while (contador < 21):
                 player["valoracion"] += 5   
                 trofeo = f"Copa America ({campeon_copa_america5})"
                 vitrina.append(trofeo)
+                player["dinero"] += 2000000
             if campeon_eurocopa5 == player["nacionalidad"]:
                 player["valoracion"] += 5   
                 trofeo = f"Eurocopa ({campeon_eurocopa5})"
                 vitrina.append(trofeo)
+                player["dinero"] += 2000000
             if campeon_copa_asia5 == player["nacionalidad"]:
                 player["valoracion"] += 5   
                 trofeo = f"Copa Asia ({campeon_copa_asia5})"
                 vitrina.append(trofeo)
+                player["dinero"] += 2000000
             if campeon_copa_africa5 == player["nacionalidad"]:
                 player["valoracion"] += 5   
                 trofeo = f"Copa Africa ({campeon_copa_africa5})"
                 vitrina.append(trofeo)
+                player["dinero"] += 2000000
             if campeon_finalisima5 == player["nacionalidad"]:
                 player["valoracion"] += 3
                 trofeo = f"Finalissima ({campeon_finalisima5})"
                 vitrina.append(trofeo)
+                player["dinero"] += 1000000
     if contador == 11:
         campeon_eurocopa6 = jugar_eurocopa()
         campeon_copa_america6 = jugar_copa_america()
@@ -9415,22 +8293,27 @@ while (contador < 21):
                 player["valoracion"] += 5   
                 trofeo = f"Eurocopa ({campeon_eurocopa6})"
                 vitrina.append(trofeo)
+                player["dinero"] += 2000000
             if campeon_copa_america6 == player["nacionalidad"]:
                 player["valoracion"] += 5   
                 trofeo = f"Copa America ({campeon_copa_america6})"
                 vitrina.append(trofeo)
+                player["dinero"] += 2000000
             if campeon_copa_asia6 == player["nacionalidad"]:
                 player["valoracion"] += 5   
                 trofeo = f"Copa Asia ({campeon_copa_asia6})"
                 vitrina.append(trofeo)
+                player["dinero"] += 2000000
             if campeon_copa_africa6 == player["nacionalidad"]:
                 player["valoracion"] += 5   
                 trofeo = f"Copa Africa ({campeon_copa_africa6})"
                 vitrina.append(trofeo)
+                player["dinero"] += 2000000
             if campeon_finalisima6 == player["nacionalidad"]:
                 player["valoracion"] += 3 
                 trofeo = f"Finalissima ({campeon_finalisima6})"
                 vitrina.append(trofeo)
+                player["dinero"] += 1000000
     if contador == 13:    
         campeon_eurocopa7 = jugar_eurocopa()
         campeon_copa_america7 = jugar_copa_america()
@@ -9459,22 +8342,27 @@ while (contador < 21):
                 player["valoracion"] += 5   
                 trofeo = f"Eurocopa ({campeon_eurocopa7})"
                 vitrina.append(trofeo)
+                player["dinero"] += 2000000
             if campeon_copa_america7== player["nacionalidad"]:
                 player["valoracion"] += 5   
                 trofeo = f"Copa America ({campeon_copa_america7})"
                 vitrina.append(trofeo)
+                player["dinero"] += 2000000
             if campeon_copa_asia7 == player["nacionalidad"]:
                 player["valoracion"] += 5   
                 trofeo = f"Copa Asia ({campeon_copa_asia7})"
                 vitrina.append(trofeo)
+                player["dinero"] += 2000000
             if campeon_copa_africa7 == player["nacionalidad"]:
                 player["valoracion"] += 5   
                 trofeo = f"Copa Africa ({campeon_copa_africa7})"
                 vitrina.append(trofeo)
+                player["dinero"] += 2000000
             if campeon_finalisima7 == player["nacionalidad"]:
                 player["valoracion"] += 3  
                 trofeo = f"Finalissima ({campeon_finalisima7})"
                 vitrina.append(trofeo)
+                player["dinero"] += 1000000
     if contador == 15:    
         campeon_eurocopa8 = jugar_eurocopa()
         campeon_copa_america8 = jugar_copa_america()
@@ -9502,22 +8390,27 @@ while (contador < 21):
                 player["valoracion"] += 5   
                 trofeo = f"Copa America ({campeon_copa_america8})"
                 vitrina.append(trofeo)
+                player["dinero"] += 2000000
             if campeon_eurocopa8 == player["nacionalidad"]:
                 player["valoracion"] += 5   
                 trofeo = f"Eurocopa ({campeon_eurocopa8})"
                 vitrina.append(trofeo)
+                player["dinero"] += 2000000
             if campeon_copa_asia8 == player["nacionalidad"]:
                 player["valoracion"] += 5   
                 trofeo = f"Copa Asia ({campeon_copa_asia8})"
                 vitrina.append(trofeo)
+                player["dinero"] += 2000000
             if campeon_copa_africa8 == player["nacionalidad"]:
                 player["valoracion"] += 5   
                 trofeo = f"Copa Africa ({campeon_copa_africa8})"
                 vitrina.append(trofeo)
+                player["dinero"] += 2000000
             if campeon_finalisima8 == player["nacionalidad"]:
                 player["valoracion"] += 3 
                 trofeo = f"Finalissima ({campeon_finalisima8})"
                 vitrina.append(trofeo)
+                player["dinero"] += 1000000
     if contador == 17:    
         campeon_eurocopa9 = jugar_eurocopa()
         campeon_copa_america9 = jugar_copa_america()
@@ -9546,22 +8439,27 @@ while (contador < 21):
                 player["valoracion"] += 5   
                 trofeo = f"Copa America ({campeon_copa_america9})"
                 vitrina.append(trofeo)
+                player["dinero"] += 2000000
             if campeon_eurocopa9 == player["nacionalidad"]:
                 player["valoracion"] += 5   
                 trofeo = f"Eurocopa ({campeon_eurocopa9})"
                 vitrina.append(trofeo)
+                player["dinero"] += 2000000
             if campeon_copa_asia9 == player["nacionalidad"]:
                 player["valoracion"] += 5   
                 trofeo = f"Copa Asia ({campeon_copa_asia9})"
                 vitrina.append(trofeo)
+                player["dinero"] += 2000000
             if campeon_copa_africa9 == player["nacionalidad"]:
                 player["valoracion"] += 5   
                 trofeo = f"Copa Africa ({campeon_copa_africa9})"
                 vitrina.append(trofeo)
+                player["dinero"] += 2000000
             if campeon_finalisima9 == player["nacionalidad"]:
                 player["valoracion"] += 3  
                 trofeo = f"Finalissima ({campeon_finalisima9})"
                 vitrina.append(trofeo)
+                player["dinero"] += 1000000
     if contador == 19:    
         campeon_eurocopa10 = jugar_eurocopa()
         campeon_copa_america10 = jugar_copa_america()
@@ -9589,24 +8487,28 @@ while (contador < 21):
                 player["valoracion"] += 5   
                 trofeo = f"Copa America ({campeon_copa_america10})"
                 vitrina.append(trofeo)
+                player["dinero"] += 2000000
             if campeon_eurocopa10 == player["nacionalidad"]:
                 player["valoracion"] += 5   
                 trofeo = f"Eurocopa ({campeon_eurocopa10})"
                 vitrina.append(trofeo)
+                player["dinero"] += 2000000
             if campeon_copa_asia10 == player["nacionalidad"]:
                 player["valoracion"] += 5   
                 trofeo = f"Copa Asia ({campeon_copa_asia10})"
                 vitrina.append(trofeo)
+                player["dinero"] += 2000000
             if campeon_copa_africa10 == player["nacionalidad"]:
                 player["valoracion"] += 5   
                 trofeo = f"Copa Africa ({campeon_copa_africa10})"
                 vitrina.append(trofeo)
+                player["dinero"] += 2000000
             if campeon_finalisima10 == player["nacionalidad"]:
                 player["valoracion"] += 3
                 trofeo = f"Finalissima ({campeon_finalisima10})"
                 vitrina.append(trofeo)
+                player["dinero"] += 1000000
     
-
     if contador == 2:
         print("CLASIFICATORIO AL MUNDIAL")
         input("")
@@ -9658,7 +8560,7 @@ while (contador < 21):
         fecha_1_s(fixure_ida_2_e,2,apto,tabla_clasi_2_e)
         fecha_1_s(fixure_ida_3_e,3,apto,tabla_clasi_3_e)
         fecha_1_s(fixure_ida_4_e,4,apto,tabla_clasi_4_e)
-        mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e)  
+        fct.mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e)  
         mostrar_datos_selecciones(1)
         input("")
         input("")
@@ -9710,7 +8612,7 @@ while (contador < 21):
         fecha_1_s(fixure_ida_2_a,2,apto,tabla_clasi_2_a)
         fecha_1_s(fixure_ida_3_a,3,apto,tabla_clasi_3_a)
         fecha_1_s(fixure_ida_4_a,4,apto,tabla_clasi_4_a)
-        mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a)  
+        fct.mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a)  
         mostrar_datos_selecciones(2)
         input("")
         print("AFRICA")
@@ -9742,7 +8644,7 @@ while (contador < 21):
         input("")
         fecha_1_s(fixure_ida_1_f,1,apto,tabla_clasi_1_f)
         fecha_1_s(fixure_ida_2_f,2,apto,tabla_clasi_2_f)
-        mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f)  
+        fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f)  
         mostrar_datos_selecciones(3)
         input("")
         print("ASIA")
@@ -9774,7 +8676,7 @@ while (contador < 21):
         input("")
         fecha_1_s(fixure_ida_1_s,1,apto,tabla_clasi_1_s)
         fecha_1_s(fixure_ida_2_s,2,apto,tabla_clasi_2_s)
-        mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s)  
+        fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s)  
         mostrar_datos_selecciones(4)
         input("")
     
@@ -9829,7 +8731,7 @@ while (contador < 21):
         fecha_1_s(fixure_ida_2_e,2,apto,tabla_clasi_2_e)
         fecha_1_s(fixure_ida_3_e,3,apto,tabla_clasi_3_e)
         fecha_1_s(fixure_ida_4_e,4,apto,tabla_clasi_4_e)
-        mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e)  
+        fct.mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e)  
         mostrar_datos_selecciones(1)
         input("")
         input("")
@@ -9881,7 +8783,7 @@ while (contador < 21):
         fecha_1_s(fixure_ida_2_a,2,apto,tabla_clasi_2_a)
         fecha_1_s(fixure_ida_3_a,3,apto,tabla_clasi_3_a)
         fecha_1_s(fixure_ida_4_a,4,apto,tabla_clasi_4_a)
-        mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a)  
+        fct.mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a)  
         mostrar_datos_selecciones(2)
         input("")
         print("AFRICA")
@@ -9913,7 +8815,7 @@ while (contador < 21):
         input("")
         fecha_1_s(fixure_ida_1_f,1,apto,tabla_clasi_1_f)
         fecha_1_s(fixure_ida_2_f,2,apto,tabla_clasi_2_f)
-        mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f)  
+        fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f)  
         mostrar_datos_selecciones(3)
         input("")
         print("ASIA")
@@ -9945,7 +8847,7 @@ while (contador < 21):
         input("")
         fecha_1_s(fixure_ida_1_s,1,apto,tabla_clasi_1_s)
         fecha_1_s(fixure_ida_2_s,2,apto,tabla_clasi_2_s)
-        mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s)  
+        fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s)  
         mostrar_datos_selecciones(4)
         input("")
      
@@ -10000,7 +8902,7 @@ while (contador < 21):
         fecha_1_s(fixure_ida_2_e,2,apto,tabla_clasi_2_e)
         fecha_1_s(fixure_ida_3_e,3,apto,tabla_clasi_3_e)
         fecha_1_s(fixure_ida_4_e,4,apto,tabla_clasi_4_e)
-        mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e)  
+        fct.mostrar_tablas_fecha_fin(tabla_clasi_1_e, tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e)  
         mostrar_datos_selecciones(1)
         input("")
         input("")
@@ -10052,7 +8954,7 @@ while (contador < 21):
         fecha_1_s(fixure_ida_2_a,2,apto,tabla_clasi_2_a)
         fecha_1_s(fixure_ida_3_a,3,apto,tabla_clasi_3_a)
         fecha_1_s(fixure_ida_4_a,4,apto,tabla_clasi_4_a)
-        mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a)  
+        fct.mostrar_tablas_fecha_fin(tabla_clasi_1_a, tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a)  
         mostrar_datos_selecciones(2)
         input("")
         print("AFRICA")
@@ -10084,7 +8986,7 @@ while (contador < 21):
         input("")
         fecha_1_s(fixure_ida_1_f,1,apto,tabla_clasi_1_f)
         fecha_1_s(fixure_ida_2_f,2,apto,tabla_clasi_2_f)
-        mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f)  
+        fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f)  
         mostrar_datos_selecciones(3)
         input("")
         print("ASIA")
@@ -10116,7 +9018,7 @@ while (contador < 21):
         input("")
         fecha_1_s(fixure_ida_1_s,1,apto,tabla_clasi_1_s)
         fecha_1_s(fixure_ida_2_s,2,apto,tabla_clasi_2_s)
-        mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s)  
+        fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s)  
         mostrar_datos_selecciones(4)
         input("")
      
@@ -10171,7 +9073,8 @@ while (contador < 21):
         fecha_1_s(fixure_ida_2_e,2,apto,tabla_clasi_2_e)
         fecha_1_s(fixure_ida_3_e,3,apto,tabla_clasi_3_e)
         fecha_1_s(fixure_ida_4_e,4,apto,tabla_clasi_4_e)
-        mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e)  
+        fct.mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,
+                                     tabla_clasi_3_e,tabla_clasi_4_e)  
         mostrar_datos_selecciones(1)
         input("")
         input("")
@@ -10223,7 +9126,7 @@ while (contador < 21):
         fecha_1_s(fixure_ida_2_a,2,apto,tabla_clasi_2_a)
         fecha_1_s(fixure_ida_3_a,3,apto,tabla_clasi_3_a)
         fecha_1_s(fixure_ida_4_a,4,apto,tabla_clasi_4_a)
-        mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a)  
+        fct.mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a)  
         mostrar_datos_selecciones(2)
         input("")
         print("AFRICA")
@@ -10255,7 +9158,7 @@ while (contador < 21):
         input("")
         fecha_1_s(fixure_ida_1_f,1,apto,tabla_clasi_1_f)
         fecha_1_s(fixure_ida_2_f,2,apto,tabla_clasi_2_f)
-        mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f)  
+        fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f)  
         mostrar_datos_selecciones(3)
         input("")
         print("ASIA")
@@ -10287,7 +9190,7 @@ while (contador < 21):
         input("")
         fecha_1_s(fixure_ida_1_s,1,apto,tabla_clasi_1_s)
         fecha_1_s(fixure_ida_2_s,2,apto,tabla_clasi_2_s)
-        mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s)  
+        fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s)  
         mostrar_datos_selecciones(4)
         input("")
     
@@ -10342,7 +9245,7 @@ while (contador < 21):
         fecha_1_s(fixure_ida_2_e,2,apto,tabla_clasi_2_e)
         fecha_1_s(fixure_ida_3_e,3,apto,tabla_clasi_3_e)
         fecha_1_s(fixure_ida_4_e,4,apto,tabla_clasi_4_e)
-        mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e)  
+        fct.mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e)  
         mostrar_datos_selecciones(1)
         input("")
         input("")
@@ -10394,7 +9297,7 @@ while (contador < 21):
         fecha_1_s(fixure_ida_2_a,2,apto,tabla_clasi_2_a)
         fecha_1_s(fixure_ida_3_a,3,apto,tabla_clasi_3_a)
         fecha_1_s(fixure_ida_4_a,4,apto,tabla_clasi_4_a)
-        mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a)  
+        fct.mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a)  
         mostrar_datos_selecciones(2)
         input("")
         print("AFRICA")
@@ -10426,7 +9329,7 @@ while (contador < 21):
         input("")
         fecha_1_s(fixure_ida_1_f,1,apto,tabla_clasi_1_f)
         fecha_1_s(fixure_ida_2_f,2,apto,tabla_clasi_2_f)
-        mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f)  
+        fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f)  
         mostrar_datos_selecciones(3)
         input("")
         print("ASIA")
@@ -10458,7 +9361,7 @@ while (contador < 21):
         input("")
         fecha_1_s(fixure_ida_1_s,1,apto,tabla_clasi_1_s)
         fecha_1_s(fixure_ida_2_s,2,apto,tabla_clasi_2_s)
-        mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s)  
+        fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s)  
         mostrar_datos_selecciones(4)
         input("")
      
@@ -10469,6 +9372,7 @@ while (contador < 21):
                 player["valoracion"] += 5
                 trofeo = f"Mundial ({campeon_mundial1})"
                 vitrina.append(trofeo)
+                player["dinero"] += 5000000
     if contador == 8:
         campeon_mundial2 = jugar_mundial(apto) 
         if apto == 1:
@@ -10476,6 +9380,7 @@ while (contador < 21):
                 player["valoracion"] += 5
                 trofeo = f"Mundial ({campeon_mundial2})"
                 vitrina.append(trofeo)
+                player["dinero"] += 5000000
     if contador == 12:
         campeon_mundial3 = jugar_mundial(apto) 
         if apto == 1:
@@ -10483,6 +9388,7 @@ while (contador < 21):
                 player["valoracion"] += 5
                 trofeo = f"Mundial ({campeon_mundial3})"
                 vitrina.append(trofeo)
+                player["dinero"] += 5000000
     if contador == 16:
         campeon_mundial4 = jugar_mundial(apto) 
         if apto == 1:
@@ -10490,6 +9396,7 @@ while (contador < 21):
                 player["valoracion"] += 5
                 trofeo = f"Mundial ({campeon_mundial4})"
                 vitrina.append(trofeo)
+                player["dinero"] += 5000000
     if contador == 20:
         campeon_mundial5 = jugar_mundial(apto) 
         if apto == 1:
@@ -10497,7 +9404,7 @@ while (contador < 21):
                 player["valoracion"] += 5
                 trofeo = f"Mundial ({campeon_mundial5})"
                 vitrina.append(trofeo)
-    
+                player["dinero"] += 5000000
     
     for ronda_premier, ronda_championship,ronda_serieA,ronda_serieB in zip(fixture_vuelta_premier, fixture_vuelta_championship,fixture_vuelta_serieA,fixture_vuelta_serieB):
         print(f"jornada {ronda_ida_num} Premier League:")
@@ -10507,7 +9414,7 @@ while (contador < 21):
         for partido in ronda_premier:
             generar_partido(partido[0],partido[1],tabla_premier)
             input("")
-        mostrar_tabla(tabla_premier)
+        fct.mostrar_tabla(tabla_premier)
         input("")
         goleadores_totales("p")
         input("")
@@ -10516,6 +9423,8 @@ while (contador < 21):
         amarillas_totales("p")
         input("")
         rojas_totales("p")
+        input("")
+        lesionados_totales("p")
         input("")
         ver_mvp_fecha_premier()
 
@@ -10526,7 +9435,7 @@ while (contador < 21):
         for partido in ronda_championship:
             generar_partido(partido[0],partido[1],tabla_championship)
             input("")
-        mostrar_tabla(tabla_championship)
+        fct.mostrar_tabla(tabla_championship)
         input("")
         goleadores_totales("c")
         input("")
@@ -10536,6 +9445,8 @@ while (contador < 21):
         input("")
         rojas_totales("c")
         input("")
+        lesionados_totales("c")
+        input("")
         ver_mvp_fecha_championship()
         print(f"jornada {ronda_ida_num} Serie A:")
         for partido in ronda_serieA:
@@ -10544,7 +9455,7 @@ while (contador < 21):
         for partido in ronda_serieA:
             generar_partido(partido[0],partido[1],tabla_serieA)
             input("")
-        mostrar_tabla(tabla_serieA)
+        fct.mostrar_tabla(tabla_serieA)
         input("")
         goleadores_totales("sa")
         input("")
@@ -10554,6 +9465,8 @@ while (contador < 21):
         input("")
         rojas_totales("sa")
         input("")
+        lesionados_totales("sa")
+        input("")
         ver_mvp_fecha_seriea()
         print(f"jornada {ronda_ida_num} Serie B:")
         for partido in ronda_serieB:
@@ -10562,7 +9475,7 @@ while (contador < 21):
         for partido in ronda_serieB:
             generar_partido(partido[0],partido[1],tabla_serieB)
             input("")
-        mostrar_tabla(tabla_serieB)
+        fct.mostrar_tabla(tabla_serieB)
         input("")
         goleadores_totales("sb")
         input("")
@@ -10572,13 +9485,12 @@ while (contador < 21):
         input("")
         rojas_totales("sb")
         input("")
+        lesionados_totales("sb")
+        input("")
         ver_mvp_fecha_serieb()
-        
         ver_datos_player()
         recetearmvp()
-
         ronda_ida_num += 1
-
         if contador == 2:
             if ronda_ida_num == 22:
                 print("CLASIFICATORIO AL MUNDIAL")
@@ -10589,7 +9501,7 @@ while (contador < 21):
                 fecha_2_s(fixure_ida_2_e,2,apto,tabla_clasi_2_e)
                 fecha_2_s(fixure_ida_3_e,3,apto,tabla_clasi_3_e)
                 fecha_2_s(fixure_ida_4_e,4,apto,tabla_clasi_4_e)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e) 
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e) 
                 mostrar_datos_selecciones(1)
                 input("")
                 print("FECHA 2 DEL CLASIFICATORIO AL MUNDIAL AMERICA")
@@ -10598,21 +9510,21 @@ while (contador < 21):
                 fecha_2_s(fixure_ida_2_a,2,apto,tabla_clasi_2_a)
                 fecha_2_s(fixure_ida_3_a,3,apto,tabla_clasi_3_a)
                 fecha_2_s(fixure_ida_4_a,4,apto,tabla_clasi_4_a)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a) 
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a) 
                 mostrar_datos_selecciones(2)
                 input("")
                 print("FECHA 2 DEL CLASIFICATORIO AL MUNDIAL AFRICA")
                 input("")
                 fecha_2_s(fixure_ida_1_f,1,apto,tabla_clasi_1_f)
                 fecha_2_s(fixure_ida_2_f,2,apto,tabla_clasi_2_f)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f) 
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f) 
                 mostrar_datos_selecciones(3)
                 input("")
                 print("FECHA 2 DEL CLASIFICATORIO AL MUNDIAL ASIA")
                 input("")
                 fecha_2_s(fixure_ida_1_s,1,apto,tabla_clasi_1_s)
                 fecha_2_s(fixure_ida_2_s,2,apto,tabla_clasi_2_s)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s) 
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s) 
                 mostrar_datos_selecciones(4)
                 input("")
             if ronda_ida_num == 24:
@@ -10624,7 +9536,7 @@ while (contador < 21):
                 fecha_3_s(fixure_ida_2_e,2,apto,tabla_clasi_2_e)
                 fecha_3_s(fixure_ida_3_e,3,apto,tabla_clasi_3_e)
                 fecha_3_s(fixure_ida_4_e,4,apto,tabla_clasi_4_e)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e) 
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e) 
                 mostrar_datos_selecciones(1)
                 input("")
                 print("FECHA 3 DEL CLASIFICATORIO AL MUNDIAL AMERICA")
@@ -10633,21 +9545,21 @@ while (contador < 21):
                 fecha_3_s(fixure_ida_2_a,2,apto,tabla_clasi_2_a)
                 fecha_3_s(fixure_ida_3_a,3,apto,tabla_clasi_3_a)
                 fecha_3_s(fixure_ida_4_a,4,apto,tabla_clasi_4_a)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a) 
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a) 
                 mostrar_datos_selecciones(2)
                 input("")
                 print("FECHA 3 DEL CLASIFICATORIO AL MUNDIAL AFRICA")
                 input("")
                 fecha_3_s(fixure_ida_1_f,1,apto,tabla_clasi_1_f)
                 fecha_3_s(fixure_ida_2_f,2,apto,tabla_clasi_2_f)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f) 
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f) 
                 mostrar_datos_selecciones(3)
                 input("")
                 print("FECHA 3 DEL CLASIFICATORIO AL MUNDIAL ASIA")
                 input("")
                 fecha_3_s(fixure_ida_1_s,1,apto,tabla_clasi_1_s)
                 fecha_3_s(fixure_ida_2_s,2,apto,tabla_clasi_2_s)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s) 
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s) 
                 mostrar_datos_selecciones(4)
                 input("")
                 
@@ -10659,7 +9571,7 @@ while (contador < 21):
                 fecha_1_s(fixure_vuelta_2_e,2,apto,tabla_clasi_2_e)
                 fecha_1_s(fixure_vuelta_3_e,3,apto,tabla_clasi_3_e)
                 fecha_1_s(fixure_vuelta_4_e,4,apto,tabla_clasi_4_e)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e)  
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e)  
                 mostrar_datos_selecciones(1)
                 input("")
                 print("FECHA 4 DEL CLASIFICATORIO AL MUNDIAL AMERICA")
@@ -10668,21 +9580,21 @@ while (contador < 21):
                 fecha_1_s(fixure_vuelta_2_a,2,apto,tabla_clasi_2_a)
                 fecha_1_s(fixure_vuelta_3_a,3,apto,tabla_clasi_3_a)
                 fecha_1_s(fixure_vuelta_4_a,4,apto,tabla_clasi_4_a)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a)  
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a)  
                 mostrar_datos_selecciones(2)
                 input("")
                 print("FECHA 4 DEL CLASIFICATORIO AL MUNDIAL AFRICA")
                 input("")
                 fecha_1_s(fixure_vuelta_1_f,1,apto,tabla_clasi_1_f)
                 fecha_1_s(fixure_vuelta_2_f,2,apto,tabla_clasi_2_f)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f)  
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f)  
                 mostrar_datos_selecciones(3)
                 input("")
                 print("FECHA 4 DEL CLASIFICATORIO AL MUNDIAL ASIA")
                 input("")
                 fecha_1_s(fixure_vuelta_1_s,1,apto,tabla_clasi_1_s)
                 fecha_1_s(fixure_vuelta_2_s,2,apto,tabla_clasi_2_s)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s)  
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s)  
                 mostrar_datos_selecciones(4)
                 input("")
             if ronda_ida_num == 30:
@@ -10693,7 +9605,7 @@ while (contador < 21):
                 fecha_2_s(fixure_vuelta_2_e,2,apto,tabla_clasi_2_e)
                 fecha_2_s(fixure_vuelta_3_e,3,apto,tabla_clasi_3_e)
                 fecha_2_s(fixure_vuelta_4_e,4,apto,tabla_clasi_4_e)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e)  
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e)  
                 mostrar_datos_selecciones(1)
                 input("")
                 print("FECHA 5 DEL CLASIFICATORIO AL MUNDIAL AMERICA")
@@ -10702,21 +9614,21 @@ while (contador < 21):
                 fecha_2_s(fixure_vuelta_2_a,2,apto,tabla_clasi_2_a)
                 fecha_2_s(fixure_vuelta_3_a,3,apto,tabla_clasi_3_a)
                 fecha_2_s(fixure_vuelta_4_a,4,apto,tabla_clasi_4_a)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a)  
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a)  
                 mostrar_datos_selecciones(2)
                 input("")
                 print("FECHA 5 DEL CLASIFICATORIO AL MUNDIAL AFRICA")
                 input("")
                 fecha_2_s(fixure_vuelta_1_f,1,apto,tabla_clasi_1_f)
                 fecha_2_s(fixure_vuelta_2_f,2,apto,tabla_clasi_2_f)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f)  
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f)  
                 mostrar_datos_selecciones(3)
                 input("")
                 print("FECHA 5 DEL CLASIFICATORIO AL MUNDIAL ASIA")
                 input("")
                 fecha_2_s(fixure_vuelta_1_s,1,apto,tabla_clasi_1_s)
                 fecha_2_s(fixure_vuelta_2_s,2,apto,tabla_clasi_2_s)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s)  
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s)  
                 mostrar_datos_selecciones(4)
                 input("")
             if ronda_ida_num == 35:
@@ -10727,13 +9639,13 @@ while (contador < 21):
                 fecha_3_s(fixure_vuelta_2_e,2,apto,tabla_clasi_2_e)
                 fecha_3_s(fixure_vuelta_3_e,3,apto,tabla_clasi_3_e)
                 fecha_3_s(fixure_vuelta_4_e,4,apto,tabla_clasi_4_e)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e)  
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e)  
                 mostrar_datos_selecciones(1)
                 input("")
-                clas_e_1,segundo_4_e = obtener_primer_y_segundo_equipo(tabla_clasi_1_e) 
-                clas_e_2,segundo_4_e = obtener_primer_y_segundo_equipo(tabla_clasi_2_e)
-                clas_e_3,segundo_4_e = obtener_primer_y_segundo_equipo(tabla_clasi_3_e)
-                clas_e_4,segundo_4_e = obtener_primer_y_segundo_equipo(tabla_clasi_4_e)  
+                clas_e_1,segundo_4_e = fct.obtener_primer_y_segundo_equipo(tabla_clasi_1_e) 
+                clas_e_2,segundo_4_e = fct.obtener_primer_y_segundo_equipo(tabla_clasi_2_e)
+                clas_e_3,segundo_4_e = fct.obtener_primer_y_segundo_equipo(tabla_clasi_3_e)
+                clas_e_4,segundo_4_e = fct.obtener_primer_y_segundo_equipo(tabla_clasi_4_e)  
                 clas_europa = [clas_e_1,clas_e_2,clas_e_3,clas_e_4]
                 input("")
                 print("LOS EUROPEOS CLASIFICADOS AL MUNDIAL SON")
@@ -10749,13 +9661,13 @@ while (contador < 21):
                 fecha_3_s(fixure_vuelta_2_a,2,apto,tabla_clasi_2_a)
                 fecha_3_s(fixure_vuelta_3_a,3,apto,tabla_clasi_3_a)
                 fecha_3_s(fixure_vuelta_4_a,4,apto,tabla_clasi_4_a)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a)
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a)
                 mostrar_datos_selecciones(2)
                 input("")
-                clas_a_1,segundo_4_e = obtener_primer_y_segundo_equipo(tabla_clasi_1_a) 
-                clas_a_2,segundo_4_e = obtener_primer_y_segundo_equipo(tabla_clasi_2_a)
-                clas_a_3,segundo_4_e = obtener_primer_y_segundo_equipo(tabla_clasi_3_a)
-                clas_a_4,segundo_4_e = obtener_primer_y_segundo_equipo(tabla_clasi_4_a)  
+                clas_a_1,segundo_4_e = fct.obtener_primer_y_segundo_equipo(tabla_clasi_1_a) 
+                clas_a_2,segundo_4_e = fct.obtener_primer_y_segundo_equipo(tabla_clasi_2_a)
+                clas_a_3,segundo_4_e = fct.obtener_primer_y_segundo_equipo(tabla_clasi_3_a)
+                clas_a_4,segundo_4_e = fct.obtener_primer_y_segundo_equipo(tabla_clasi_4_a)  
                 clas_america = [clas_a_1,clas_a_2,clas_a_3,clas_a_4]
                 input("")
                 print("LOS AMERICANOS CLASIFICADOS AL MUNDIAL SON")
@@ -10769,11 +9681,11 @@ while (contador < 21):
                 input("")
                 fecha_3_s(fixure_vuelta_1_f,1,apto,tabla_clasi_1_f)
                 fecha_3_s(fixure_vuelta_2_f,2,apto,tabla_clasi_2_f)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f)
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f)
                 mostrar_datos_selecciones(3)
                 input("")
-                clas_f_1,clas_f_3 = obtener_primer_y_segundo_equipo(tabla_clasi_1_f) 
-                clas_f_2,clas_f_4 = obtener_primer_y_segundo_equipo(tabla_clasi_2_f)
+                clas_f_1,clas_f_3 = fct.obtener_primer_y_segundo_equipo(tabla_clasi_1_f) 
+                clas_f_2,clas_f_4 = fct.obtener_primer_y_segundo_equipo(tabla_clasi_2_f)
                 clas_africa = [clas_f_1,clas_f_2,clas_f_3,clas_f_4]
                 input("")
                 print("LOS AFRICANOS CLASIFICADOS AL MUNDIAL SON")
@@ -10787,11 +9699,11 @@ while (contador < 21):
                 input("")
                 fecha_3_s(fixure_vuelta_1_s,1,apto,tabla_clasi_1_s)
                 fecha_3_s(fixure_vuelta_2_s,2,apto,tabla_clasi_2_s)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s)
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s)
                 mostrar_datos_selecciones(4)
                 input("")
-                clas_s_1,clas_s_3 = obtener_primer_y_segundo_equipo(tabla_clasi_1_s) 
-                clas_s_2,clas_s_4 = obtener_primer_y_segundo_equipo(tabla_clasi_2_s)
+                clas_s_1,clas_s_3 = fct.obtener_primer_y_segundo_equipo(tabla_clasi_1_s) 
+                clas_s_2,clas_s_4 = fct.obtener_primer_y_segundo_equipo(tabla_clasi_2_s)
                 clas_asia = [clas_s_1,clas_s_2,clas_s_3,clas_s_4]
                 input("")
                 print("LOS ASIATICOS CLASIFICADOS AL MUNDIAL SON")
@@ -10806,6 +9718,7 @@ while (contador < 21):
                             logro = f"Clasificacion al mundial con {player['nacionalidad']}"
                             logros_anuales.append(logro)
                             player["valoracion"] += 3
+                            player["dinero"] += 250000
         if contador == 6:
             if ronda_ida_num == 22:
                 print("CLASIFICATORIO AL MUNDIAL")
@@ -10816,7 +9729,7 @@ while (contador < 21):
                 fecha_2_s(fixure_ida_2_e,2,apto,tabla_clasi_2_e)
                 fecha_2_s(fixure_ida_3_e,3,apto,tabla_clasi_3_e)
                 fecha_2_s(fixure_ida_4_e,4,apto,tabla_clasi_4_e)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e) 
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e) 
                 mostrar_datos_selecciones(1)
                 input("")
                 print("FECHA 2 DEL CLASIFICATORIO AL MUNDIAL AMERICA")
@@ -10825,21 +9738,21 @@ while (contador < 21):
                 fecha_2_s(fixure_ida_2_a,2,apto,tabla_clasi_2_a)
                 fecha_2_s(fixure_ida_3_a,3,apto,tabla_clasi_3_a)
                 fecha_2_s(fixure_ida_4_a,4,apto,tabla_clasi_4_a)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a) 
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a) 
                 mostrar_datos_selecciones(2)
                 input("")
                 print("FECHA 2 DEL CLASIFICATORIO AL MUNDIAL AFRICA")
                 input("")
                 fecha_2_s(fixure_ida_1_f,1,apto,tabla_clasi_1_f)
                 fecha_2_s(fixure_ida_2_f,2,apto,tabla_clasi_2_f)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f) 
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f) 
                 mostrar_datos_selecciones(3)
                 input("")
                 print("FECHA 2 DEL CLASIFICATORIO AL MUNDIAL ASIA")
                 input("")
                 fecha_2_s(fixure_ida_1_s,1,apto,tabla_clasi_1_s)
                 fecha_2_s(fixure_ida_2_s,2,apto,tabla_clasi_2_s)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s) 
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s) 
                 mostrar_datos_selecciones(4)
                 input("")
             if ronda_ida_num == 24:
@@ -10851,7 +9764,7 @@ while (contador < 21):
                 fecha_3_s(fixure_ida_2_e,2,apto,tabla_clasi_2_e)
                 fecha_3_s(fixure_ida_3_e,3,apto,tabla_clasi_3_e)
                 fecha_3_s(fixure_ida_4_e,4,apto,tabla_clasi_4_e)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e) 
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e) 
                 mostrar_datos_selecciones(1)
                 input("")
                 print("FECHA 3 DEL CLASIFICATORIO AL MUNDIAL AMERICA")
@@ -10860,21 +9773,21 @@ while (contador < 21):
                 fecha_3_s(fixure_ida_2_a,2,apto,tabla_clasi_2_a)
                 fecha_3_s(fixure_ida_3_a,3,apto,tabla_clasi_3_a)
                 fecha_3_s(fixure_ida_4_a,4,apto,tabla_clasi_4_a)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a) 
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a) 
                 mostrar_datos_selecciones(2)
                 input("")
                 print("FECHA 3 DEL CLASIFICATORIO AL MUNDIAL AFRICA")
                 input("")
                 fecha_3_s(fixure_ida_1_f,1,apto,tabla_clasi_1_f)
                 fecha_3_s(fixure_ida_2_f,2,apto,tabla_clasi_2_f)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f) 
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f) 
                 mostrar_datos_selecciones(3)
                 input("")
                 print("FECHA 3 DEL CLASIFICATORIO AL MUNDIAL ASIA")
                 input("")
                 fecha_3_s(fixure_ida_1_s,1,apto,tabla_clasi_1_s)
                 fecha_3_s(fixure_ida_2_s,2,apto,tabla_clasi_2_s)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s) 
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s) 
                 mostrar_datos_selecciones(4)
                 input("")
                 
@@ -10886,7 +9799,7 @@ while (contador < 21):
                 fecha_1_s(fixure_vuelta_2_e,2,apto,tabla_clasi_2_e)
                 fecha_1_s(fixure_vuelta_3_e,3,apto,tabla_clasi_3_e)
                 fecha_1_s(fixure_vuelta_4_e,4,apto,tabla_clasi_4_e)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e)  
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e)  
                 mostrar_datos_selecciones(1)
                 input("")
                 print("FECHA 4 DEL CLASIFICATORIO AL MUNDIAL AMERICA")
@@ -10895,21 +9808,21 @@ while (contador < 21):
                 fecha_1_s(fixure_vuelta_2_a,2,apto,tabla_clasi_2_a)
                 fecha_1_s(fixure_vuelta_3_a,3,apto,tabla_clasi_3_a)
                 fecha_1_s(fixure_vuelta_4_a,4,apto,tabla_clasi_4_a)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a)  
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a)  
                 mostrar_datos_selecciones(2)
                 input("")
                 print("FECHA 4 DEL CLASIFICATORIO AL MUNDIAL AFRICA")
                 input("")
                 fecha_1_s(fixure_vuelta_1_f,1,apto,tabla_clasi_1_f)
                 fecha_1_s(fixure_vuelta_2_f,2,apto,tabla_clasi_2_f)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f)  
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f)  
                 mostrar_datos_selecciones(3)
                 input("")
                 print("FECHA 4 DEL CLASIFICATORIO AL MUNDIAL ASIA")
                 input("")
                 fecha_1_s(fixure_vuelta_1_s,1,apto,tabla_clasi_1_s)
                 fecha_1_s(fixure_vuelta_2_s,2,apto,tabla_clasi_2_s)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s)  
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s)  
                 mostrar_datos_selecciones(4)
                 input("")
             if ronda_ida_num == 30:
@@ -10920,7 +9833,7 @@ while (contador < 21):
                 fecha_2_s(fixure_vuelta_2_e,2,apto,tabla_clasi_2_e)
                 fecha_2_s(fixure_vuelta_3_e,3,apto,tabla_clasi_3_e)
                 fecha_2_s(fixure_vuelta_4_e,4,apto,tabla_clasi_4_e)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e)  
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e)  
                 mostrar_datos_selecciones(1)
                 input("")
                 print("FECHA 5 DEL CLASIFICATORIO AL MUNDIAL AMERICA")
@@ -10929,21 +9842,21 @@ while (contador < 21):
                 fecha_2_s(fixure_vuelta_2_a,2,apto,tabla_clasi_2_a)
                 fecha_2_s(fixure_vuelta_3_a,3,apto,tabla_clasi_3_a)
                 fecha_2_s(fixure_vuelta_4_a,4,apto,tabla_clasi_4_a)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a)  
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a)  
                 mostrar_datos_selecciones(2)
                 input("")
                 print("FECHA 5 DEL CLASIFICATORIO AL MUNDIAL AFRICA")
                 input("")
                 fecha_2_s(fixure_vuelta_1_f,1,apto,tabla_clasi_1_f)
                 fecha_2_s(fixure_vuelta_2_f,2,apto,tabla_clasi_2_f)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f)  
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f)  
                 mostrar_datos_selecciones(3)
                 input("")
                 print("FECHA 5 DEL CLASIFICATORIO AL MUNDIAL ASIA")
                 input("")
                 fecha_2_s(fixure_vuelta_1_s,1,apto,tabla_clasi_1_s)
                 fecha_2_s(fixure_vuelta_2_s,2,apto,tabla_clasi_2_s)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s)  
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s)  
                 mostrar_datos_selecciones(4)
                 input("")
             if ronda_ida_num == 35:
@@ -10954,13 +9867,13 @@ while (contador < 21):
                 fecha_3_s(fixure_vuelta_2_e,2,apto,tabla_clasi_2_e)
                 fecha_3_s(fixure_vuelta_3_e,3,apto,tabla_clasi_3_e)
                 fecha_3_s(fixure_vuelta_4_e,4,apto,tabla_clasi_4_e)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e)  
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e)  
                 mostrar_datos_selecciones(1)
                 input("")
-                clas_e_1,segundo_4_e = obtener_primer_y_segundo_equipo(tabla_clasi_1_e) 
-                clas_e_2,segundo_4_e = obtener_primer_y_segundo_equipo(tabla_clasi_2_e)
-                clas_e_3,segundo_4_e = obtener_primer_y_segundo_equipo(tabla_clasi_3_e)
-                clas_e_4,segundo_4_e = obtener_primer_y_segundo_equipo(tabla_clasi_4_e)  
+                clas_e_1,segundo_4_e = fct.obtener_primer_y_segundo_equipo(tabla_clasi_1_e) 
+                clas_e_2,segundo_4_e = fct.obtener_primer_y_segundo_equipo(tabla_clasi_2_e)
+                clas_e_3,segundo_4_e = fct.obtener_primer_y_segundo_equipo(tabla_clasi_3_e)
+                clas_e_4,segundo_4_e = fct.obtener_primer_y_segundo_equipo(tabla_clasi_4_e)  
                 clas_europa = [clas_e_1,clas_e_2,clas_e_3,clas_e_4]
                 input("")
                 print("LOS EUROPEOS CLASIFICADOS AL MUNDIAL SON")
@@ -10976,13 +9889,13 @@ while (contador < 21):
                 fecha_3_s(fixure_vuelta_2_a,2,apto,tabla_clasi_2_a)
                 fecha_3_s(fixure_vuelta_3_a,3,apto,tabla_clasi_3_a)
                 fecha_3_s(fixure_vuelta_4_a,4,apto,tabla_clasi_4_a)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a)
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a)
                 mostrar_datos_selecciones(2)
                 input("")
-                clas_a_1,segundo_4_e = obtener_primer_y_segundo_equipo(tabla_clasi_1_a) 
-                clas_a_2,segundo_4_e = obtener_primer_y_segundo_equipo(tabla_clasi_2_a)
-                clas_a_3,segundo_4_e = obtener_primer_y_segundo_equipo(tabla_clasi_3_a)
-                clas_a_4,segundo_4_e = obtener_primer_y_segundo_equipo(tabla_clasi_4_a)  
+                clas_a_1,segundo_4_e = fct.obtener_primer_y_segundo_equipo(tabla_clasi_1_a) 
+                clas_a_2,segundo_4_e = fct.obtener_primer_y_segundo_equipo(tabla_clasi_2_a)
+                clas_a_3,segundo_4_e = fct.obtener_primer_y_segundo_equipo(tabla_clasi_3_a)
+                clas_a_4,segundo_4_e = fct.obtener_primer_y_segundo_equipo(tabla_clasi_4_a)  
                 clas_america = [clas_a_1,clas_a_2,clas_a_3,clas_a_4]
                 input("")
                 print("LOS AMERICANOS CLASIFICADOS AL MUNDIAL SON")
@@ -10996,11 +9909,11 @@ while (contador < 21):
                 input("")
                 fecha_3_s(fixure_vuelta_1_f,1,apto,tabla_clasi_1_f)
                 fecha_3_s(fixure_vuelta_2_f,2,apto,tabla_clasi_2_f)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f)
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f)
                 mostrar_datos_selecciones(3)
                 input("")
-                clas_f_1,clas_f_3 = obtener_primer_y_segundo_equipo(tabla_clasi_1_f) 
-                clas_f_2,clas_f_4 = obtener_primer_y_segundo_equipo(tabla_clasi_2_f)
+                clas_f_1,clas_f_3 = fct.obtener_primer_y_segundo_equipo(tabla_clasi_1_f) 
+                clas_f_2,clas_f_4 = fct.obtener_primer_y_segundo_equipo(tabla_clasi_2_f)
                 clas_africa = [clas_f_1,clas_f_2,clas_f_3,clas_f_4]
                 input("")
                 print("LOS AFRICANOS CLASIFICADOS AL MUNDIAL SON")
@@ -11014,11 +9927,11 @@ while (contador < 21):
                 input("")
                 fecha_3_s(fixure_vuelta_1_s,1,apto,tabla_clasi_1_s)
                 fecha_3_s(fixure_vuelta_2_s,2,apto,tabla_clasi_2_s)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s)
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s)
                 mostrar_datos_selecciones(4)
                 input("")
-                clas_s_1,clas_s_3 = obtener_primer_y_segundo_equipo(tabla_clasi_1_s) 
-                clas_s_2,clas_s_4 = obtener_primer_y_segundo_equipo(tabla_clasi_2_s)
+                clas_s_1,clas_s_3 = fct.obtener_primer_y_segundo_equipo(tabla_clasi_1_s) 
+                clas_s_2,clas_s_4 = fct.obtener_primer_y_segundo_equipo(tabla_clasi_2_s)
                 clas_asia = [clas_s_1,clas_s_2,clas_s_3,clas_s_4]
                 input("")
                 print("LOS ASIATICOS CLASIFICADOS AL MUNDIAL SON")
@@ -11033,6 +9946,7 @@ while (contador < 21):
                         logro = f"Clasificacion al mundial con {player['nacionalidad']}"
                         logros_anuales.append(logro)
                         player["valoracion"] += 3
+                        player["dinero"] += 250000
         if contador == 10:
             if ronda_ida_num == 22:
                 print("CLASIFICATORIO AL MUNDIAL")
@@ -11043,7 +9957,7 @@ while (contador < 21):
                 fecha_2_s(fixure_ida_2_e,2,apto,tabla_clasi_2_e)
                 fecha_2_s(fixure_ida_3_e,3,apto,tabla_clasi_3_e)
                 fecha_2_s(fixure_ida_4_e,4,apto,tabla_clasi_4_e)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e) 
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e) 
                 mostrar_datos_selecciones(1)
                 input("")
                 print("FECHA 2 DEL CLASIFICATORIO AL MUNDIAL AMERICA")
@@ -11052,21 +9966,21 @@ while (contador < 21):
                 fecha_2_s(fixure_ida_2_a,2,apto,tabla_clasi_2_a)
                 fecha_2_s(fixure_ida_3_a,3,apto,tabla_clasi_3_a)
                 fecha_2_s(fixure_ida_4_a,4,apto,tabla_clasi_4_a)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a) 
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a) 
                 mostrar_datos_selecciones(2)
                 input("")
                 print("FECHA 2 DEL CLASIFICATORIO AL MUNDIAL AFRICA")
                 input("")
                 fecha_2_s(fixure_ida_1_f,1,apto,tabla_clasi_1_f)
                 fecha_2_s(fixure_ida_2_f,2,apto,tabla_clasi_2_f)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f) 
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f) 
                 mostrar_datos_selecciones(3)
                 input("")
                 print("FECHA 2 DEL CLASIFICATORIO AL MUNDIAL ASIA")
                 input("")
                 fecha_2_s(fixure_ida_1_s,1,apto,tabla_clasi_1_s)
                 fecha_2_s(fixure_ida_2_s,2,apto,tabla_clasi_2_s)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s) 
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s) 
                 mostrar_datos_selecciones(4)
                 input("")
             if ronda_ida_num == 24:
@@ -11078,7 +9992,7 @@ while (contador < 21):
                 fecha_3_s(fixure_ida_2_e,2,apto,tabla_clasi_2_e)
                 fecha_3_s(fixure_ida_3_e,3,apto,tabla_clasi_3_e)
                 fecha_3_s(fixure_ida_4_e,4,apto,tabla_clasi_4_e)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e) 
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e) 
                 mostrar_datos_selecciones(1)
                 input("")
                 print("FECHA 3 DEL CLASIFICATORIO AL MUNDIAL AMERICA")
@@ -11087,21 +10001,21 @@ while (contador < 21):
                 fecha_3_s(fixure_ida_2_a,2,apto,tabla_clasi_2_a)
                 fecha_3_s(fixure_ida_3_a,3,apto,tabla_clasi_3_a)
                 fecha_3_s(fixure_ida_4_a,4,apto,tabla_clasi_4_a)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a) 
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a) 
                 mostrar_datos_selecciones(2)
                 input("")
                 print("FECHA 3 DEL CLASIFICATORIO AL MUNDIAL AFRICA")
                 input("")
                 fecha_3_s(fixure_ida_1_f,1,apto,tabla_clasi_1_f)
                 fecha_3_s(fixure_ida_2_f,2,apto,tabla_clasi_2_f)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f) 
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f) 
                 mostrar_datos_selecciones(3)
                 input("")
                 print("FECHA 3 DEL CLASIFICATORIO AL MUNDIAL ASIA")
                 input("")
                 fecha_3_s(fixure_ida_1_s,1,apto,tabla_clasi_1_s)
                 fecha_3_s(fixure_ida_2_s,2,apto,tabla_clasi_2_s)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s) 
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s) 
                 mostrar_datos_selecciones(4)
                 input("")
                 
@@ -11113,7 +10027,7 @@ while (contador < 21):
                 fecha_1_s(fixure_vuelta_2_e,2,apto,tabla_clasi_2_e)
                 fecha_1_s(fixure_vuelta_3_e,3,apto,tabla_clasi_3_e)
                 fecha_1_s(fixure_vuelta_4_e,4,apto,tabla_clasi_4_e)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e)  
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e)  
                 mostrar_datos_selecciones(1)
                 input("")
                 print("FECHA 4 DEL CLASIFICATORIO AL MUNDIAL AMERICA")
@@ -11122,21 +10036,21 @@ while (contador < 21):
                 fecha_1_s(fixure_vuelta_2_a,2,apto,tabla_clasi_2_a)
                 fecha_1_s(fixure_vuelta_3_a,3,apto,tabla_clasi_3_a)
                 fecha_1_s(fixure_vuelta_4_a,4,apto,tabla_clasi_4_a)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a)  
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a)  
                 mostrar_datos_selecciones(2)
                 input("")
                 print("FECHA 4 DEL CLASIFICATORIO AL MUNDIAL AFRICA")
                 input("")
                 fecha_1_s(fixure_vuelta_1_f,1,apto,tabla_clasi_1_f)
                 fecha_1_s(fixure_vuelta_2_f,2,apto,tabla_clasi_2_f)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f)  
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f)  
                 mostrar_datos_selecciones(3)
                 input("")
                 print("FECHA 4 DEL CLASIFICATORIO AL MUNDIAL ASIA")
                 input("")
                 fecha_1_s(fixure_vuelta_1_s,1,apto,tabla_clasi_1_s)
                 fecha_1_s(fixure_vuelta_2_s,2,apto,tabla_clasi_2_s)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s)  
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s)  
                 mostrar_datos_selecciones(4)
                 input("")
             if ronda_ida_num == 30:
@@ -11147,7 +10061,7 @@ while (contador < 21):
                 fecha_2_s(fixure_vuelta_2_e,2,apto,tabla_clasi_2_e)
                 fecha_2_s(fixure_vuelta_3_e,3,apto,tabla_clasi_3_e)
                 fecha_2_s(fixure_vuelta_4_e,4,apto,tabla_clasi_4_e)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e)  
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e)  
                 mostrar_datos_selecciones(1)
                 input("")
                 print("FECHA 5 DEL CLASIFICATORIO AL MUNDIAL AMERICA")
@@ -11156,21 +10070,21 @@ while (contador < 21):
                 fecha_2_s(fixure_vuelta_2_a,2,apto,tabla_clasi_2_a)
                 fecha_2_s(fixure_vuelta_3_a,3,apto,tabla_clasi_3_a)
                 fecha_2_s(fixure_vuelta_4_a,4,apto,tabla_clasi_4_a)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a)  
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a)  
                 mostrar_datos_selecciones(2)
                 input("")
                 print("FECHA 5 DEL CLASIFICATORIO AL MUNDIAL AFRICA")
                 input("")
                 fecha_2_s(fixure_vuelta_1_f,1,apto,tabla_clasi_1_f)
                 fecha_2_s(fixure_vuelta_2_f,2,apto,tabla_clasi_2_f)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f)  
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f)  
                 mostrar_datos_selecciones(3)
                 input("")
                 print("FECHA 5 DEL CLASIFICATORIO AL MUNDIAL ASIA")
                 input("")
                 fecha_2_s(fixure_vuelta_1_s,1,apto,tabla_clasi_1_s)
                 fecha_2_s(fixure_vuelta_2_s,2,apto,tabla_clasi_2_s)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s)  
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s)  
                 mostrar_datos_selecciones(4)
                 input("")
             if ronda_ida_num == 35:
@@ -11181,13 +10095,13 @@ while (contador < 21):
                 fecha_3_s(fixure_vuelta_2_e,2,apto,tabla_clasi_2_e)
                 fecha_3_s(fixure_vuelta_3_e,3,apto,tabla_clasi_3_e)
                 fecha_3_s(fixure_vuelta_4_e,4,apto,tabla_clasi_4_e)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e)  
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e)  
                 mostrar_datos_selecciones(1)
                 input("")
-                clas_e_1,segundo_4_e = obtener_primer_y_segundo_equipo(tabla_clasi_1_e) 
-                clas_e_2,segundo_4_e = obtener_primer_y_segundo_equipo(tabla_clasi_2_e)
-                clas_e_3,segundo_4_e = obtener_primer_y_segundo_equipo(tabla_clasi_3_e)
-                clas_e_4,segundo_4_e = obtener_primer_y_segundo_equipo(tabla_clasi_4_e)  
+                clas_e_1,segundo_4_e = fct.obtener_primer_y_segundo_equipo(tabla_clasi_1_e) 
+                clas_e_2,segundo_4_e = fct.obtener_primer_y_segundo_equipo(tabla_clasi_2_e)
+                clas_e_3,segundo_4_e = fct.obtener_primer_y_segundo_equipo(tabla_clasi_3_e)
+                clas_e_4,segundo_4_e = fct.obtener_primer_y_segundo_equipo(tabla_clasi_4_e)  
                 clas_europa = [clas_e_1,clas_e_2,clas_e_3,clas_e_4]
                 input("")
                 print("LOS EUROPEOS CLASIFICADOS AL MUNDIAL SON")
@@ -11203,13 +10117,13 @@ while (contador < 21):
                 fecha_3_s(fixure_vuelta_2_a,2,apto,tabla_clasi_2_a)
                 fecha_3_s(fixure_vuelta_3_a,3,apto,tabla_clasi_3_a)
                 fecha_3_s(fixure_vuelta_4_a,4,apto,tabla_clasi_4_a)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a)
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a)
                 mostrar_datos_selecciones(2)
                 input("")
-                clas_a_1,segundo_4_e = obtener_primer_y_segundo_equipo(tabla_clasi_1_a) 
-                clas_a_2,segundo_4_e = obtener_primer_y_segundo_equipo(tabla_clasi_2_a)
-                clas_a_3,segundo_4_e = obtener_primer_y_segundo_equipo(tabla_clasi_3_a)
-                clas_a_4,segundo_4_e = obtener_primer_y_segundo_equipo(tabla_clasi_4_a)  
+                clas_a_1,segundo_4_e = fct.obtener_primer_y_segundo_equipo(tabla_clasi_1_a) 
+                clas_a_2,segundo_4_e = fct.obtener_primer_y_segundo_equipo(tabla_clasi_2_a)
+                clas_a_3,segundo_4_e = fct.obtener_primer_y_segundo_equipo(tabla_clasi_3_a)
+                clas_a_4,segundo_4_e = fct.obtener_primer_y_segundo_equipo(tabla_clasi_4_a)  
                 clas_america = [clas_a_1,clas_a_2,clas_a_3,clas_a_4]
                 input("")
                 print("LOS AMERICANOS CLASIFICADOS AL MUNDIAL SON")
@@ -11223,11 +10137,11 @@ while (contador < 21):
                 input("")
                 fecha_3_s(fixure_vuelta_1_f,1,apto,tabla_clasi_1_f)
                 fecha_3_s(fixure_vuelta_2_f,2,apto,tabla_clasi_2_f)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f)
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f)
                 mostrar_datos_selecciones(3)
                 input("")
-                clas_f_1,clas_f_3 = obtener_primer_y_segundo_equipo(tabla_clasi_1_f) 
-                clas_f_2,clas_f_4 = obtener_primer_y_segundo_equipo(tabla_clasi_2_f)
+                clas_f_1,clas_f_3 = fct.obtener_primer_y_segundo_equipo(tabla_clasi_1_f) 
+                clas_f_2,clas_f_4 = fct.obtener_primer_y_segundo_equipo(tabla_clasi_2_f)
                 clas_africa = [clas_f_1,clas_f_2,clas_f_3,clas_f_4]
                 input("")
                 print("LOS AFRICANOS CLASIFICADOS AL MUNDIAL SON")
@@ -11241,11 +10155,11 @@ while (contador < 21):
                 input("")
                 fecha_3_s(fixure_vuelta_1_s,1,apto,tabla_clasi_1_s)
                 fecha_3_s(fixure_vuelta_2_s,2,apto,tabla_clasi_2_s)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s)
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s)
                 mostrar_datos_selecciones(4)
                 input("")
-                clas_s_1,clas_s_3 = obtener_primer_y_segundo_equipo(tabla_clasi_1_s) 
-                clas_s_2,clas_s_4 = obtener_primer_y_segundo_equipo(tabla_clasi_2_s)
+                clas_s_1,clas_s_3 = fct.obtener_primer_y_segundo_equipo(tabla_clasi_1_s) 
+                clas_s_2,clas_s_4 = fct.obtener_primer_y_segundo_equipo(tabla_clasi_2_s)
                 clas_asia = [clas_s_1,clas_s_2,clas_s_3,clas_s_4]
                 input("")
                 print("LOS ASIATICOS CLASIFICADOS AL MUNDIAL SON")
@@ -11260,6 +10174,7 @@ while (contador < 21):
                         logro = f"Clasificacion al mundial con {player['nacionalidad']}"
                         logros_anuales.append(logro)
                         player["valoracion"] += 3
+                        player["dinero"] += 250000
         if contador == 14:
             if ronda_ida_num == 22:
                 print("CLASIFICATORIO AL MUNDIAL")
@@ -11270,7 +10185,7 @@ while (contador < 21):
                 fecha_2_s(fixure_ida_2_e,2,apto,tabla_clasi_2_e)
                 fecha_2_s(fixure_ida_3_e,3,apto,tabla_clasi_3_e)
                 fecha_2_s(fixure_ida_4_e,4,apto,tabla_clasi_4_e)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e) 
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e) 
                 mostrar_datos_selecciones(1)
                 input("")
                 print("FECHA 2 DEL CLASIFICATORIO AL MUNDIAL AMERICA")
@@ -11279,21 +10194,21 @@ while (contador < 21):
                 fecha_2_s(fixure_ida_2_a,2,apto,tabla_clasi_2_a)
                 fecha_2_s(fixure_ida_3_a,3,apto,tabla_clasi_3_a)
                 fecha_2_s(fixure_ida_4_a,4,apto,tabla_clasi_4_a)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a) 
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a) 
                 mostrar_datos_selecciones(2)
                 input("")
                 print("FECHA 2 DEL CLASIFICATORIO AL MUNDIAL AFRICA")
                 input("")
                 fecha_2_s(fixure_ida_1_f,1,apto,tabla_clasi_1_f)
                 fecha_2_s(fixure_ida_2_f,2,apto,tabla_clasi_2_f)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f) 
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f) 
                 mostrar_datos_selecciones(3)
                 input("")
                 print("FECHA 2 DEL CLASIFICATORIO AL MUNDIAL ASIA")
                 input("")
                 fecha_2_s(fixure_ida_1_s,1,apto,tabla_clasi_1_s)
                 fecha_2_s(fixure_ida_2_s,2,apto,tabla_clasi_2_s)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s) 
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s) 
                 mostrar_datos_selecciones(4)
                 input("")
             if ronda_ida_num == 24:
@@ -11305,7 +10220,7 @@ while (contador < 21):
                 fecha_3_s(fixure_ida_2_e,2,apto,tabla_clasi_2_e)
                 fecha_3_s(fixure_ida_3_e,3,apto,tabla_clasi_3_e)
                 fecha_3_s(fixure_ida_4_e,4,apto,tabla_clasi_4_e)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e) 
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e) 
                 mostrar_datos_selecciones(1)
                 input("")
                 print("FECHA 3 DEL CLASIFICATORIO AL MUNDIAL AMERICA")
@@ -11314,21 +10229,21 @@ while (contador < 21):
                 fecha_3_s(fixure_ida_2_a,2,apto,tabla_clasi_2_a)
                 fecha_3_s(fixure_ida_3_a,3,apto,tabla_clasi_3_a)
                 fecha_3_s(fixure_ida_4_a,4,apto,tabla_clasi_4_a)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a) 
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a) 
                 mostrar_datos_selecciones(2)
                 input("")
                 print("FECHA 3 DEL CLASIFICATORIO AL MUNDIAL AFRICA")
                 input("")
                 fecha_3_s(fixure_ida_1_f,1,apto,tabla_clasi_1_f)
                 fecha_3_s(fixure_ida_2_f,2,apto,tabla_clasi_2_f)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f) 
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f) 
                 mostrar_datos_selecciones(3)
                 input("")
                 print("FECHA 3 DEL CLASIFICATORIO AL MUNDIAL ASIA")
                 input("")
                 fecha_3_s(fixure_ida_1_s,1,apto,tabla_clasi_1_s)
                 fecha_3_s(fixure_ida_2_s,2,apto,tabla_clasi_2_s)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s) 
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s) 
                 mostrar_datos_selecciones(4)
                 input("")
                 
@@ -11340,7 +10255,7 @@ while (contador < 21):
                 fecha_1_s(fixure_vuelta_2_e,2,apto,tabla_clasi_2_e)
                 fecha_1_s(fixure_vuelta_3_e,3,apto,tabla_clasi_3_e)
                 fecha_1_s(fixure_vuelta_4_e,4,apto,tabla_clasi_4_e)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e)  
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e)  
                 mostrar_datos_selecciones(1)
                 input("")
                 print("FECHA 4 DEL CLASIFICATORIO AL MUNDIAL AMERICA")
@@ -11349,21 +10264,21 @@ while (contador < 21):
                 fecha_1_s(fixure_vuelta_2_a,2,apto,tabla_clasi_2_a)
                 fecha_1_s(fixure_vuelta_3_a,3,apto,tabla_clasi_3_a)
                 fecha_1_s(fixure_vuelta_4_a,4,apto,tabla_clasi_4_a)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a)  
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a)  
                 mostrar_datos_selecciones(2)
                 input("")
                 print("FECHA 4 DEL CLASIFICATORIO AL MUNDIAL AFRICA")
                 input("")
                 fecha_1_s(fixure_vuelta_1_f,1,apto,tabla_clasi_1_f)
                 fecha_1_s(fixure_vuelta_2_f,2,apto,tabla_clasi_2_f)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f)  
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f)  
                 mostrar_datos_selecciones(3)
                 input("")
                 print("FECHA 4 DEL CLASIFICATORIO AL MUNDIAL ASIA")
                 input("")
                 fecha_1_s(fixure_vuelta_1_s,1,apto,tabla_clasi_1_s)
                 fecha_1_s(fixure_vuelta_2_s,2,apto,tabla_clasi_2_s)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s)  
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s)  
                 mostrar_datos_selecciones(4)
                 input("")
             if ronda_ida_num == 30:
@@ -11374,7 +10289,7 @@ while (contador < 21):
                 fecha_2_s(fixure_vuelta_2_e,2,apto,tabla_clasi_2_e)
                 fecha_2_s(fixure_vuelta_3_e,3,apto,tabla_clasi_3_e)
                 fecha_2_s(fixure_vuelta_4_e,4,apto,tabla_clasi_4_e)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e)  
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e)  
                 mostrar_datos_selecciones(1)
                 input("")
                 print("FECHA 5 DEL CLASIFICATORIO AL MUNDIAL AMERICA")
@@ -11383,21 +10298,21 @@ while (contador < 21):
                 fecha_2_s(fixure_vuelta_2_a,2,apto,tabla_clasi_2_a)
                 fecha_2_s(fixure_vuelta_3_a,3,apto,tabla_clasi_3_a)
                 fecha_2_s(fixure_vuelta_4_a,4,apto,tabla_clasi_4_a)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a)  
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a)  
                 mostrar_datos_selecciones(2)
                 input("")
                 print("FECHA 5 DEL CLASIFICATORIO AL MUNDIAL AFRICA")
                 input("")
                 fecha_2_s(fixure_vuelta_1_f,1,apto,tabla_clasi_1_f)
                 fecha_2_s(fixure_vuelta_2_f,2,apto,tabla_clasi_2_f)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f)  
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f)  
                 mostrar_datos_selecciones(3)
                 input("")
                 print("FECHA 5 DEL CLASIFICATORIO AL MUNDIAL ASIA")
                 input("")
                 fecha_2_s(fixure_vuelta_1_s,1,apto,tabla_clasi_1_s)
                 fecha_2_s(fixure_vuelta_2_s,2,apto,tabla_clasi_2_s)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s)  
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s)  
                 mostrar_datos_selecciones(4)
                 input("")
             if ronda_ida_num == 35:
@@ -11408,13 +10323,13 @@ while (contador < 21):
                 fecha_3_s(fixure_vuelta_2_e,2,apto,tabla_clasi_2_e)
                 fecha_3_s(fixure_vuelta_3_e,3,apto,tabla_clasi_3_e)
                 fecha_3_s(fixure_vuelta_4_e,4,apto,tabla_clasi_4_e)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e)  
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e)  
                 mostrar_datos_selecciones(1)
                 input("")
-                clas_e_1,segundo_4_e = obtener_primer_y_segundo_equipo(tabla_clasi_1_e) 
-                clas_e_2,segundo_4_e = obtener_primer_y_segundo_equipo(tabla_clasi_2_e)
-                clas_e_3,segundo_4_e = obtener_primer_y_segundo_equipo(tabla_clasi_3_e)
-                clas_e_4,segundo_4_e = obtener_primer_y_segundo_equipo(tabla_clasi_4_e)  
+                clas_e_1,segundo_4_e = fct.obtener_primer_y_segundo_equipo(tabla_clasi_1_e) 
+                clas_e_2,segundo_4_e = fct.obtener_primer_y_segundo_equipo(tabla_clasi_2_e)
+                clas_e_3,segundo_4_e = fct.obtener_primer_y_segundo_equipo(tabla_clasi_3_e)
+                clas_e_4,segundo_4_e = fct.obtener_primer_y_segundo_equipo(tabla_clasi_4_e)  
                 clas_europa = [clas_e_1,clas_e_2,clas_e_3,clas_e_4]
                 input("")
                 print("LOS EUROPEOS CLASIFICADOS AL MUNDIAL SON")
@@ -11430,13 +10345,13 @@ while (contador < 21):
                 fecha_3_s(fixure_vuelta_2_a,2,apto,tabla_clasi_2_a)
                 fecha_3_s(fixure_vuelta_3_a,3,apto,tabla_clasi_3_a)
                 fecha_3_s(fixure_vuelta_4_a,4,apto,tabla_clasi_4_a)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a)
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a)
                 mostrar_datos_selecciones(2)
                 input("")
-                clas_a_1,segundo_4_e = obtener_primer_y_segundo_equipo(tabla_clasi_1_a) 
-                clas_a_2,segundo_4_e = obtener_primer_y_segundo_equipo(tabla_clasi_2_a)
-                clas_a_3,segundo_4_e = obtener_primer_y_segundo_equipo(tabla_clasi_3_a)
-                clas_a_4,segundo_4_e = obtener_primer_y_segundo_equipo(tabla_clasi_4_a)  
+                clas_a_1,segundo_4_e = fct.obtener_primer_y_segundo_equipo(tabla_clasi_1_a) 
+                clas_a_2,segundo_4_e = fct.obtener_primer_y_segundo_equipo(tabla_clasi_2_a)
+                clas_a_3,segundo_4_e = fct.obtener_primer_y_segundo_equipo(tabla_clasi_3_a)
+                clas_a_4,segundo_4_e = fct.obtener_primer_y_segundo_equipo(tabla_clasi_4_a)  
                 clas_america = [clas_a_1,clas_a_2,clas_a_3,clas_a_4]
                 input("")
                 print("LOS AMERICANOS CLASIFICADOS AL MUNDIAL SON")
@@ -11450,11 +10365,11 @@ while (contador < 21):
                 input("")
                 fecha_3_s(fixure_vuelta_1_f,1,apto,tabla_clasi_1_f)
                 fecha_3_s(fixure_vuelta_2_f,2,apto,tabla_clasi_2_f)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f)
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f)
                 mostrar_datos_selecciones(3)
                 input("")
-                clas_f_1,clas_f_3 = obtener_primer_y_segundo_equipo(tabla_clasi_1_f) 
-                clas_f_2,clas_f_4 = obtener_primer_y_segundo_equipo(tabla_clasi_2_f)
+                clas_f_1,clas_f_3 = fct.obtener_primer_y_segundo_equipo(tabla_clasi_1_f) 
+                clas_f_2,clas_f_4 = fct.obtener_primer_y_segundo_equipo(tabla_clasi_2_f)
                 clas_africa = [clas_f_1,clas_f_2,clas_f_3,clas_f_4]
                 input("")
                 print("LOS AFRICANOS CLASIFICADOS AL MUNDIAL SON")
@@ -11468,11 +10383,11 @@ while (contador < 21):
                 input("")
                 fecha_3_s(fixure_vuelta_1_s,1,apto,tabla_clasi_1_s)
                 fecha_3_s(fixure_vuelta_2_s,2,apto,tabla_clasi_2_s)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s)
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s)
                 mostrar_datos_selecciones(4)
                 input("")
-                clas_s_1,clas_s_3 = obtener_primer_y_segundo_equipo(tabla_clasi_1_s) 
-                clas_s_2,clas_s_4 = obtener_primer_y_segundo_equipo(tabla_clasi_2_s)
+                clas_s_1,clas_s_3 = fct.obtener_primer_y_segundo_equipo(tabla_clasi_1_s) 
+                clas_s_2,clas_s_4 = fct.obtener_primer_y_segundo_equipo(tabla_clasi_2_s)
                 clas_asia = [clas_s_1,clas_s_2,clas_s_3,clas_s_4]
                 input("")
                 print("LOS ASIATICOS CLASIFICADOS AL MUNDIAL SON")
@@ -11487,6 +10402,7 @@ while (contador < 21):
                         logro = f"Clasificacion al mundial con {player['nacionalidad']}"
                         logros_anuales.append(logro)
                         player["valoracion"] += 3
+                        player["dinero"] += 250000
         if contador == 18:
             if ronda_ida_num == 22:
                 print("CLASIFICATORIO AL MUNDIAL")
@@ -11497,7 +10413,7 @@ while (contador < 21):
                 fecha_2_s(fixure_ida_2_e,2,apto,tabla_clasi_2_e)
                 fecha_2_s(fixure_ida_3_e,3,apto,tabla_clasi_3_e)
                 fecha_2_s(fixure_ida_4_e,4,apto,tabla_clasi_4_e)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e) 
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e) 
                 mostrar_datos_selecciones(1)
                 input("")
                 print("FECHA 2 DEL CLASIFICATORIO AL MUNDIAL AMERICA")
@@ -11506,21 +10422,21 @@ while (contador < 21):
                 fecha_2_s(fixure_ida_2_a,2,apto,tabla_clasi_2_a)
                 fecha_2_s(fixure_ida_3_a,3,apto,tabla_clasi_3_a)
                 fecha_2_s(fixure_ida_4_a,4,apto,tabla_clasi_4_a)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a) 
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a) 
                 mostrar_datos_selecciones(2)
                 input("")
                 print("FECHA 2 DEL CLASIFICATORIO AL MUNDIAL AFRICA")
                 input("")
                 fecha_2_s(fixure_ida_1_f,1,apto,tabla_clasi_1_f)
                 fecha_2_s(fixure_ida_2_f,2,apto,tabla_clasi_2_f)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f) 
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f) 
                 mostrar_datos_selecciones(3)
                 input("")
                 print("FECHA 2 DEL CLASIFICATORIO AL MUNDIAL ASIA")
                 input("")
                 fecha_2_s(fixure_ida_1_s,1,apto,tabla_clasi_1_s)
                 fecha_2_s(fixure_ida_2_s,2,apto,tabla_clasi_2_s)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s) 
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s) 
                 mostrar_datos_selecciones(4)
                 input("")
             if ronda_ida_num == 24:
@@ -11532,7 +10448,7 @@ while (contador < 21):
                 fecha_3_s(fixure_ida_2_e,2,apto,tabla_clasi_2_e)
                 fecha_3_s(fixure_ida_3_e,3,apto,tabla_clasi_3_e)
                 fecha_3_s(fixure_ida_4_e,4,apto,tabla_clasi_4_e)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e) 
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e) 
                 mostrar_datos_selecciones(1)
                 input("")
                 print("FECHA 3 DEL CLASIFICATORIO AL MUNDIAL AMERICA")
@@ -11541,21 +10457,21 @@ while (contador < 21):
                 fecha_3_s(fixure_ida_2_a,2,apto,tabla_clasi_2_a)
                 fecha_3_s(fixure_ida_3_a,3,apto,tabla_clasi_3_a)
                 fecha_3_s(fixure_ida_4_a,4,apto,tabla_clasi_4_a)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a) 
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a) 
                 mostrar_datos_selecciones(2)
                 input("")
                 print("FECHA 3 DEL CLASIFICATORIO AL MUNDIAL AFRICA")
                 input("")
                 fecha_3_s(fixure_ida_1_f,1,apto,tabla_clasi_1_f)
                 fecha_3_s(fixure_ida_2_f,2,apto,tabla_clasi_2_f)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f) 
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f) 
                 mostrar_datos_selecciones(3)
                 input("")
                 print("FECHA 3 DEL CLASIFICATORIO AL MUNDIAL ASIA")
                 input("")
                 fecha_3_s(fixure_ida_1_s,1,apto,tabla_clasi_1_s)
                 fecha_3_s(fixure_ida_2_s,2,apto,tabla_clasi_2_s)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s) 
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s) 
                 mostrar_datos_selecciones(4)
                 input("")
                 
@@ -11567,7 +10483,7 @@ while (contador < 21):
                 fecha_1_s(fixure_vuelta_2_e,2,apto,tabla_clasi_2_e)
                 fecha_1_s(fixure_vuelta_3_e,3,apto,tabla_clasi_3_e)
                 fecha_1_s(fixure_vuelta_4_e,4,apto,tabla_clasi_4_e)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e)  
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e)  
                 mostrar_datos_selecciones(1)
                 input("")
                 print("FECHA 4 DEL CLASIFICATORIO AL MUNDIAL AMERICA")
@@ -11576,21 +10492,21 @@ while (contador < 21):
                 fecha_1_s(fixure_vuelta_2_a,2,apto,tabla_clasi_2_a)
                 fecha_1_s(fixure_vuelta_3_a,3,apto,tabla_clasi_3_a)
                 fecha_1_s(fixure_vuelta_4_a,4,apto,tabla_clasi_4_a)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a)  
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a)  
                 mostrar_datos_selecciones(2)
                 input("")
                 print("FECHA 4 DEL CLASIFICATORIO AL MUNDIAL AFRICA")
                 input("")
                 fecha_1_s(fixure_vuelta_1_f,1,apto,tabla_clasi_1_f)
                 fecha_1_s(fixure_vuelta_2_f,2,apto,tabla_clasi_2_f)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f)  
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f)  
                 mostrar_datos_selecciones(3)
                 input("")
                 print("FECHA 4 DEL CLASIFICATORIO AL MUNDIAL ASIA")
                 input("")
                 fecha_1_s(fixure_vuelta_1_s,1,apto,tabla_clasi_1_s)
                 fecha_1_s(fixure_vuelta_2_s,2,apto,tabla_clasi_2_s)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s)  
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s)  
                 mostrar_datos_selecciones(4)
                 input("")
             if ronda_ida_num == 30:
@@ -11601,7 +10517,7 @@ while (contador < 21):
                 fecha_2_s(fixure_vuelta_2_e,2,apto,tabla_clasi_2_e)
                 fecha_2_s(fixure_vuelta_3_e,3,apto,tabla_clasi_3_e)
                 fecha_2_s(fixure_vuelta_4_e,4,apto,tabla_clasi_4_e)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e)  
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e)  
                 mostrar_datos_selecciones(1)
                 input("")
                 print("FECHA 5 DEL CLASIFICATORIO AL MUNDIAL AMERICA")
@@ -11610,21 +10526,21 @@ while (contador < 21):
                 fecha_2_s(fixure_vuelta_2_a,2,apto,tabla_clasi_2_a)
                 fecha_2_s(fixure_vuelta_3_a,3,apto,tabla_clasi_3_a)
                 fecha_2_s(fixure_vuelta_4_a,4,apto,tabla_clasi_4_a)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a)  
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a)  
                 mostrar_datos_selecciones(2)
                 input("")
                 print("FECHA 5 DEL CLASIFICATORIO AL MUNDIAL AFRICA")
                 input("")
                 fecha_2_s(fixure_vuelta_1_f,1,apto,tabla_clasi_1_f)
                 fecha_2_s(fixure_vuelta_2_f,2,apto,tabla_clasi_2_f)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f)  
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f)  
                 mostrar_datos_selecciones(3)
                 input("")
                 print("FECHA 5 DEL CLASIFICATORIO AL MUNDIAL ASIA")
                 input("")
                 fecha_2_s(fixure_vuelta_1_s,1,apto,tabla_clasi_1_s)
                 fecha_2_s(fixure_vuelta_2_s,2,apto,tabla_clasi_2_s)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s)  
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s)  
                 mostrar_datos_selecciones(4)
                 input("")
             if ronda_ida_num == 35:
@@ -11635,13 +10551,13 @@ while (contador < 21):
                 fecha_3_s(fixure_vuelta_2_e,2,apto,tabla_clasi_2_e)
                 fecha_3_s(fixure_vuelta_3_e,3,apto,tabla_clasi_3_e)
                 fecha_3_s(fixure_vuelta_4_e,4,apto,tabla_clasi_4_e)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e)  
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_e,tabla_clasi_2_e,tabla_clasi_3_e,tabla_clasi_4_e)  
                 mostrar_datos_selecciones(1)
                 input("")
-                clas_e_1,segundo_4_e = obtener_primer_y_segundo_equipo(tabla_clasi_1_e) 
-                clas_e_2,segundo_4_e = obtener_primer_y_segundo_equipo(tabla_clasi_2_e)
-                clas_e_3,segundo_4_e = obtener_primer_y_segundo_equipo(tabla_clasi_3_e)
-                clas_e_4,segundo_4_e = obtener_primer_y_segundo_equipo(tabla_clasi_4_e)  
+                clas_e_1,segundo_4_e = fct.obtener_primer_y_segundo_equipo(tabla_clasi_1_e) 
+                clas_e_2,segundo_4_e = fct.obtener_primer_y_segundo_equipo(tabla_clasi_2_e)
+                clas_e_3,segundo_4_e = fct.obtener_primer_y_segundo_equipo(tabla_clasi_3_e)
+                clas_e_4,segundo_4_e = fct.obtener_primer_y_segundo_equipo(tabla_clasi_4_e)  
                 clas_europa = [clas_e_1,clas_e_2,clas_e_3,clas_e_4]
                 input("")
                 print("LOS EUROPEOS CLASIFICADOS AL MUNDIAL SON")
@@ -11657,13 +10573,13 @@ while (contador < 21):
                 fecha_3_s(fixure_vuelta_2_a,2,apto,tabla_clasi_2_a)
                 fecha_3_s(fixure_vuelta_3_a,3,apto,tabla_clasi_3_a)
                 fecha_3_s(fixure_vuelta_4_a,4,apto,tabla_clasi_4_a)
-                mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a)
+                fct.mostrar_tablas_fecha_fin(tabla_clasi_1_a,tabla_clasi_2_a,tabla_clasi_3_a,tabla_clasi_4_a)
                 mostrar_datos_selecciones(2)
                 input("")
-                clas_a_1,segundo_4_e = obtener_primer_y_segundo_equipo(tabla_clasi_1_a) 
-                clas_a_2,segundo_4_e = obtener_primer_y_segundo_equipo(tabla_clasi_2_a)
-                clas_a_3,segundo_4_e = obtener_primer_y_segundo_equipo(tabla_clasi_3_a)
-                clas_a_4,segundo_4_e = obtener_primer_y_segundo_equipo(tabla_clasi_4_a)  
+                clas_a_1,segundo_4_e = fct.obtener_primer_y_segundo_equipo(tabla_clasi_1_a) 
+                clas_a_2,segundo_4_e = fct.obtener_primer_y_segundo_equipo(tabla_clasi_2_a)
+                clas_a_3,segundo_4_e = fct.obtener_primer_y_segundo_equipo(tabla_clasi_3_a)
+                clas_a_4,segundo_4_e = fct.obtener_primer_y_segundo_equipo(tabla_clasi_4_a)  
                 clas_america = [clas_a_1,clas_a_2,clas_a_3,clas_a_4]
                 input("")
                 print("LOS AMERICANOS CLASIFICADOS AL MUNDIAL SON")
@@ -11677,11 +10593,11 @@ while (contador < 21):
                 input("")
                 fecha_3_s(fixure_vuelta_1_f,1,apto,tabla_clasi_1_f)
                 fecha_3_s(fixure_vuelta_2_f,2,apto,tabla_clasi_2_f)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f)
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_f,tabla_clasi_2_f)
                 mostrar_datos_selecciones(3)
                 input("")
-                clas_f_1,clas_f_3 = obtener_primer_y_segundo_equipo(tabla_clasi_1_f) 
-                clas_f_2,clas_f_4 = obtener_primer_y_segundo_equipo(tabla_clasi_2_f)
+                clas_f_1,clas_f_3 = fct.obtener_primer_y_segundo_equipo(tabla_clasi_1_f) 
+                clas_f_2,clas_f_4 = fct.obtener_primer_y_segundo_equipo(tabla_clasi_2_f)
                 clas_africa = [clas_f_1,clas_f_2,clas_f_3,clas_f_4]
                 input("")
                 print("LOS AFRICANOS CLASIFICADOS AL MUNDIAL SON")
@@ -11695,11 +10611,11 @@ while (contador < 21):
                 input("")
                 fecha_3_s(fixure_vuelta_1_s,1,apto,tabla_clasi_1_s)
                 fecha_3_s(fixure_vuelta_2_s,2,apto,tabla_clasi_2_s)
-                mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s)
+                fct.mostrar_tablas_fecha_fin_(tabla_clasi_1_s,tabla_clasi_2_s)
                 mostrar_datos_selecciones(4)
                 input("")
-                clas_s_1,clas_s_3 = obtener_primer_y_segundo_equipo(tabla_clasi_1_s) 
-                clas_s_2,clas_s_4 = obtener_primer_y_segundo_equipo(tabla_clasi_2_s)
+                clas_s_1,clas_s_3 = fct.obtener_primer_y_segundo_equipo(tabla_clasi_1_s) 
+                clas_s_2,clas_s_4 = fct.obtener_primer_y_segundo_equipo(tabla_clasi_2_s)
                 clas_asia = [clas_s_1,clas_s_2,clas_s_3,clas_s_4]
                 input("")
                 print("LOS ASIATICOS CLASIFICADOS AL MUNDIAL SON")
@@ -11714,6 +10630,7 @@ while (contador < 21):
                         logro = f"Clasificacion al mundial con {player['nacionalidad']}"
                         logros_anuales.append(logro)
                         player["valoracion"] += 3
+                        player["dinero"] += 250000
         
         if ronda_ida_num == 21:
             input("")
@@ -11724,7 +10641,7 @@ while (contador < 21):
             fecha_2_e(fixure_ida_2_europa,2,tabla2_europa)
             fecha_2_e(fixure_ida_3_europa,3,tabla3_europa)
             fecha_2_e(fixure_ida_4_europa,4,tabla4_europa)
-            mostrar_tablas_fecha_fin(tabla1_europa,tabla2_europa,tabla3_europa,tabla4_europa)
+            fct.mostrar_tablas_fecha_fin(tabla1_europa,tabla2_europa,tabla3_europa,tabla4_europa)
             goleadores_totales_europa()
             asistentes_totales_europa()
             mostrar_ama_europa()
@@ -11738,7 +10655,7 @@ while (contador < 21):
             fecha_2(fixure_ida_2,2,tabla2_champions)
             fecha_2(fixure_ida_3,3,tabla3_champions)
             fecha_2(fixure_ida_4,4,tabla4_champions)
-            mostrar_tablas_fecha_fin(tabla1_champions,tabla2_champions,tabla3_champions,tabla4_champions)
+            fct.mostrar_tablas_fecha_fin(tabla1_champions,tabla2_champions,tabla3_champions,tabla4_champions)
             goleadores_totales_champions()
             asistentes_totales_champions()
             mostrar_ama_champions()
@@ -11831,7 +10748,7 @@ while (contador < 21):
             fecha_3_e(fixure_ida_2_europa,2,tabla2_europa)
             fecha_3_e(fixure_ida_3_europa,3,tabla3_europa)
             fecha_3_e(fixure_ida_4_europa,4,tabla4_europa)
-            mostrar_tablas_fecha_fin(tabla1_europa,tabla2_europa,tabla3_europa,tabla4_europa)
+            fct.mostrar_tablas_fecha_fin(tabla1_europa,tabla2_europa,tabla3_europa,tabla4_europa)
             goleadores_totales_europa()
             asistentes_totales_europa()
             mostrar_ama_europa()
@@ -11844,7 +10761,7 @@ while (contador < 21):
             fecha_3(fixure_ida_2,2,tabla2_champions)
             fecha_3(fixure_ida_3,3,tabla3_champions)
             fecha_3(fixure_ida_4,4,tabla4_champions)
-            mostrar_tablas_fecha_fin(tabla1_champions,tabla2_champions,tabla3_champions,tabla4_champions)
+            fct.mostrar_tablas_fecha_fin(tabla1_champions,tabla2_champions,tabla3_champions,tabla4_champions)
             goleadores_totales_champions()
             asistentes_totales_champions()
             mostrar_ama_champions()
@@ -11859,7 +10776,7 @@ while (contador < 21):
             fecha_1_e(fixure_vuelta_2_europa,2,tabla2_europa)
             fecha_1_e(fixure_vuelta_3_europa,3,tabla3_europa)
             fecha_1_e(fixure_vuelta_4_europa,4,tabla4_europa)
-            mostrar_tablas_fecha_fin(tabla1_europa,tabla2_europa,tabla3_europa,tabla4_europa)
+            fct.mostrar_tablas_fecha_fin(tabla1_europa,tabla2_europa,tabla3_europa,tabla4_europa)
             goleadores_totales_europa()
             asistentes_totales_europa()
             mostrar_ama_europa()
@@ -11872,7 +10789,7 @@ while (contador < 21):
             fecha_1(fixure_vuelta_2,2,tabla2_champions)
             fecha_1(fixure_vuelta_3,3,tabla3_champions)
             fecha_1(fixure_vuelta_4,4,tabla4_champions)
-            mostrar_tablas_fecha_fin(tabla1_champions,tabla2_champions,tabla3_champions,tabla4_champions)
+            fct.mostrar_tablas_fecha_fin(tabla1_champions,tabla2_champions,tabla3_champions,tabla4_champions)
             goleadores_totales_champions()
             asistentes_totales_champions()
             mostrar_ama_champions()
@@ -11934,7 +10851,7 @@ while (contador < 21):
             fecha_2_e(fixure_vuelta_2_europa,2,tabla2_europa)
             fecha_2_e(fixure_vuelta_3_europa,3,tabla3_europa)
             fecha_2_e(fixure_vuelta_4_europa,4,tabla4_europa)
-            mostrar_tablas_fecha_fin(tabla1_europa,tabla2_europa,tabla3_europa,tabla4_europa)
+            fct.mostrar_tablas_fecha_fin(tabla1_europa,tabla2_europa,tabla3_europa,tabla4_europa)
             goleadores_totales_europa()
             asistentes_totales_europa()
             mostrar_ama_europa()
@@ -11947,7 +10864,7 @@ while (contador < 21):
             fecha_2(fixure_vuelta_2,2,tabla2_champions)
             fecha_2(fixure_vuelta_3,3,tabla3_champions)
             fecha_2(fixure_vuelta_4,4,tabla4_champions)
-            mostrar_tablas_fecha_fin(tabla1_champions,tabla2_champions,tabla3_champions,tabla4_champions)
+            fct.mostrar_tablas_fecha_fin(tabla1_champions,tabla2_champions,tabla3_champions,tabla4_champions)
             goleadores_totales_champions()
             asistentes_totales_champions()
             mostrar_ama_champions()
@@ -11993,15 +10910,15 @@ while (contador < 21):
             fecha_3_e(fixure_vuelta_2_europa,2,tabla2_europa)
             fecha_3_e(fixure_vuelta_3_europa,3,tabla3_europa)
             fecha_3_e(fixure_vuelta_4_europa,4,tabla4_europa)
-            mostrar_tablas_fecha_fin(tabla1_europa,tabla2_europa,tabla3_europa,tabla4_europa)
+            fct.mostrar_tablas_fecha_fin(tabla1_europa,tabla2_europa,tabla3_europa,tabla4_europa)
             goleadores_totales_europa()
             asistentes_totales_europa()
             mostrar_ama_europa()
             mostrar_rojas_europa()
-            primero_1_e,segundo_1_e = obtener_primer_y_segundo_equipo(tabla1_europa)
-            primero_2_e,segundo_2_e = obtener_primer_y_segundo_equipo(tabla2_europa)
-            primero_3_e,segundo_3_e = obtener_primer_y_segundo_equipo(tabla3_europa)
-            primero_4_e,segundo_4_e = obtener_primer_y_segundo_equipo(tabla4_europa)
+            primero_1_e,segundo_1_e = fct.obtener_primer_y_segundo_equipo(tabla1_europa)
+            primero_2_e,segundo_2_e = fct.obtener_primer_y_segundo_equipo(tabla2_europa)
+            primero_3_e,segundo_3_e = fct.obtener_primer_y_segundo_equipo(tabla3_europa)
+            primero_4_e,segundo_4_e = fct.obtener_primer_y_segundo_equipo(tabla4_europa)
             cuartos_europa_primeros = [primero_1_e,primero_2_e,primero_3_e,primero_4_e]
             cuartos_europa_segundos = [segundo_1_e,segundo_2_e,segundo_3_e,segundo_4_e]
             input("")
@@ -12012,15 +10929,15 @@ while (contador < 21):
             fecha_3(fixure_vuelta_2,2,tabla2_champions)
             fecha_3(fixure_vuelta_3,3,tabla3_champions)
             fecha_3(fixure_vuelta_4,4,tabla4_champions)
-            mostrar_tablas_fecha_fin(tabla1_champions,tabla2_champions,tabla3_champions,tabla4_champions)
+            fct.mostrar_tablas_fecha_fin(tabla1_champions,tabla2_champions,tabla3_champions,tabla4_champions)
             goleadores_totales_champions()
             asistentes_totales_champions()
             mostrar_ama_champions()
             mostrar_rojas_champions()
-            primero_1_c,segundo_1_c = obtener_primer_y_segundo_equipo(tabla1_champions)
-            primero_2_c,segundo_2_c = obtener_primer_y_segundo_equipo(tabla2_champions)
-            primero_3_c,segundo_3_c = obtener_primer_y_segundo_equipo(tabla3_champions)
-            primero_4_c,segundo_4_c = obtener_primer_y_segundo_equipo(tabla4_champions)
+            primero_1_c,segundo_1_c = fct.obtener_primer_y_segundo_equipo(tabla1_champions)
+            primero_2_c,segundo_2_c = fct.obtener_primer_y_segundo_equipo(tabla2_champions)
+            primero_3_c,segundo_3_c = fct.obtener_primer_y_segundo_equipo(tabla3_champions)
+            primero_4_c,segundo_4_c = fct.obtener_primer_y_segundo_equipo(tabla4_champions)
             cuartos_champions_primeros = [primero_1_c,primero_2_c,primero_3_c,primero_4_c]
             cuartos_champions_segundos = [segundo_1_c,segundo_2_c,segundo_3_c,segundo_4_c]
             
@@ -12329,18 +11246,26 @@ while (contador < 21):
             jugadores_sancionados_visitantes = sancionados_europa(final_europa[1])
             desancionar_europa(final_europa[0])
             desancionar_europa(final_europa[1])
+            jugadores_lesionados_locales = lesionados(final_europa[0])
+            jugadores_lesionados_visitantes = lesionados(final_europa[1])
+            deslesionar(final_europa[0])
+            deslesionar(final_europa[1])
             input("")
-            result,club1,goallocal,goalsvisitor,club2 = resultado(final_europa[0],final_europa[1])
+            result,club1,goallocal,goalsvisitor,club2 = fct.resultado(final_europa[0],final_europa[1])
             if goallocal != 0:
-                goles_totales = taq.goleadores(club1,goallocal,jugadores_sancionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+                goles_totales = taq.goleadores(club1,goallocal,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
                 for i in goles_totales:
                     sumar_gol_europa(i)
-                asistencias_local = taq.asistentes(club1,goallocal,jugadores_sancionados_locales,player["equipo"],player["valoracion"],player["nombre"]) 
+                asistencias_local = taq.asistentes(club1,goallocal,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"]) 
                 if len(asistencias_local) != 0:
                     for i in asistencias_local:
                         sumar_asistencia_europa(i)
-            amarillas_locales = taq.amarillas(club1,jugadores_sancionados_locales,player["equipo"],player["valoracion"],player["nombre"])
-            rojas_locales = taq.rojas(club1,jugadores_sancionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+            amarillas_locales = taq.amarillas(club1,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+            rojas_locales = taq.rojas(club1,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+            lesionados_locales = taq.lesiones(club1,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+            if len(lesionados_locales) != 0:
+                for i in lesionados_locales:
+                    actualizar_lesionados(i[0],i[1])
             if len(amarillas_locales) != 0:
                 for i in amarillas_locales:
                     actualizar_rustico_europa(i,1,0)     
@@ -12348,15 +11273,19 @@ while (contador < 21):
                 for i in rojas_locales:
                     actualizar_rustico_europa(i,0,1) 
             if goalsvisitor != 0:
-                goles_totalesv = taq.goleadores(club2,goalsvisitor,jugadores_sancionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+                goles_totalesv = taq.goleadores(club2,goalsvisitor,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
                 for i in goles_totalesv:
                     sumar_gol_europa(i)
-                asistenciasvisitor = taq.asistentes(club2,goalsvisitor,jugadores_sancionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+                asistenciasvisitor = taq.asistentes(club2,goalsvisitor,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
                 if len(asistenciasvisitor) != 0:
                     for i in asistenciasvisitor:
                         sumar_asistencia_europa(i)
-            amarillas_visitor = taq.amarillas(club2,jugadores_sancionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
-            rojas_visitor = taq.rojas(club2,jugadores_sancionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+            amarillas_visitor = taq.amarillas(club2,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+            rojas_visitor = taq.rojas(club2,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+            lesionados_visitantes = taq.lesiones(club2,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+            if len(lesionados_visitantes) != 0:
+                for i in lesionados_visitantes:
+                    actualizar_lesionados(i[0],i[1])
             if len(amarillas_visitor) != 0:
                 for i in amarillas_visitor:
                     actualizar_rustico_europa(i,1,0)
@@ -12372,8 +11301,8 @@ while (contador < 21):
                 campeon_europa = club2
                 perdedor_europa = club1
             else:
-                penalty_local = numero_random() 
-                penalty_visitor = numero_random()
+                penalty_local = fct.numero_random() 
+                penalty_visitor = fct.numero_random()
                 if penalty_local == penalty_visitor:
                     aux = penalty_visitor - 1
                     penalty_visitor = aux    
@@ -12402,18 +11331,26 @@ while (contador < 21):
             jugadores_sancionados_visitantes = sancionados_champions(final_champions[1])
             desancionar_champions(final_champions[0])
             desancionar_champions(final_champions[1])
+            jugadores_lesionados_locales = lesionados(final_champions[0])
+            jugadores_lesionados_visitantes = lesionados(final_champions[1])
+            deslesionar(final_champions[0])
+            deslesionar(final_champions[1])
             input("")
-            result,club1,goallocal,goalsvisitor,club2 = resultado(final_champions[0],final_champions[1])
+            result,club1,goallocal,goalsvisitor,club2 = fct.resultado(final_champions[0],final_champions[1])
             if goallocal != 0:
-                goles_totales = taq.goleadores(club1,goallocal,jugadores_sancionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+                goles_totales = taq.goleadores(club1,goallocal,jugadores_sancionados_locales,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
                 for i in goles_totales:
                     sumar_gol_champions(i)
-                asistencias_local = taq.asistentes(club1,goallocal,jugadores_sancionados_locales,player["equipo"],player["valoracion"],player["nombre"]) 
+                asistencias_local = taq.asistentes(club1,goallocal,jugadores_sancionados_locales,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"]) 
                 if len(asistencias_local) != 0:
                     for i in asistencias_local:
                         sumar_asistencia_champions(i)
-            amarillas_locales = taq.amarillas(club1,jugadores_sancionados_locales,player["equipo"],player["valoracion"],player["nombre"])
-            rojas_locales = taq.rojas(club1,jugadores_sancionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+            amarillas_locales = taq.amarillas(club1,jugadores_sancionados_locales,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+            rojas_locales = taq.rojas(club1,jugadores_sancionados_locales,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+            lesionados_locales = taq.lesiones(club1,jugadores_sancionados_locales,jugadores_lesionados_locales,player["equipo"],player["valoracion"],player["nombre"])
+            if len(lesionados_locales) != 0:
+                for i in lesionados_locales:
+                    actualizar_lesionados(i[0],i[1])
             if len(amarillas_locales) != 0:
                 for i in amarillas_locales:
                     actualizar_rustico_champions(i,1,0)     
@@ -12421,15 +11358,19 @@ while (contador < 21):
                 for i in rojas_locales:
                     actualizar_rustico_champions(i,0,1) 
             if goalsvisitor != 0:
-                goles_totalesv = taq.goleadores(club2,goalsvisitor,jugadores_sancionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+                goles_totalesv = taq.goleadores(club2,goalsvisitor,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
                 for i in goles_totalesv:
                     sumar_gol_champions(i)
-                asistenciasvisitor = taq.asistentes(club2,goalsvisitor,jugadores_sancionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+                asistenciasvisitor = taq.asistentes(club2,goalsvisitor,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
                 if len(asistenciasvisitor) != 0:
                     for i in asistenciasvisitor:
                         sumar_asistencia_champions(i)
-            amarillas_visitor = taq.amarillas(club2,jugadores_sancionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
-            rojas_visitor = taq.rojas(club2,jugadores_sancionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+            amarillas_visitor = taq.amarillas(club2,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+            rojas_visitor = taq.rojas(club2,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+            lesionados_visitantes = taq.lesiones(club2,jugadores_sancionados_visitantes,jugadores_lesionados_visitantes,player["equipo"],player["valoracion"],player["nombre"])
+            if len(lesionados_visitantes) != 0:
+                for i in lesionados_visitantes:
+                    actualizar_lesionados(i[0],i[1])
             if len(amarillas_visitor) != 0:
                 for i in amarillas_visitor:
                     actualizar_rustico_champions(i,1,0)
@@ -12445,8 +11386,8 @@ while (contador < 21):
                 campeon_champions = club2
                 perdedor_champions = club1
             else:
-                penalty_local = numero_random() 
-                penalty_visitor = numero_random()
+                penalty_local = fct.numero_random() 
+                penalty_visitor = fct.numero_random()
                 if penalty_local == penalty_visitor:
                     aux = penalty_visitor - 1
                     penalty_visitor = aux    
@@ -12468,7 +11409,6 @@ while (contador < 21):
             input("")
     campeon_carabaoo = campeon_carabao
     campeon_copa_italiaa = campeon_copa_italia
-    
     equipos_ordenados = sorted(tabla_premier, key=lambda x: (x[list(x.keys())[0]]['PTS'], x[list(x.keys())[0]]['GD']), reverse=True)
     for i, equipo in enumerate(equipos_ordenados, start=1):
         nombre_equipo = list(equipo.keys())[0]
@@ -12477,19 +11417,24 @@ while (contador < 21):
         if i == 20:
             if nombre_equipo == player["equipo"]:
                 player["valoracion"] -= 5
+                player["dinero"] -= 250000
         if i == 19:
             if nombre_equipo == player["equipo"]:
                 player["valoracion"] -= 5
+                player["dinero"] -= 250000
         if i == 18:
             if nombre_equipo == player["equipo"]:
                 player["valoracion"] -= 5
+                player["dinero"] -= 250000
         if nombre_equipo == player["equipo"]:
             if i == 2:
                 logro = f"segundo puesto en la Premier League con {nombre_equipo}"
                 logros_anuales.append(logro)
+                player["dinero"] += 750000
             elif i == 3:
                 logro = f"tercer puesto en la Premier League con {nombre_equipo}"
                 logros_anuales.append(logro)
+                player["dinero"] += 500000
     
     equipos_ordenados = sorted(tabla_championship, key=lambda x: (x[list(x.keys())[0]]['PTS'], x[list(x.keys())[0]]['GD']), reverse=True)
     for i, equipo in enumerate(equipos_ordenados, start=1):
@@ -12502,16 +11447,19 @@ while (contador < 21):
                 logros_anuales.append(logro)
                 if nombre_equipo == player["equipo"]:
                     player["valoracion"] += 4
+                    player["dinero"] += 250000
             if i == 2:
                 logro = f"ascenso en la Champioship con {nombre_equipo}"
                 logros_anuales.append(logro)
                 if nombre_equipo == player["equipo"]:
                     player["valoracion"] += 4
+                    player["dinero"] += 250000
             elif i == 3:
                 logro = f"ascenso en la Champioship con {nombre_equipo}"
                 logros_anuales.append(logro)
                 if nombre_equipo == player["equipo"]:
                     player["valoracion"] += 4
+                    player["dinero"] += 250000
     
     equipos_ordenados = sorted(tabla_serieA, key=lambda x: (x[list(x.keys())[0]]['PTS'], x[list(x.keys())[0]]['GD']), reverse=True)
     for i, equipo in enumerate(equipos_ordenados, start=1):
@@ -12521,19 +11469,24 @@ while (contador < 21):
         if i == 20:
             if nombre_equipo == player["equipo"]:
                 player["valoracion"] -= 5
+                player["dinero"] -= 250000
         if i == 19:
             if nombre_equipo == player["equipo"]:
                 player["valoracion"] -= 5
+                player["dinero"] -= 250000
         if i == 18:
             if nombre_equipo == player["equipo"]:
                 player["valoracion"] -= 5
+                player["dinero"] -= 250000
         if nombre_equipo == player["equipo"]:
             if i == 2:
                 logro = f"segundo puesto en la Serie A con {nombre_equipo}"
                 logros_anuales.append(logro)
+                player["dinero"] += 750000
             elif i == 3:
                 logro = f"tercer puesto en la Serie A con {nombre_equipo}"
                 logros_anuales.append(logro)
+                player["dinero"] += 500000
     
     equipos_ordenados = sorted(tabla_serieB, key=lambda x: (x[list(x.keys())[0]]['PTS'], x[list(x.keys())[0]]['GD']), reverse=True)
     for i, equipo in enumerate(equipos_ordenados, start=1):
@@ -12546,63 +11499,78 @@ while (contador < 21):
                 logros_anuales.append(logro)
                 if nombre_equipo == player["equipo"]:
                     player["valoracion"] += 4
+                    player["dinero"] += 250000
             if i == 2:
                 logro = f"ascenso en la Serie B con {nombre_equipo}"
                 logros_anuales.append(logro)
                 if nombre_equipo == player["equipo"]:
                     player["valoracion"] += 4
+                    player["dinero"] += 250000
             elif i == 3:
                 logro = f"ascenso en la Serie B con {nombre_equipo}"
                 logros_anuales.append(logro)
                 if nombre_equipo == player["equipo"]:
                     player["valoracion"] += 4
+                    player["dinero"] += 250000
     
     if perdedor_copa_italia == player["equipo"]: 
         logro = f'segundo puesto en la Copa Italia con {perdedor_copa_italia}'
+        player["dinero"] += 200000
         logros_anuales.append(logro)
         player["valoracion"] += 2
     if perdedor_carabao == player["equipo"]: 
         logro = f'segundo puesto en la Carabao Cup con {perdedor_carabao}'
+        player["dinero"] += 200000
         logros_anuales.append(logro)
         player["valoracion"] += 2
     if perdedor_champions == player["equipo"]: 
         logro = f'segundo puesto en la Champions League con {perdedor_champions}'
+        player["dinero"] += 500000
         logros_anuales.append(logro)
         player["valoracion"] += 3
     if perdedor_europa == player["equipo"]: 
         logro = f'segundo puesto en la Europa League con {perdedor_europa}'
+        player["dinero"] += 500000
         logros_anuales.append(logro)  
         player["valoracion"] += 2
     if perdedor_Semi_europa1 ==  player["equipo"]:
         logro = f'Semifinalista de la Europa League con {perdedor_Semi_europa1}'
+        player["dinero"] += 200000
         logros_anuales.append(logro) 
         player["valoracion"] += 1 
     if perdedor_Semi_europa2 ==  player["equipo"]:
         logro = f'Semifinalista de la Europa League con {perdedor_Semi_europa2}'
+        player["dinero"] += 200000
         logros_anuales.append(logro)  
         player["valoracion"] += 1
     if perdedor_Semi_champions1 ==  player["equipo"]:
         logro = f'Semifinalista de la Champions League con {perdedor_Semi_champions1}'
+        player["dinero"] += 250000
         logros_anuales.append(logro)  
         player["valoracion"] += 1
     if perdedor_Semi_champions2 ==  player["equipo"]:
         logro = f'Semifinalista de la Champions League con {perdedor_Semi_champions2}'
+        player["dinero"] += 250000
         logros_anuales.append(logro)
         player["valoracion"] += 1
     if perdedor_Semi_cara1 ==  player["equipo"]:
         logro = f'Semifinalista de la Carabao cup con {perdedor_Semi_cara1}'
+        player["dinero"] += 100000
         logros_anuales.append(logro)  
         player["valoracion"] += 1
     if perdedor_Semi_cara2 ==  player["equipo"]:
         logro = f'Semifinalista de la Carabao cup con {perdedor_Semi_cara2}'
+        player["dinero"] += 100000
         logros_anuales.append(logro)
         player["valoracion"] += 1
     if perdedor_Semi_copa_italia1 ==  player["equipo"]:
         logro = f'Semifinalista de la Copa Italia con {perdedor_Semi_copa_italia1}'
+        player["dinero"] += 100000
         logros_anuales.append(logro)  
         player["valoracion"] += 1
     if perdedor_Semi_copa_italia2 ==  player["equipo"]:
         logro = f'Semifinalista de la Copa Italia con {perdedor_Semi_copa_italia2}'
+        player["dinero"] += 100000
         logros_anuales.append(logro)
         player["valoracion"] += 1
     
@@ -12656,7 +11624,6 @@ while (contador < 21):
     print("")
     print(f'CAMPEON DE LA RECOPA DE EUROPA {ganador_recopa}')
     input("")
-    
     print(F'''
 LOS CAMPEONES DE ESTE AÑO SON:
 1. {campeon_premier} (Premier League)
@@ -12675,48 +11642,58 @@ LOS CAMPEONES DE ESTE AÑO SON:
     if ganador_recopa == player["equipo"]:
         player["valoracion"] += 2
         trofeo = f"Recopa De Europa ({ganador_recopa})"
+        player["dinero"] += 250000
         vitrina.append(trofeo)
     if campeon_europa == player["equipo"]:
         player["valoracion"] += 8
         trofeo = f"Europa League ({campeon_europa})"
+        player["dinero"] += 1000000
         vitrina.append(trofeo)
     if campeon_champions == player["equipo"]:
         player["valoracion"] += 10
         trofeo = f"Champions League ({campeon_champions})"
+        player["dinero"] += 2000000
         vitrina.append(trofeo)
     if campeon_premier == player["equipo"]:
         player["valoracion"] += 11
         trofeo = f"Premier League ({campeon_premier})"
+        player["dinero"] += 1500000
         vitrina.append(trofeo)
     if campeon_championship == player["equipo"]:
         player["valoracion"] += 3  
         trofeo = f"Sky By Championship ({campeon_championship})"
+        player["dinero"] += 1000000
         vitrina.append(trofeo)
     if campeon_carabaoo == player["equipo"]:
         player["valoracion"] += 4
         trofeo = f"Carabao Cup ({campeon_carabaoo})"
+        player["dinero"] += 500000
         vitrina.append(trofeo)
     if campeon_comunity == player["equipo"]:
         player["valoracion"] += 2   
         trofeo = f"Community Shield ({campeon_comunity})"
+        player["dinero"] += 250000
         vitrina.append(trofeo)
     if campeon_serieA == player["equipo"]:
         player["valoracion"] += 11
         trofeo = f"Serie A ({campeon_serieA})"
+        player["dinero"] += 1500000
         vitrina.append(trofeo)
     if campeon_serieB == player["equipo"]:
         player["valoracion"] += 3  
         trofeo = f"Serie B ({campeon_serieB})"
+        player["dinero"] += 1000000
         vitrina.append(trofeo)
     if campeon_copa_italiaa == player["equipo"]:
         player["valoracion"] += 4
         trofeo = f"Copa Italia ({campeon_copa_italiaa})"
+        player["dinero"] += 500000
         vitrina.append(trofeo)
     if campeon_recopa_italia == player["equipo"]:
         player["valoracion"] += 2   
         trofeo = f"Recopa Italiana ({campeon_recopa_italia})"
+        player["dinero"] += 250000
         vitrina.append(trofeo)
-    
     logros = mostrar_goleadores_asistentes()
     if contador in [1,3,5,7,9,11,13,15,17,19]:
         definir_datos_fin("e",1)
@@ -12753,7 +11730,6 @@ LOS CAMPEONES DE ESTE AÑO SON:
     actualizar_ranking_mostrar()
     guardar_datos_anuales(vitrina,logros_anuales)
     mostrar_datos_anuales()
-    
     if player["valoracion"] > 100:
         player["valoracion"] = 100
     if player["contrato"] != 0:
@@ -12773,17 +11749,13 @@ LOS CAMPEONES DE ESTE AÑO SON:
         if jugador["nombre"] == nombre_del_jugador:
             jugador["partidos"] = 0
             jugador["equipo"] = equipo_player
-
-    
     sky_by_championship_equipos,premier_league_equipos = divisionacomodar(tabla_premier,tabla_championship)
     serieA_equipos,serieB_equipos = divisionacomodar_i(tabla_serieA,tabla_serieB)
     resetear_tabla() 
     edad += 1
     contador += 1
-    
     if edad < 25: player["valoracion"] += 3
     elif edad > 30:player["valoracion"] -= 3
-
     print(f'tu valoracion es: {player["valoracion"]}')
 ruta_archivo = r'C:\Users\Uusario\Documents\portal\primer sitio web\proyectos\python_proyrctos\partidos\modo_carrera\datos_player.txt'
-agregar_dato(ruta_archivo,player)
+fct.agregar_dato(ruta_archivo,player)

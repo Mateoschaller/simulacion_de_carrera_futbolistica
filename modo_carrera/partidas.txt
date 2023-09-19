@@ -1,651 +1,4 @@
 1 {
-    "nombre": "Schaller",
-
-    "vitrina": [
-    [], [], [], [], [], [], [], [], [], [], [], [], [], [], 
-    ["Carabao Cup (Arsenal)", "Community Shield (Arsenal)"], 
-    [], 
-    ["Recopa De Europa (Arsenal)", "Champions League (Arsenal)"], 
-    [], []], 
-
-    "goles anuales": [3, 3, 4, 8, 5, 2, 4, 13, 9, 4, 25, 17, 22, 20, 24, 21, 18, 35, 25],262 
-
-    "asistencias anuales": [4, 3, 4, 1, 0, 2, 1, 2, 0, 5, 3, 3, 0, 4, 5, 8, 5, 2, 2],54
-
-    "amarillas anuales": [0, 2, 1, 3, 0, 1, 0, 1, 0, 0, 0, 1, 2, 1, 0, 0, 0, 2, 1], 15
-
-    "rojas anuales": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0], 1
-
-    "mvp de la fecha anuales": [0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 1, 1, 2, 2, 1, 2, 2, 0],13
-
-    "mvp del año anuales": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0], 1
-
-    "partidos jugados": [40, 40, 39, 39, 40, 38, 39, 39, 40, 39, 39, 39, 52, 48, 50, 46, 51, 48, 41],807
-
-    "equipo anual": ["Millwall", "Luton Town", "Luton Town", "Luton Town", "Bournemouth", "Bournemouth", "Coventry City", "Coventry City", "Everton", "Brentford", "Blackburn Rovers", "Sunderland", "Brigthon", "Brigthon", "Arsenal", "Arsenal", "Arsenal", "Manchester City", "Manchester City"], 
-
-    "logros anuales": [[], [], [], [], [], [], [], 
-    ["ascenso en la Champioship con Coventry City"], 
-    [], [], 
-    ["goleador de la Championship"], 
-    [], 
-    ["segundo puesto en la Europa League con Brigthon"], 
-    ["tercer puesto en la Premier League con Brigthon"], 
-    ["tercer puesto en la Premier League con Arsenal", "goleador de la Premier League"],
-    [], 
-    ["segundo puesto en la Premier League con Arsenal"], 
-    ["goleador de la Premier League", "mvp del año"],
-    []], 
-
-    "traspasos": ["Desde el libre al Millwall por $3M", "Desde el Millwall al Luton Town por $1M", "Renovacion con el Luton Town por $1M", "", "Desde el Luton Town al Bournemouth por $4M", "", "Desde el Bournemouth al Coventry City por $3M", "", "Desde el Coventry City al Everton por $18M", "Desde el Everton al Brentford por $29M", "Desde el Brentford al Blackburn Rovers por $1M", "Desde el Blackburn Rovers al Sunderland por $10M", "Desde el Sunderland al Brigthon por $60M", "", "Desde el Brigthon al Arsenal por $105M", "", "Renovacion con el Arsenal por $188M", "Desde el Arsenal al Manchester City por $190M", "", ""],
-
-    palmares
-    1.Champions League
-    1.Recopa De Europa
-    1.Community Shield
-    1.Carabao Cup
-
-    campeones de la premier league
-    2023. Arsenal (1)
-    2024. Manchester City (1)
-    2025. Manchester City (2)
-    2026. Liverpool (1)
-    2027. Chelsea (1)
-    2028. Arsenal (2)
-    2029. Liverpool (2)
-    2030. Arsenal (3)
-    2031. Arsenal (4)
-    2032. Arsenal (5)
-    2033. Manchester United (1)
-    2034. Manchester City (3)
-    2035. Manchester City (4)
-    2036. Liverpool (3)
-    2037. Manchester City (5)
-    2038. Chelsea (2)
-    2039. Manchester City (6)
-    2040. Arsenal (6)
-    2041. Arsenal (7)
-
-    campeones de la championship
-    2023. Swansea (1)
-    2024. Burnley (1)
-    2025. Swansea (2)
-    2026. Southampton (1)
-    2027. Newcastle (1)
-    2028. Aston Villa (1)
-    2029. Cardiff City (1)
-    2030. Millwall (1)
-    2031. Southampton (2)
-    2032. Middlesbrough (1)
-    2033. Sheffield United (1)
-    2034. Nottingham Forest (1)
-    2035. Southampton (3)
-    2036. Brentford (1)
-    2037. Nottingham Forest (2)
-    2038. Stoke City (1)
-    2039. Huddersfield Town (1)
-    2040. Leicester City (1)
-    2041. Preston North End (1)
-
-    campeones de la carabao cup
-    2023. Leeds United (1)
-    2024. Liverpool (1)
-    2025. Tottenham (1)
-    2026. Burnley (1)
-    2027. Swansea (1)
-    2028. Southampton (1)
-    2029. Aston Villa (1)
-    2030. Liverpool (2)
-    2031. Brigthon (1)
-    2032. Tottenham (1)
-    2033. Swansea (2)
-    2034. Fulham (1)
-    2035. Tottenham (2)
-    2036. Liverpool (3)
-    2037. Arsenal (1)
-    2038. Brigthon (2)
-    2039. Tottenham (4)
-    2040. Manchester United (1)
-    2041. Stoke City (1)
-
-    campeones de la community
-    2023. Arsenal (1)
-    2024. Burnley (1) 
-    2025. Swansea (1)
-    2026. Southampton (1)
-    2027. Chelsea (1)
-    2028. Arsenal (2)
-    2029. Liverpool (1)
-    2030. Arsenal (3)
-    2031. Arsenal (4)
-    2032. Arsenal (6)
-    2033. Manchester United (1)
-    2034. Manchester City (1)
-    2035. Southampton (2)
-    2036. Arsenal (7)
-    2037. Arsenal (8)
-    2038. Brigthon (1)
-    2039. Manchester City (2)
-    2040. Manchester United (2)
-    2041. Stoke City (1)
-
-    campeones de la champions league
-    2023. PSG (1)
-    2024. Milan (1)
-    2025. Bayern Munich (1)
-    2026. Atl.Madrid (1)
-    2027. Manchester City (1)
-    2028. Liverpool (1)
-    2029. Liverpool (2)
-    2030. Bayern Munich (2)
-    2031. Barcelona (1)
-    2032. PSG (2)
-    2033. O.Lyon (1)
-    2034. Real Madrid (1)
-    2035. Manchester City (2)
-    2036. Barcelona (2)
-    2037. Atl.Madrid (1)
-    2038. B.Dortmund (1)
-    2039. Arsenal (1)
-    2040. Barcelona (3)
-    2041. Real Madrid (2)
-
-    campeones de la europa league
-    2023. Napoli (1)
-    2024. Newcastle (1)
-    2025. Porto (1)
-    2026. Napoli (2)
-    2027. B.Leverkusen (1)
-    2028. Tottenham (1)
-    2029. Tottenham (2)
-    2030. Arsenal (1)
-    2031. Porto (2)
-    2032. Tottenham (3)
-    2033. Manchester City (1)
-    2034. Roma (1)
-    2035. Monaco (1)
-    2036. Manchester City (2)
-    2037. Wolverhampton (1)
-    2038. Roma (2)
-    2039. Watford (1)
-    2040. Monaco (2)
-    2041. Leipzig (1)
-
-    campeones de la recopa de europa
-    2023. Napoli (1)
-    2024. Milan (1) 
-    2025. Porto (1)
-    2026. Napoli (2)
-    2027. B.Leverkusen (1)
-    2028. Liverpool (1)
-    2029. Liverpool (2)
-    2030. Bayern Munich (1)
-    2031. Barcelona (1)
-    2032. PSG (1)
-    2033. O.Lyon (1)
-    2034. Roma (1)
-    2035. Monaco (1)
-    2036. Barcelona (2)
-    2037. Atl.Madrid (1)
-    2038. B.Dortmund (1)
-    2039. Arsenal (1)
-    2040. Monaco (2)
-    2041. Real Madrid (1)
-    }
-
-2 {
-    "nombre": "Schaller", 
-    
-    "vitrina": [
-    [], [], [], [], [], [], [], [], 
-    ["Carabao Cup (Brigthon)", "Community Shield (Brigthon)"], 
-    [], 
-    ["Premier League (Arsenal)", "Community Shield (Arsenal)"], 
-    [], [], 
-    ["Carabao Cup (Arsenal)", "Community Shield (Arsenal)"], 
-    [], [], [], [], []],
-    
-    "goles anuales": [5, 10, 7, 4, 6, 6, 9, 18, 10, 16, 26, 23, 26, 16, 20, 21, 19, 21, 14], 277
-    
-    "asistencias anuales": [3, 3, 1, 2, 5, 0, 2, 4, 1, 3, 4, 3, 8, 3, 4, 2, 6, 0, 2], 56
-    
-    "amarillas anuales": [1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 2, 1, 1, 0, 3, 1, 1, 0, 1], 14
-    
-    "rojas anuales": [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0], 2
-    
-    "mvp de la fecha anuales": [0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 2, 1, 2, 0, 0, 0, 0, 0, 1], 10
-    
-    "mvp del a\u00f1o anuales": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 0
-    
-    "partidos jugados": [37, 41, 39, 39, 41, 40, 39, 45, 45, 40, 54, 52, 45, 54, 45, 50, 48, 50, 39], 843
-    
-    "equipo anual": ["Bristol City", "Bristol City", "Bristol City", "West Bromwich Albion", "Nottingham Forest", "Leicester City", "Leicester City", "Leicester City", "Brigthon", "Brigthon", "Arsenal", "Manchester City", "Arsenal", "Arsenal", "Tottenham", "Manchester City", "Liverpool", "Manchester United", "Chelsea"], 
-    
-    "logros anuales": [
-    [], [], [], [], [], [], 
-    ["ascenso en la Champioship con Leicester City"], 
-    [], [], [], 
-    ["segundo puesto en la Champions League con Arsenal", "Semifinalista de la Carabao cup con Arsenal"], 
-    ["tercer puesto en la Premier League con Manchester City", "segundo puesto en la Champions League con Manchester City"], 
-    ["segundo puesto en la Premier League con Arsenal"], 
-    ["Semifinalista de la Champions League con Arsenal", "goleador de la Carabo Cup", "asistente de la Carabo Cup"], 
-    ["tercer puesto en la Premier League con Tottenham"], 
-    ["tercer puesto en la Premier League con Manchester City", "segundo puesto en la Champions League con Manchester City", "goleador de la Champions League"],
-    ["tercer puesto en la Premier League con Liverpool"], 
-    ["Semifinalista de la Europa League con Manchester United"], 
-    []], 
-    
-    "traspasos": ["Renovacion con el Bristol City por $4M", "", "", "Renovacion con el West Bromwich Albion por $1M", "Renovacion con el Nottingham Forest por $14M", "Renovacion con el Leicester City por $16M", "", "", "Renovacion con el Brigthon por $99M", "", "Renovacion con el Arsenal por $170M", "Renovacion con el Manchester City por $123M", "Renovacion con el Arsenal por $195M", "", "Renovacion con el Tottenham por $194M", "Renovacion con el Manchester City por $106M", "Renovacion con el Liverpool por $164M", "Renovacion con el Manchester United por $132M", "Renovacion con el Chelsea por $169M", "Renovacion con el Liverpool por $191M"], 
-
-    palmares
-    3.Community Shield
-    2.Carabao Cup
-    1.Premier League
-
-    campeones de la premier league
-    2023. Chelsea (1)
-    2024. Arsenal (1)
-    2025. Manchester City (1)
-    2026. Manchester United (1)
-    2027. Liverpool (1)
-    2028. Tottenham (1)
-    2029. Chelsea (2)
-    2030. Tottenham (2)
-    2031. Tottenham (3)
-    2032. Arsenal (2)
-    2033. Arsenal (3)
-    2034. Arsenal (4)
-    2035. Newcastle (1)
-    2036. Manchester United (2)
-    2037. Newcastle (2)
-    2038. Liverpool (2)
-    2039. Manchester United (3)
-    2040. Tottenham (4)
-    2041. Manchester United (4)
-
-    campeones de la championship
-    2023. Norwich (1)
-    2024. Watford (1)
-    2025. Wolverhampton (1)
-    2026. Sunderland (1)
-    2027. Swansea (1)
-    2028. Aston Villa (1)
-    2029. Wolverhampton (2)
-    2030. Leeds United (1)
-    2031. Huddersfield Town (1)
-    2032. Sheffield United (1) 
-    2033. West ham (1)
-    2034. Stoke City (1)
-    2035. Sunderland (2)
-    2036. Leicester City (1)
-    2037. Fulham (1)
-    2038. Everton (1) 
-    2039. Birmingham (1)
-    2040. Burnley (1)
-    2041. Leicester City (2)
-
-    campeones de la carabao cup
-    2023. Newcastle (1)
-    2024. Tottenham (1)
-    2025. Manchester United (1)
-    2026. Tottenham (2)
-    2027. Manchester United (2)
-    2028. Liverpool (1)
-    2029. West ham (1)
-    2030. Liverpool (2)
-    2031. Brigthon (1)
-    2032. Liverpool (3)
-    2033. Manchester City (1)
-    2034. Tottenham (3)
-    2035. Liverpool (4)
-    2036. Arsenal (1)
-    2037. Norwich (1)
-    2038. Liverpool (5)
-    2039. Leeds United (1)
-    2040. Arsenal (2)
-    2041. Brigthon (2)
-
-    campeones de la community
-    2023. Chelsea (1)
-    2024. Watford (1)
-    2025. Manchester United (1)
-    2026. Manchester United (2)
-    2027. Manchester United (3)
-    2028. Tottenham (1)
-    2029. Chelsea (2)
-    2030. Tottenham (2)
-    2031. Brigthon (1)
-    2032. Arsenal (1)
-    2033. Arsenal (2)
-    2034. Arsenal (3)
-    2035. Liverpool (1)
-    2036. Arsenal (4)
-    2037. Newcastle (1)
-    2038. Liverpool (2)
-    2039. Manchester United (4)
-    2040. Tottenham (3)
-    2041. Manchester United (5)
-
-    campeones de la champions league
-    2023. Arsenal (1)
-    2024. Barcelona (1)
-    2025. Real Madrid (1)
-    2026. Chelsea (1)
-    2027. Tottenham (1)
-    2028. Barcelona (2)
-    2029. Liverpool (1)
-    2030. Ajax (1)
-    2031. Milan (1)
-    2032. Milan (2)
-    2033. Bayern Munich (1)
-    2034. Barcelona (3)
-    2035. Atl.Madrid (1)
-    2036. B.Dortmund (1)
-    2037. Real Madrid (2)
-    2038. Bayern Munich (2)
-    2039. PSG (1)
-    2040. PSG (2)
-    2041. Atl.Madrid (2)
-
-    campeones de la europa league
-    2023. Sevilla (1)
-    2024. Sevilla (2)
-    2025. Manchester City (1)
-    2026. Napoli (1)
-    2027. Roma (1)
-    2028. Brugge (1)
-    2029. Porto (1)
-    2030. Roma (2)
-    2031. Sporting Lisboa (1)
-    2032. Manchester United (1)
-    2033. Liverpool (1)
-    2034. Roma (3)
-    2035. Liverpool (2)
-    2036. Porto (2)
-    2037. Leipzig (1)
-    2038. Frankfurt (1)
-    2039. Brigthon (1)
-    2040. Everton (1)
-    2041. Monaco (1)
-
-    campeones de la recopa de europa
-    2023. Sevilla (1)
-    2024. Barcelona (1)
-    2025. Real Madrid (1)
-    2026. Chelsea (1)
-    2027. Tottenham (1)
-    2028. Brugge (1)
-    2029. Liverpool (1)
-    2030. Roma (1)
-    2031. Milan (1)
-    2032. Manchester United (1)
-    2033. Liverpool (2)
-    2034. Roma (2)
-    2035. Atl.Madrid (1)
-    2036. B.Dortmund (1)
-    2037. Leipzig (1)
-    2038. Bayern Munich (1)
-    2039. PSG (1)
-    2040. PSG (2)
-    2041. Monaco (1)
-    }
-
-3 {
-    "nombre": "Schaller", 
-    
-    "nacionalidad": "Argentina", 
-    
-    "vitrina": [
-    [], [], [], [], [], 
-    ["Sky By Championship (Leicester City)"], 
-    [], [], 
-    ["Copa America (Argentina)"], 
-    [], [], [], 
-    ["Europa League (Liverpool)"], 
-    ["Premier League (Liverpool)"], 
-    [], [], [], [], 
-    ["Carabao Cup (Tottenham)"], 
-    []], 
-    
-    "goles anuales": [8, 1, 4, 6, 8, 11, 11, 8, 18, 19, 16, 26, 26, 31, 23, 30, 33, 30, 29, 31], 369
-    
-    "asistencias anuales": [2, 3, 2, 3, 3, 4, 5, 1, 0, 5, 1, 7, 3, 4, 4, 4, 7, 10, 9, 2], 79
-    
-    "amarillas anuales": [1, 0, 0, 0, 0, 0, 0, 2, 2, 4, 1, 1, 1, 0, 1, 0, 0, 2, 0, 1], 16
-    
-    "rojas anuales": [0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0], 3
-    
-    "mvp de la fecha anuales": [0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 1, 2, 2, 1, 3], 15
-    
-    "mvp del año anuales": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1],5 
-    
-    "partidos jugados": [39, 40, 41, 39, 38, 40, 39, 39, 45, 45, 47, 53, 54, 53, 46, 52, 51, 54, 54, 50], 919
-    
-    "equipo anual": ["Coventry City", "Coventry City", "Preston North End", "Bristol City", "Bristol City", "Leicester City", "Leicester City", "Crystal Palace", "Crystal Palace", "Newcastle", "Newcastle", "Newcastle", "Liverpool", "Liverpool", "Liverpool", "Tottenham", "Tottenham", "Tottenham", "Tottenham", "Manchester City"], 
-    
-    "logros anuales": [
-    [], [], [], [], [], 
-    ["ascenso en la Champioship con Leicester City"], 
-    [], [], [], 
-    ["Clasificacion al mundial con Argentina"], 
-    [], 
-    ["semifinalista del mundial  con Argentina"], 
-    ["semifinalista de la copa america con Argentina", "segundo puesto en la Premier League con Liverpool"], 
-    ["Clasificacion al mundial con Argentina", "goleador de la clasificacion al mundial americana", "mvp del año"], 
-    ["segundo puesto en la Premier League con Liverpool"], 
-    ["segundo puesto en la Premier League con Tottenham", "Semifinalista de la Champions League con Tottenham", "goleador de la Premier League"], 
-    ["finalista de la copa america con Argentina", "segundo puesto en la Premier League con Tottenham", "asistente de la copa america", "goleador de la Premier League", "mvp del año"], 
-    ["asistente de la clasificacion al mundial americana", "mvp del año"], 
-    ["segundo puesto en la Premier League con Tottenham", "Semifinalista de la Champions League con Tottenham", "asistente de la Premier League", "mvp del año"], 
-    ["tercer puesto en la Premier League con Manchester City", "Semifinalista de la Carabao cup con Manchester City", "goleador de la Carabo Cup", "mvp del año"]],
-    
-    "traspasos": ["Desde el libre al Coventry City por $1M", "", "Desde el Coventry City al Preston North End por $3M", "Desde el Preston North End al Bristol City por $4M", "", "Desde el Bristol City al Leicester City por $23M", "", "Desde el Leicester City al Crystal Palace por $49M", "", "Desde el Crystal Palace al Newcastle por $57M", "", "", "Desde el Newcastle al Liverpool por $191M", "", "Renovacion con el Liverpool por $137M", "Desde el Liverpool al Tottenham por $180M", "Renovacion con el Tottenham por $155M", "", "", "Desde el Tottenham al Manchester City por $167M", ""], 
-
-    palmares
-    1.Sky By Championship
-    1.Copa America
-    1.Europa League
-    1.Premier League
-    1.Carabao Cup
-
-    campeones de la premier league
-    2023. Brigthon (1)
-    2024. Manchester United (1)
-    2025. Chelsea (1)
-    2026. Liverpool (1)
-    2027. Tottenham (1)
-    2028. Newcastle (1)
-    2029. Manchester United (2)
-    2030. Chelsea (2)
-    2031. Chelsea (3)
-    2032. Brigthon (2)
-    2033. Manchester United (3)
-    2034. Manchester City (1)
-    2035. Tottenham (2)
-    2036. Liverpool (2)
-    2037. Tottenham (3)
-    2038. Crystal Palace (1)
-    2039. Manchester United (4)
-    2040. Chelsea (4)
-    2041. Manchester City (2)
-    2042. Manchester United (5)
-
-    campeones de la championship
-    2023. Swansea (1)
-    2024. Sheffield United (1)
-    2025. Leeds United (1)
-    2026. Huddersfield Town (1)
-    2027. Burnley (1)
-    2028. Leicester City (1)
-    2029. Watford (1)
-    2030. Fulham (1)
-    2031. Stoke City (1)
-    2032. Swansea (2)
-    2033. Southampton (1)
-    2034. Aston Villa (1)
-    2035. Leeds United (2)
-    2036. Burnley (2)
-    2037. West Bromwich Albion (1)
-    2038. Southampton (2)
-    2039. Wolverhampton (1)
-    2040. Hull City (1)
-    2041. Leeds United (3)
-    2042. Swansea (3)
-
-    campeones de la carabao cup
-    2023. Aston Villa (1)
-    2024. Leicester City (1)
-    2025. Arsenal (1)
-    2026. Manchester United (1)
-    2027. Tottenham (1)
-    2028. Chelsea (1)
-    2029. Liverpool (1)
-    2030. Chelsea (2)
-    2031. Liverpool (2)
-    2032. Manchester City (1)
-    2033. Manchester United (2)
-    2034. Manchester City (2)
-    2035. Tottenham (2)
-    2036. Aston Villa (2)
-    2037. Manchester City (3)
-    2038. Aston Villa (3)
-    2039. Chelsea (3)
-    2040. Liverpool (3)
-    2041. Tottenham (3)
-    2042. Chelsea (4)
-
-    campeones de la community
-    2023. Brigthon (1)
-    2024. Manchester United (1)
-    2025. Leeds United (1)
-    2026. Manchester United (2)
-    2027. Tottenham (1)
-    2028. Chelsea (1)
-    2029. Manchester United (3)
-    2030. Chelsea (2)
-    2031. Stoke City (1)
-    2032. Brigthon (2)
-    2033. Chelsea (3)
-    2034. Aston Villa (1)
-    2035. Tottenham (2)
-    2036. Aston Villa (2)
-    2037. Tottenham (3)
-    2038. Aston Villa (3)
-    2039. Manchester United (4)
-    2040. Chelsea (4)
-    2041. Manchester City (1)
-    2042. Manchester United (5)
-
-    campeones de la champions league
-    2023. PSG (1)
-    2024. Bayern Munich (1)
-    2025. Benfica (1)
-    2026. B.Dortmund (1)
-    2027. Inter (1)
-    2028. Tottenham (1)
-    2029. Tottenham (2)
-    2030. Barcelona (1)
-    2031. Manchester United (1)
-    2032. Juventus (1)
-    2033. B.Dortmund (2)
-    2034. B.Dortmund (3)
-    2035. B.Dortmund (4)
-    2036. Real Madrid (1)
-    2037. Inter (2)
-    2038. Milan (1)
-    2039. Bayern Munich (2)
-    2040. Inter (3)
-    2041. Milan (2)
-    2042. B.Dortmund (5)
-
-    campeones de la europa league
-    2023. Aston Villa (1)
-    2024. Brugge (1)
-    2025. Sporting Lisboa (1)
-    2026. Newcastle (1)
-    2027. Manchester United (1)
-    2028. Brentford (1)
-    2029. Sporting Lisboa (2)
-    2030. Frankfurt (1)
-    2031. B.Leverkusen (1)
-    2032. B.Leverkusen (2)
-    2033. Porto (1)
-    2034. Tottenham (1)
-    2035. Liverpool (1)
-    2036. Manchester United (2)
-    2037. Manchester City (1)
-    2038. Sporting Lisboa (3)
-    2039. Chelsea (1)
-    2040. Porto (2)
-    2041. Manchester United (3)
-    2042. Brigthon (1)
-
-    campeones de la recopa de europa
-    2023. Aston Villa (1)
-    2024. Bayern Munich (1)
-    2025. Sporting Lisboa (1)
-    2026. Newcastle (1)
-    2027. Inter (1)
-    2028. Tottenham (1)
-    2029. Tottenham (2)
-    2030. Barcelona (1)
-    2031. Manchester United (1)
-    2032. Juventus (1)
-    2033. B.Dortmund (1)
-    2034. Tottenham (3)
-    2035. B.Dortmund (2)
-    2036. Real Madrid (1)
-    2037. Manchester City (1)
-    2038. Sporting Lisboa (2)
-    2039. Chelsea (1)
-    2040. Porto (1)
-    2041. Manchester United (2)
-    2042. B.Dortmund (3)
-
-    campeones de la eurocpa
-    2023. España (1)
-    2027. Alemania (1)
-    2031. Alemania (2)
-    2035. Holanda (1)
-    2039. Italia (1)
-
-    campeones de la copa america
-    2023. Estados Unidos (1)
-    2027. Estados Unidos (2)
-    2031. Argentina (1)
-    2035. Peru (1)
-    2039. Uruguay (1)
-
-    campeones de la copa asiatica
-    2023. China (1)
-    2027. Qatar (1)
-    2031. Corea del Sur (1)
-    2035. Japon (1)
-    2039. Israel (1)
-
-    campeones de la copa africana
-    2023. Marruecos (1)
-    2027. Camerun (1)
-    2031. Ghana (1)
-    2035. Egipto (1)
-    2039. Nigeria (1)
-
-    campeones de la finalissima
-    2023. Estados Unidos (1)
-    2027. Alemania (1)
-    2031. Alemania (2)
-    2035. Peru (1)
-    2039. Nigeria (1)
-
-    campeones del mundial
-    2026. Alemania (1)
-    2030. España (1)
-    2034. Estados Unidos (1)
-    2038. España (2)
-    2042. España (3)
-    }
-
-4 {
     
     "nombre": "Schaller", 
     
@@ -672,7 +25,20 @@
     
     "partidos jugados": [39, 36, 42, 40, 40, 40, 40, 39, 39, 40, 41, 44, 43, 45, 45, 47, 53, 45, 52, 52], 862
     
-    "equipo anual": ["Coventry City", "Bristol City", "Bristol City", "Bristol City", "Luton Town", "Cardiff City", "Birmingham", "Wolverhampton", "Wolverhampton", "Swansea", "West Bromwich Albion", "West Bromwich Albion", "Brigthon", "Brigthon", "Manchester United", "Arsenal", "Arsenal", "Manchester City", "Manchester City", "Liverpool"], 
+    "equipo anual": [
+        "Coventry City", 
+        "Bristol City", "Bristol City", "Bristol City", 
+        "Luton Town",
+        "Cardiff City", 
+        "Birmingham", 
+        "Wolverhampton", "Wolverhampton", 
+        "Swansea", 
+        "West Bromwich Albion", "West Bromwich Albion", 
+        "Brigthon", "Brigthon", 
+        "Manchester United", 
+        "Arsenal", "Arsenal", 
+        "Manchester City", "Manchester City", 
+        "Liverpool"], 
     
     "logros anuales": [[], [], 
     ["Semifinalista de la Carabao cup con Bristol City"], 
@@ -940,7 +306,7 @@
     1.656 Alemania
     1.604 Portugal}
 
-5 {
+2 {
     "nombre": "Schaller",
     
     "nacionalidad": "Argentina", 
@@ -966,7 +332,18 @@
     
     "partidos jugados": [37, 40, 39, 38, 40, 40, 38, 39, 44, 46, 53, 50, 53, 46, 41, 53, 50, 58, 44, 59], 908
     
-    "equipo anual": ["Preston North End", "Preston North End", "West Bromwich Albion", "West Bromwich Albion", "West Bromwich Albion", "Huddersfield Town", "Middlesbrough", "Huddersfield Town", "Huddersfield Town", "Brigthon", "Brigthon", "Manchester United", "Manchester United", "Manchester United", "Manchester City", "Manchester United", "Chelsea", "Chelsea", "Chelsea", "Manchester City"], 
+    "equipo anual": [
+        "Preston North End", "Preston North End", 
+        "West Bromwich Albion", "West Bromwich Albion", "West Bromwich Albion", 
+        "Huddersfield Town", 
+        "Middlesbrough", 
+        "Huddersfield Town", "Huddersfield Town", 
+        "Brigthon", "Brigthon", 
+        "Manchester United", "Manchester United", "Manchester United", 
+        "Manchester City", 
+        "Manchester United", 
+        "Chelsea", "Chelsea", "Chelsea", 
+        "Manchester City"], 
     
     "logros anuales": 
     [[], [], [], [], [], [], [], [], 
@@ -1235,7 +612,7 @@
     1.642 Croacia
     1.636 Brasil}
 
-6 {
+3 {
     "nombre": "Schaller", 
     
     "nacionalidad": "Argentina", 
@@ -1264,7 +641,15 @@
     
     "partidos jugados": [41, 39, 42, 40, 39, 41, 40, 51, 47, 51, 46, 47, 52, 52, 56, 54, 53, 45, 51, 56], 943
     
-    "equipo anual": ["Preston North End", "Preston North End", "Preston North End", "West Bromwich Albion", "West Bromwich Albion", "West Bromwich Albion", "Burnley", "Newcastle", "Newcastle", "Tottenham", "Tottenham", "Arsenal", "Chelsea", "Liverpool", "Liverpool", "Liverpool", "Liverpool", "Liverpool", "Liverpool", "Liverpool"], 
+    "equipo anual": [
+        "Preston North End", "Preston North End", "Preston North End", 
+        "West Bromwich Albion", "West Bromwich Albion", "West Bromwich Albion", 
+        "Burnley", 
+        "Newcastle", "Newcastle", 
+        "Tottenham", "Tottenham", 
+        "Arsenal", 
+        "Chelsea",
+        "Liverpool", "Liverpool", "Liverpool", "Liverpool", "Liverpool", "Liverpool", "Liverpool"], 
     
     "logros anuales": 
     [["ascenso en la Champioship con Preston North End"], 
@@ -1277,7 +662,7 @@
     ["tercer puesto en la Premier League con Chelsea"], 
     ["Clasificacion al mundial con Argentina", "segundo puesto en la Premier League con Liverpool", "mvp del año"], 
     ["semifinalista de la copa america con Argentina", "Semifinalista de la Carabao cup con Liverpool"], 
-    ["semifinalista del mundial  con Argentina", "Semifinalista de la Champions League con Liverpool", "goleador de la Champions League"], 
+    ["semifinalista del mundial con Argentina", "Semifinalista de la Champions League con Liverpool", "goleador de la Champions League"], 
     ["segundo puesto en la Europa League con Liverpool", "goleador de la Europa League"], 
     ["Clasificacion al mundial con Argentina", "tercer puesto en la Premier League con Liverpool"], 
     [], 
@@ -1537,6 +922,811 @@
     1.642 Japon
     1.612 Egipto
     1.587 Uruguay
-    1.571 Iran
-}
+    1.571 Iran              }
+
+4 {
+    "nombre": "Schaller", 
     
+    "nacionalidad": "Argentina", 
+    
+    "vitrina": [
+        [], [], [], [], [], [], [], [], [],
+        ["Serie B (Cagliari)"], 
+        ["Recopa De Europa (Cagliari)", "Europa League (Cagliari)"], 
+        ["Mundial (Argentina)"], 
+        ["Serie A (Inter)", "Recopa Italiana (Inter)"], 
+        ["Premier League (Tottenham)"], 
+        [], [], 
+        ["Premier League (Chelsea)", "Carabao Cup (Chelsea)", "Community Shield (Chelsea)"], 
+        [], [], 
+        ["Mundial (Argentina)", "Europa League (Chelsea)"]], 
+         
+    "goles anuales": [3, 4, 2, 3, 5, 6, 7, 16, 11, 23, 24, 16, 24, 37, 19, 19, 20, 22, 22, 27], 310
+    
+    "asistencias anuales": [1, 4, 2, 0, 6, 4, 4, 0, 1, 7, 4, 3, 7, 6, 5, 4, 2, 5, 4, 1], 70
+    
+    "amarillas anuales": [0, 2, 2, 0, 0, 1, 1, 3, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1], 15
+    
+    "rojas anuales": [0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 1], 6
+    
+    "mvp de la fecha anuales": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 0, 0, 2, 1, 2, 1], 9
+    
+    "mvp del año anuales": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0], 1
+    
+    "partidos jugados": [35, 35, 39, 40, 40, 34, 39, 39, 40, 42, 51, 46, 53, 59, 45, 55, 49, 45, 48, 52], 886
+    
+    "equipo anual": [
+        "Preston North End", "Preston North End", "Preston North End", 
+        "Como", "Como", "Como", "Como", 
+        "Venezia", "Venezia", 
+        "Cagliari", "Cagliari", "Cagliari", 
+        "Inter", 
+        "Tottenham", 
+        "Liverpool", "Liverpool", 
+        "Chelsea", "Chelsea", "Chelsea", "Chelsea"],
+
+    "logros anuales": [
+        [], [], [], [], [], [], [], [], [], 
+        ["ascenso en la Serie B con Cagliari"], 
+        ["semifinalista de la copa america con Argentina", "goleador de la Europa League"], 
+        [], 
+        ["finalista de la copa america con Argentina"], 
+        ["Clasificacion al mundial con Argentina", "Semifinalista de la Champions League con Tottenham", "Semifinalista de la Carabao cup con Tottenham", "goleador de la Premier League", "mvp del año"], 
+        ["semifinalista de la copa america con Argentina", "segundo puesto en la Premier League con Liverpool"], 
+        ["tercer puesto en la Premier League con Liverpool", "Semifinalista de la Europa League con Liverpool"], 
+        ["goleador de la Carabo Cup"], 
+        ["Clasificacion al mundial con Argentina"], 
+        ["finalista de la copa america con Argentina", "tercer puesto en la Premier League con Chelsea", "Semifinalista de la Europa League con Chelsea"], 
+        ["tercer puesto en la Premier League con Chelsea", "goleador de la Europa League"]], 
+        
+        "traspasos": 
+        ["Desde el libre al Preston North End por $1M", "", "", "Desde el Preston North End al Como por $5M", "", "", "Renovacion con el Como por $1M", "Desde el Como al Venezia por $1M", "", "Desde el Venezia al Cagliari por $29M", "", "", "Desde el Cagliari al Inter por $120M", "Desde el Inter al Tottenham por $108M", "Desde el Tottenham al Liverpool por $154M", "", "Desde el Liverpool al Chelsea por $100M", "", "Renovacion con el Chelsea por $121M", "", "Desde el Chelsea al Milan por $193M"], 
+        
+        "dinero": 31303000
+
+    Palmares
+    2. Mundial
+    2. Premier League
+    2. Europa League
+    1. Serie A
+    1. Serie B
+    1. Carabao Cup
+    1. Recopa Italiana
+    1. Community Shield
+    1. Recopa de Europa
+        
+    campeones de la premier league
+    2023. Manchester United (1)
+    2024. Liverpool (1)
+    2025. Tottenham (1)
+    2026. Manchester City (1)
+    2027. Arsenal (1)
+    2028. Manchester United (2)
+    2029. Tottenham (2)
+    2030. Tottenham (3)
+    2031. Chelsea (1)
+    2032. Arsenal (2)
+    2033. Liverpool (2)
+    2034. Manchester United (3)
+    2035. Liverpool (3)
+    2036. Tottenham (4)
+    2037. Tottenham (5)
+    2038. Arsenal (3)
+    2039. Chelsea (2)
+    2040. Newcastle (1)
+    2041. Manchester United (4)
+    2042. Tottenham (6)
+
+    campeones de la championship
+    2023. Swansea (1)
+    2024. Watford (1)
+    2025. Bournemouth (1)
+    2026. Newcastle (1)
+    2027. Bournemouth (2)
+    2028. Swansea (2)
+    2029. Leeds United (1)
+    2030. Leicester City (1)
+    2031. Leeds United (2)
+    2032. Norwich (1)
+    2033. Cardiff City (1)
+    2034. Sunderland (1)
+    2035. Sheffield United (1)
+    2036. Crystal Palace (1)
+    2037. Sunderland (2)
+    2038. Blackburn Rovers (1)
+    2039. West ham (1)
+    2040. Stoke City (1)
+    2041. Aston Villa (1)
+    2042. Swansea (3)
+
+    campeones de la carabao cup
+    2023. Liverpool (1)
+    2024. Brentford (1)
+    2025. Liverpool (2)
+    2026. Stoke City (1)
+    2027. Crystal Palace (1)
+    2028. Crystal Palace (2)
+    2029. Burnley (1)
+    2030. Crystal Palace (3)
+    2031. Cardiff City (1)
+    2032. Newcastle (1)
+    2033. Chelsea (1)
+    2034. Brigthon (1)
+    2035. Chelsea (3)
+    2036. Manchester United (1)
+    2037. Manchester United (2)
+    2038. Arsenal (1)
+    2039. Chelsea (4)
+    2040. Manchester City (1)
+    2041. Swansea (1)
+    2042. Newcastle (2)
+
+    campeones de la community
+    2023. Swansea (1)
+    2024. Liverpool (1)
+    2025. Tottenham (1)
+    2026. Stoke City (1)
+    2027. Arsenal (1)
+    2028. Manchester United (1)
+    2029. Tottenham (2)
+    2030. Tottenham (3)
+    2031. Chelsea (1)
+    2032. Newcastle (1)
+    2033. Liverpool (2)
+    2034. Brigthon (1)
+    2035. Liverpool (3)
+    2036. Manchester United (2)
+    2037. Tottenham (4)
+    2038. Arsenal (2)
+    2039. Chelsea (2)
+    2040. Manchester City (1)
+    2041. Manchester United (3)
+    2042. Newcastle (2)
+
+    campeones de la Serie A
+    2023. Juventus (1)
+    2024. Inter (1)
+    2025. Milan (1)
+    2026. Napoli (1)
+    2027. Lazio (1)
+    2028. Juventus (2)
+    2029. Juventus (3)
+    2030. Milan (2)
+    2031. Napoli (2)
+    2032. Juventus (4)
+    2033. Inter (2)
+    2034. Fiorentina (1)
+    2035. Inter (3)
+    2036. Inter (3)
+    2037. Inter (5)
+    2038. Roma (1)
+    2039. Roma (2)
+    2040. Milan (3)
+    2041. Inter (6)
+    2042. Inter (7)
+
+    campeones de la Serie B
+    2023. Cagliari (1)
+    2024. Palermo (1)
+    2025. Sassuolo (1)
+    2026. Genoa (1)
+    2027. Cittadella (1)
+    2028. Parma (1)
+    2029. Salernitana (1)
+    2030. Hellas Verona (1)
+    2031. Cittadella (2)
+    2032. Cagliari (2)
+    2033. Cosenza (1)
+    2034. Genoa (2)
+    2035. Pisa (1)
+    2036. Cittadella (3)
+    2037. Empoli (1)
+    2038. Sampdoria (1)
+    2039. Bologna (1)
+    2040. Sassuolo (2)
+    2041. Lecce (1)
+    2042. Palermo (2)
+
+    campeones de la Copa Italia
+    2023. Inter (1)
+    2024. Inter (2)
+    2025. Roma (1)
+    2026. Juventus (1)
+    2027. Juventus (2)
+    2028. Genoa (1)
+    2029. Lecce (1)
+    2030. Empoli (1)
+    2031. Roma (2)
+    2032. Roma (3)
+    2033. Milan (1)
+    2034. Inter (3)
+    2035. Udinese (1)
+    2036. Inter (4)
+    2037. Fiorentina (1)
+    2038. Sampdoria (1)
+    2039. Inter (5)
+    2040. Lazio (1)
+    2041. Milan (2)
+    2042. Benevento (1)
+
+    campeones de la Recopa Italiana
+    2023. Cagliari (1)
+    2024. Inter (1)
+    2025. Roma (1)
+    2026. Napoli (1)
+    2027. Cittadella (1)
+    2028. Parma (1)
+    2029. Juventus (1)
+    2030. Milan (1)
+    2031. Napoli (2)
+    2032. Juventus (2)
+    2033. Milan (2)
+    2034. Inter (2)
+    2035. Inter (3)
+    2036. Inter (4)
+    2037. Inter (5)
+    2038. Sampdoria (1)
+    2039. Inter (6)
+    2040. Milan (3)
+    2041. Inter (7)
+    2042. Inter (8)
+
+    campeones de la champions league
+    2023. Real Madrid (1)
+    2024. Manchester United (1)
+    2025. Roma (1)
+    2026. Barcelona (1)
+    2027. PSG (1)
+    2028. PSG (2)
+    2029. O.Lyon (1)
+    2030. PSG (3)
+    2031. PSG (4)
+    2032. O.Lyon (2)
+    2033. B.Dortmund (1)
+    2034. B.Dortmund (2)
+    2035. Real Madrid (2)
+    2036. Chelsea (1)
+    2037. Atl.Madrid (1)
+    2038. PSG (5)
+    2039. Juventus (1)
+    2040. Bayern Munich (1)
+    2041. B.Dortmund (3)
+    2042. Tottenham (1)
+
+    campeones de la europa league
+    2023. Chelsea (1)
+    2024. Arsenal (1)
+    2025. Fiorentina (1)
+    2026. Juventus (1)
+    2027. Milan (1)
+    2028. Leipzig (1)
+    2029. Sevilla (1)
+    2030. Lazio (1)
+    2031. Milan (2)
+    2032. Tottenham (1)
+    2033. Cagliari (1)
+    2034. B.Leverkusen (1)
+    2035. B.Leverkusen (2)
+    2036. Milan (3)
+    2037. Tottenham (2)
+    2038. Genoa (1)
+    2039. Liverpool (1)
+    2040. Frankfurt (1)
+    2041. Milan (4)
+    2042. Chelsea (2)
+
+    campeones de la recopa de europa
+    2023. Chelsea (1)
+    2024. Manchester United (1)
+    2025. Roma (1)
+    2026. Barcelona (1)
+    2027. Milan (1)
+    2028. PSG (1)
+    2029. O.Lyon (1)
+    2030. PSG (2)
+    2031. PSG (3)
+    2032. Tottenham (1)
+    2033. Cagliari (1)
+    2034. B.Dortmund (1)
+    2035. Real Madrid (1)
+    2036. Milan (2)
+    2037. Atl.Madrid (1)
+    2038. PSG (4)
+    2039. Liverpool (1)
+    2040. Bayern Munich (1)
+    2041. Milan (3)
+    2042. Tottenham (2)
+
+    campeones de la eurocpa
+    2023. Italia (1)
+    2025. Inglaterra (1)
+    2027. Francia (1)
+    2029. Italia (2)
+    2031. Alemania (1)
+    2033. Portugal (1)
+    2035. Alemania (2)
+    2037. Belgica (1)
+    2039. España (1)
+    2041. Holanda (1)
+
+    campeones de la copa america
+    2023. Colombia (1)
+    2025. Colombia (2)
+    2027. Peru (1)
+    2029. Brasil (1)
+    2031. Brasil (2)
+    2033. Mexico (1)
+    2035. Peru (2)
+    2037. Canada (1)
+    2039. Peru (3)
+    2041. Estados Unidos (1)
+
+    campeones de la copa asiatica
+    2023. Australia (1)
+    2025. Japon (1)
+    2027. Iran (1)
+    2029. Qatar (1)
+    2031. Corea del Sur (1)
+    2033. Arabia Saudita (1)
+    2035. Iran (2)
+    2037. Australia (2)
+    2039. Israel (1)
+    2041. Australia (3)
+
+    campeones de la copa africana
+    2023. Senegal (1)
+    2025. Camerun (1)
+    2027. Marruecos (1)
+    2029. Tunez (1)
+    2031. Egipto (1)
+    2033. Marruecos (2)
+    2035. Egipto (2)
+    2037. Tunez (2)
+    2039. Senegal (2)
+    2041. Senegal (3)
+
+    campeones de la finalissima
+    2023. Italia (1)
+    2025. Inglaterra (1)
+    2027. Francia (1)
+    2029. Italia (2)
+    2031. Alemania (1)
+    2033. Arabia Saudita (1)
+    2035. Peru (1)
+    2037. Canada (1)
+    2039. España (1)
+    2041. Australia (1)
+
+    campeones del mundial
+    2026. Alemania (1)
+    2030. Inglaterra (1)
+    2034. Argentina (1)
+    2038. Inglaterra (2)
+    2042. Argentina (2)
+
+    mostrar tabla de mejores equipos
+    1.765 Inter
+    1.75 Napoli
+    1.74 Tottenham
+    1.734 Milan
+    1.729 Chelsea
+    1.725 Manchester United
+    1.713 Roma
+    1.705 Manchester City
+    1.703 Liverpool
+    1.697 Arsenal
+
+    mostrar tabla de mejores selecciones
+    1.948 Argentina
+    1.896 Italia
+    1.851 Inglaterra
+    1.843 Peru
+    1.826 Colombia
+    1.797 Francia
+    1.788 Brasil
+    1.716 Alemania
+    1.69 España
+    1.6 Portugal
+    
+        }
+
+5 {
+    
+    "nombre": "Schaller", 
+    
+    "nacionalidad": "Argentina",  
+    
+    "vitrina": [
+        [], [], [], [], [], [], [], [], [], 
+        ["Carabao Cup (Newcastle)"], 
+        ["Copa America (Argentina)"], 
+        [], [], 
+        ["Premier League (Tottenham)", "Carabao Cup (Tottenham)", "Community Shield (Tottenham)"], 
+        [], 
+        ["Copa Italia (Juventus)", "Recopa Italiana (Juventus)"], 
+        [], [], [], 
+        ["Recopa De Europa (Napoli)", "Europa League (Napoli)", "Serie A (Napoli)", "Recopa Italiana (Napoli)"]], 
+        
+        "goles anuales": [3, 6, 6, 12, 4, 13, 10, 4, 14, 16, 20, 27, 20, 37, 26, 31, 20, 29, 24, 24], 346
+        
+        "asistencias anuales": [4, 1, 1, 2, 4, 5, 1, 4, 6, 7, 3, 6, 6, 6, 10, 6, 4, 7, 3, 8], 94
+        
+        "amarillas anuales": [1, 2, 0, 1, 1, 1, 3, 1, 0, 1, 3, 2, 0, 0, 0, 0, 1, 0, 1, 0], 18
+        
+        "rojas anuales": [0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0], 4
+        
+        "mvp de la fecha anuales": [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 2, 1, 2, 0], 8
+        
+        "mvp del año anuales": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0], 1
+        
+        "partidos jugados": [39, 39, 38, 39, 39, 39, 38, 35, 40, 50, 57, 55, 52, 56, 48, 55, 40, 56, 50, 55], 920
+        
+        "equipo anual": [
+            "Bristol City", "Bristol City", "Bristol City", 
+            "Preston North End", 
+            "Southampton", "Southampton", "Southampton", 
+            "Udinese", 
+            "Norwich", 
+            "Newcastle", 
+            "Lazio", "Lazio", 
+            "Tottenham", "Tottenham", 
+            "Juventus", "Juventus", "Juventus", 
+            "Tottenham", "Tottenham", 
+            "Napoli"], 
+        
+        "logros anuales": [
+            [], [], [], [], 
+            ["Semifinalista de la Carabao cup con Southampton"], 
+            ["ascenso en la Champioship con Southampton"], 
+            [], 
+            ["asistente de la Copa Italia"], 
+            [], 
+            ["Clasificacion al mundial con Argentina", "asistente de la Premier League"], 
+            ["segundo puesto en la Serie A con Lazio", "segundo puesto en la Champions League con Lazio", "goleador de la copa america"], 
+            ["tercer puesto en la Serie A con Lazio", "Semifinalista de la Europa League con Lazio", "goleador de la Europa League"], 
+            ["Semifinalista de la Europa League con Tottenham"], 
+            ["Clasificacion al mundial con Argentina", "mvp del año"], 
+            ["semifinalista de la copa america con Argentina", "goleador de la copa america", "asistente de la copa america"], 
+            ["segundo puesto en la Serie A con Juventus", "Semifinalista de la Champions League con Juventus", "asistente de la Copa Italia", "goleador de la Champions League"], 
+            ["tercer puesto en la Serie A con Juventus", "asistente de la copa america"], 
+            ["Clasificacion al mundial con Argentina", "Semifinalista de la Champions League con Tottenham"], 
+            ["semifinalista de la copa america con Argentina", "segundo puesto en la Premier League con Tottenham", "Semifinalista de la Champions League con Tottenham", "Semifinalista de la Carabao cup con Tottenham"], 
+            []], 
+        
+        "traspasos": ["Desde el libre al Bristol City por $2M", "", "", "Desde el Bristol City al Preston North End por $1M", "Desde el Preston North End al Southampton por $11M", "", "", "Desde el Southampton al Udinese por $28M", "Desde el Udinese al Norwich por $44M", "Desde el Norwich al Newcastle por $92M", "Desde el Newcastle al Lazio por $72M", "", "Desde el Lazio al Tottenham por $395M", "", "Desde el Tottenham al Juventus por $394M", "", "", "Desde el Juventus al Tottenham por $349M", "", "Desde el Tottenham al Napoli por $342M", "Desde el Napoli al Manchester City por $228M"], 
+        
+        "dinero": 24361500
+
+
+    campeones de la premier league
+    2023. Newcastle (1)
+    2024. Chelsea (1)
+    2025. Arsenal (1)
+    2026. Arsenal (2)
+    2027. Liverpool (1)
+    2028. Liverpool (2)
+    2029. Manchester City (1)
+    2030. Manchester United (1)
+    2031. Manchester City (2)
+    2032. Arsenal (3)
+    2033. Chelsea (2)
+    2034. Chelsea (3)
+    2035. Newcastle (2)
+    2036. Tottenham (1)
+    2037. Liverpool (3)
+    2038. Manchester City (3)
+    2039. Arsenal (4)
+    2040. Manchester City (4)
+    2041. Chelsea (4)
+    2042. Manchester United (2)
+
+    campeones de la championship
+    2023. Cardiff City (1)
+    2024. Huddersfield Town (1)
+    2025. Hull City (1)
+    2026. Fulham (1)
+    2027. Cardiff City (2)
+    2028. Hull City (2)
+    2029. West Bromwich Albion (1)
+    2030. Stoke City (1)
+    2031. Sunderland (1)
+    2032. Norwich (1)
+    2033. Hull City (3)
+    2034. Wolverhampton (1)
+    2035. West ham (1)
+    2036. Watford (1)
+    2037. Crystal Palace (1)
+    2038. Fulham (2)
+    2039. Burnley (1)
+    2040. Aston Villa (1)
+    2041. Leeds United (1)
+    2042. Cardiff City (3)
+
+    campeones de la carabao cup
+    2023. Liverpool (1)
+    2024. Leicester City (1)
+    2025. Crystal Palace (1)
+    2026. Manchester United (1)
+    2027. Manchester City (1)
+    2028. Manchester City (2)
+    2029. Fulham (1)
+    2030. Aston Villa (1)
+    2031. Newcastle (1)
+    2032. Newcastle (2)
+    2033. Manchester United (2)
+    2034. Chelsea (1)
+    2035. Swansea (1)
+    2036. Tottenham (1)
+    2037. Manchester United (3)
+    2038. Tottenham (2)
+    2039. Liverpool (2)
+    2040. Liverpool (3)
+    2041. Manchester United (4)
+    2042. Manchester City (3)
+
+    campeones de la community
+    2023. Newcastle (1)
+    2024. Chelsea (1)
+    2025. Crystal Palace (1)
+    2026. Arsenal (1)
+    2027. Liverpool (1)
+    2028. Liverpool (2)
+    2029. Manchester City (1)
+    2030. Manchester United (1)
+    2031. Sunderland (1)
+    2032. Arsenal (2)
+    2033. Chelsea (2)
+    2034. Manchester City (2)
+    2035. Swansea (1)
+    2036. Tottenham (1)
+    2037. Crystal Palace (2)
+    2038. Manchester City (3)
+    2039. Liverpool (3)
+    2040. Manchester City (4)
+    2041. Manchester United (2)
+    2042. Manchester City (5)
+
+    campeones de la Serie A
+    2023. Napoli (1)
+    2024. Napoli (2)
+    2025. Inter (1)
+    2026. Juventus (1)
+    2027. Roma (1)
+    2028. Napoli (3)
+    2029. Napoli (4)
+    2030. Napoli (5)
+    2031. Napoli (6)
+    2032. Fiorentina (1)
+    2033. Inter (2)
+    2034. Milan (1)
+    2035. Napoli (7)
+    2036. Atalanta (1)
+    2037. Inter (3)
+    2038. Roma (2)
+    2039. Inter (4)
+    2040. Inter (5)
+    2041. Atalanta (2)
+    2042. Napoli (8)
+
+    campeones de la Serie B
+    2023. Cagliari (1)
+    2024. Genoa (1)
+    2025. Parma (1)
+    2026. Modena (1)
+    2027. Parma (2)
+    2028. Sassuolo (1)
+    2029. Monza (1)
+    2030. Pisa (1)
+    2031. Torino (1)
+    2032. Lecce (1)
+    2033. Hellas Verona (1)
+    2034. Spezia (1)
+    2035. Cagliari (2)
+    2036. Cremonese (1)
+    2037. Hellas Verona (2)
+    2038. Empoli (1)
+    2039. Bologna (1)
+    2040. Cittadella (1)
+    2041. Lecce (2)
+    2042. Salernitana (1)
+
+    campeones de la Copa Italia
+    2023. Milan (1)
+    2024. Napoli (1)
+    2025. Napoli (2)
+    2026. Bari (1)
+    2027. Napoli (3)
+    2028. Fiorentina (1)
+    2029. Napoli (4)
+    2030. Atalanta (1)
+    2031. Milan (2)
+    2032. Juventus (1)
+    2033. Napoli (5)
+    2034. Atalanta (2)
+    2035. Milan (3)
+    2036. Venezia (1)
+    2037. Sampdoria (1)
+    2038. Juventus (2)
+    2039. Empoli (1)
+    2040. Empoli (2)
+    2041. Cagliari (1)
+    2042. Juventus (3)
+
+    campeones de la Recopa Italiana
+    2023. Cagliari (1)
+    2024. Inter (1)
+    2025. Napoli (1)
+    2026. Juventus (1)
+    2027. Roma (1)
+    2028. Sassuolo (1)
+    2029. Napoli (2)
+    2030. Napoli (3)
+    2031. Napoli (4)
+    2032. Fiorentina (1)
+    2033. Inter (2)
+    2034. Milan (1)
+    2035. Napoli (5)
+    2036. Cremonese (1)
+    2037. Hellas Verona (1)
+    2038. Juventus (2)
+    2039. Inter (3)
+    2040. Inter (4)
+    2041. Atalanta (1)
+    2042. Napoli (6)
+
+    campeones de la champions league
+    2023. Juventus (1)
+    2024. Barcelona (1)
+    2025. Real Madrid (1)
+    2026. Arsenal (1)
+    2027. Liverpool (1)
+    2028. Real Madrid (2)
+    2029. Ajax (1)
+    2030. Liverpool (2)
+    2031. Arsenal (2)
+    2032. Fulham (1)
+    2033. Bayern Munich (1)
+    2034. Chelsea (1)
+    2035. Barcelona (2)
+    2036. Bayern Munich (2)
+    2037. Barcelona (3)
+    2038. Barcelona (4)
+    2039. Benfica (1)
+    2040. Chelsea (2)
+    2041. Juventus (2)
+    2042. Atl.Madrid (1)
+
+    campeones de la europa league
+    2023. Liverpool (1)
+    2024. Newcastle (1)
+    2025. Manchester United (1)
+    2026. Milan (1)
+    2027. Brentford (1)
+    2028. Liverpool (2)
+    2029. Arsenal (1)
+    2030. Juventus (1)
+    2031. Brugge (1)
+    2032. Manchester United (2)
+    2033. Roma (1)
+    2034. Liverpool (3)
+    2035. Leipzig (1)
+    2036. Atalanta (1)
+    2037. Atalanta (2)
+    2038. Fiorentina (1)
+    2039. Frankfurt (1)
+    2040. Liverpool (4)
+    2041. Liverpool (5)
+    2042. Napoli (1)
+
+    campeones de la recopa de europa
+    2023. Liverpool (1)
+    2024. Barcelona (1)
+    2025. Manchester United (1)
+    2026. Arsenal (1)
+    2027. Liverpool (2)
+    2028. Real Madrid (1)
+    2029. Ajax (1)
+    2030. Liverpool (3)
+    2031. Brugge (1)
+    2032. Manchester United (2)
+    2033. Bayern Munich (1)
+    2034. Liverpool (4)
+    2035. Leipzig (1)
+    2036. Atalanta (1)
+    2037. Atalanta (2)
+    2038. Barcelona (2)
+    2039. Benfica (1)
+    2040. Liverpool (5)
+    2041. Liverpool (6)
+    2042. Napoli (1)
+
+    campeones de la eurocpa
+    2023. Portugal (1)
+    2025. Francia (1)
+    2027. España (1)
+    2029. Polonia (1)
+    2031. Croacia (1)
+    2033. España (2)
+    2035. Croacia (2)
+    2037. Francia (2)
+    2039. Croacia (3)
+    2041. Italia (1)
+
+    campeones de la copa america
+    2023. Brasil (1)
+    2025. Argentina (1)
+    2027. Brasil (2)
+    2029. Colombia (1)
+    2031. Venezuela (1)
+    2033. Argentina (2)
+    2035. Brasil (3)
+    2037. Colombia (2)
+    2039. Paraguay (1)
+    2041. Colombia (3)
+
+    campeones de la copa asiatica
+    2023. Israel (1)
+    2025. Australia (1)
+    2027. China (1)
+    2029. Iran (1)
+    2031. Australia (2)
+    2033. Australia (3)
+    2035. Australia (4)
+    2037. Australia (5)
+    2039. Corea del Sur (1)
+    2041. Corea del Sur (2)
+
+    campeones de la copa africana
+    2023. Senegal (1)
+    2025. Senegal (2)
+    2027. Ghana (1)
+    2029. Nigeria (1)
+    2031. Nigeria (2)
+    2033. Tunez (1)
+    2035. Argelia (1)
+    2037. Ghana (2)
+    2039. Marruecos (1)
+    2041. Camerun (1)
+
+    campeones de la finalissima
+    2023. Portugal (1)
+    2025. Senegal (1)
+    2027. Brasil (1)
+    2029. Colombia (1)
+    2031. Croacia (1)
+    2033. España (1)
+    2035. Australia (1)
+    2037. Francia (1)
+    2039. Paraguay (1)
+    2041. Corea del Sur (1)
+
+    campeones del mundial
+    2026. Alemania (1)
+    2030. Italia (1)
+    2034. Australia (1)
+    2038. Inglaterra (1)
+    2042. Alemania (2)
+
+    mostrar tabla de mejores equipos
+    1.778 Napoli
+    1.76 Manchester City
+    1.752 Milan
+    1.748 Arsenal
+    1.739 Liverpool
+    1.736 Juventus
+    1.713 Roma
+    1.68 Manchester United
+    1.653 Inter
+    1.638 Tottenham
+
+    mostrar tabla de mejores selecciones
+    1.987 Argentina
+    1.961 Italia
+    1.944 Alemania
+    1.844 Francia
+    1.797 España
+    1.76 Brasil
+    1.719 Inglaterra
+    1.714 Uruguay
+    1.672 Holanda
+    1.672 Croacia}

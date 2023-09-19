@@ -1,0 +1,154 @@
+goles maximo: 377 (3)
+mas goles en un año: 37 Tottenham (4,5)
+maximas veces goleador: 4 (2,3,4,5)
+maximas veces goleador en un año: 2 Manchester City, Liverpool (2,3)
+maxima veces goleador en un club: 4 Liverpool (3)
+
+asistencias maximo: 94 (5)
+mas asistencias en un año: 10 Brigthon, Juventus (2,5)
+maximas veces asistente:  5 (5)
+maximas veces asistente en un año: 2 Brigthon (2)
+maxima veces asistente en un club: 3 Juventus (5)
+
+rojas maximo: 7 (3)
+mas rojas en un año: 3  Newcastle, Cagliari (3,4)
+
+amarillas maximo: 19 (3)
+mas amarillas en un año: 3 Tottenham, Cagliari (3,4)
+
+mvp de la fecha maximo: 16 (3)
+mas mvp de la fecha en un año: 4 Liverpool (3)
+
+mvp anuales maximo: 2 (3)
+
+partidos jugados maximo: 943 (3)
+mas partidos jugados en un año: 59 Manchester City (2)
+
+titulos: 12 (3)
+subcampeonatos: 7 (2)
+terceros: 5 (3)
+maximos titulos de un club: 22 Liverpool (5)
+maximas veces campeon en un año: 4 (5)
+maxima veces campeon en un club: 4 Chelsea, Napoli (4,5)
+
+Champoions League: 1 (3)
+subcampeonatos de champions: 1 (5)
+Semifinalista de champions: 3 (5)
+maximos titulos de champions de un club: PSG 5 (4)
+mas champions con un club: 1 Liverpool (3)
+maximo goleador de la Champoions: 1 (3,5)
+maximo asistente de la Champions: 0
+
+Europa League: 2 (4)
+subcampeonatos de Europa League: 1 (1,3)
+Semifinalista de Europa League: 2 (2,4,5)
+maximos titulos de Europa League de un club: 6 Liverpool (5)
+mas Europa League con un club: 1 Cagliari, Chelsea, Manchester City, Napoli (2,4,5)
+maximo goleador de la Europa League: 2 (3,4)
+maximo asistente de la Europa League: 2 (2)
+
+Supercopa Europea: 1 (3,4,5)
+maximos titulos de Supercopa Europea de un club: Liverpool 6 (5)
+mas Supercopa Europea con un club: 1 Manchester City,  Cagliari, Napoli (2,4,5)
+
+Serie A: 1 (4,5)
+subcampeonatos de Serie A: 2 (5)
+tercero de Serie A: 2 (5)
+maximos titulos de Serie A de un club: Napoli 8 (5)
+mas Serie A con un club: 1 Inter, Napoli (4,5)
+maximo goleador de la Serie A: 0
+maximo asistente de la Serie A: 0
+
+Serie B: 1 (4)
+Ascensos en Serie B: 1 (4)
+maximos titulos de Serie B de un club: Citadella 3 (4)
+mas Serie B con un club: 1 Cagliari (4)
+maximo goleador de la Serie B: 0
+maximo asistente de la Serie B: 0
+
+Copa Italiana: 1 (5)
+subcampeonatos de Copa Italiana: 0
+Semifinalista de Copa Italiana: 0
+maximos titulos de Copa Italiana de un club: Inter, Napoli 5 (4,5)
+mas Copa Italiana con un club: 1 Juventus (5)
+maximo goleador de la Copa Italiana: 0
+maximo asistente de la Copa Italiana: 2 (5)
+
+Recopa Italiana: 2 (5)
+maximos titulos de Recopa Italiana de un club: Inter 8 (4)
+mas Recopa Italiana con un club: 1 Inter, Napoli, Juventus (4,5)
+
+Premier League: 2 (1,4)
+subcampeonatos de Premier League:  2 (2)
+tercero de Premier League: 5 (3)
+maximos titulos de Premier League de un club: Tottenham 6 (4)
+mas Premier League con un club: 1 varios (1,2,4,5)
+maximo goleador de la Premier League: 1 (4)
+maximo asistente de la Premier League: 0
+
+Championship: 0
+Ascensos en Championship: 1 (2,3,5)
+maximos titulos de Championship de un club: Swansea 3 (4)
+mas Championship con un club: 0
+maximo goleador de la Championship: 0 
+maximo asistente de la Championship: 0 
+
+Carabao Cup: 2 (5)
+subcampeonatos de Carabao Cup: 1 (3)
+Semifinalista de Carabao Cup: 2 (1,3,5)
+maximos titulos de Carabao Cup de un club: Chelsea 6 (2)
+mas Carabao Cup con un club: 1 varios (3,4,5)
+maximo goleador de la Carabao Cup: 1 (4)
+maximo asistente de la Carabao Cup: 0
+
+Community Shield: 1 (4,5)
+maximos titulos de Community Shield de un club: Manchester City 7 (3)
+mas Community con un club: 1 Chelsea, Tottenham (4,5)
+
+Copa America: 1 (3,5)
+subcampeonatos de Copa America: 4 (2)
+Semifinalista de Copa America: 2 (4,5)
+maximos titulos de Copa America de un club: Uruguay 5 (2)
+maximo goleador de la Copa America: 1 (5)
+maximo asistente de la Copa America: 2 (5)
+
+Eurocopa: 0
+subcampeonatos de Eurocopa: 0
+Semifinalista de Eurocopa: 0
+maximos titulos de Eurocopa de un club: Holanda 3 (1)
+maximo goleador de la Eurocopa: 0
+maximo asistente de la Eurocopa: 0
+
+Copa Africana: 0
+subcampeonatos de Copa Africana: 0
+Semifinalista de Copa Africana: 0
+maximos titulos de Copa Africana de un club: Senegal 3 (4)
+maximo goleador de la Copa Africana: 0
+maximo asistente de la Copa Africana: 0
+
+Copa Asiatica: 0
+subcampeonatos de Copa Asiatica: 0
+Semifinalista de Copa Asiatica: 0
+maximos titulos de Copa Asiatica de un club: Australia 5 (5)
+maximo goleador de la Copa Asiatica: 0
+maximo asistente de la Copa Asiatica: 0
+
+Finalissima: 1 (3)
+maximos titulos de Finalissima de un club: Holanda 3 (1)
+
+Mundial: 2 (4)
+subcampeonatos de Mundial: 1 (1,2)
+Semifinalista de Mundial: 1 (1,3)
+maximos titulos de Mundial de un club: Inglaterra, Argentina 2 (4)
+maximo goleador de la Mundial: 1 (1,3)
+maximo asistente de la Mundial: 1 (1)
+
+maximas clasificaciones al mundial: 3 (3,5)
+maximo goleador de la la clasificacion: 2 (2)
+maximo asistente de la clasificacion: 0
+
+mejor equipo: 1.778 Napoli (5)
+mejor seleccion: 2.232 Argentina (3)
+
+traspaso record: $395M desde el Lazio al Tottenham (2)
+maxima estancia en un club: 7 Liverpool (2)
